@@ -6,6 +6,7 @@ import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.ClientPackets;
 import com.gameserver.packet.game2client.CharacterList;
+import com.gameserver.packet.game2client.CharacterSelectedOk;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -151,6 +152,6 @@ public class ClientListenerThread {
             return;
         }
         this.playableCharacter = new PlayableCharacter(this,character);
-
+        sendPacket(new CharacterSelectedOk(character));
     }
 }

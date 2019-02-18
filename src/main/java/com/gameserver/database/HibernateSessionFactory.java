@@ -27,7 +27,7 @@ public class HibernateSessionFactory {
 
                 settings.put(Environment.DRIVER, "org.postgresql.Driver");
 
-                settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/postgres?useSSL=false");
+                settings.put(Environment.URL, "jdbc:postgresql://localhost:15432/postgres?useSSL=false");
 
                 settings.put(Environment.USER, "postgres");
 
