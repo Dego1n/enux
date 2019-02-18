@@ -2,6 +2,7 @@ package com.gameserver.network.thread;
 
 import com.gameserver.database.dao.character.CharacterDao;
 import com.gameserver.database.entity.character.Character;
+import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.ClientPackets;
 import com.gameserver.packet.game2client.CharacterList;
@@ -25,6 +26,8 @@ public class ClientListenerThread {
     private boolean writeIsPending = false;
 
     private List<AbstractSendablePacket> packetBuffer;
+
+    private PlayableCharacter playableCharacter;
 
     public ClientListenerThread(AsynchronousSocketChannel socketChannel)
     {
@@ -133,5 +136,21 @@ public class ClientListenerThread {
         CharacterDao characterDao = new CharacterDao();
         List<Character> characters = characterDao.getCharactersByAccount(1);
         sendPacket(new CharacterList(characters));
+    }
+
+    public void characterSelected(int characterId) {
+        //TODO: проверять что персонаж принадлежит аккаунту
+        //TODO: проверять что персонаж не забанен
+
+        CharacterDao characterDao = new CharacterDao();
+        Character character = characterDao.getCharacterById(characterId);
+
+        if(character == null)
+        {
+            closeConnection();
+            return;
+        }
+        this.playableCharacter = new PlayableCharacter(this,character);
+
     }
 }

@@ -55,4 +55,11 @@ public class CharacterDao {
             return session.createQuery("from Character where name = :name", Character.class).setParameter("name", name).list().stream().findFirst().orElse(null);
         }
     }
+
+    public Character getCharacterById(int id)
+    {
+        try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            return session.createQuery("from Character where id = :id", Character.class).setParameter("id", id).list().stream().findFirst().orElse(null);
+        }
+    }
 }
