@@ -28,7 +28,7 @@ public class ClientListenerThread {
 
     private List<AbstractSendablePacket> packetBuffer;
 
-    private PlayableCharacter playableCharacter;
+    public PlayableCharacter playableCharacter;
 
     public ClientListenerThread(AsynchronousSocketChannel socketChannel)
     {

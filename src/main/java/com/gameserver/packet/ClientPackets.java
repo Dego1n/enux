@@ -4,6 +4,7 @@ import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.client2game.CharacterSelected;
 import com.gameserver.packet.client2game.MoveToLocation;
 import com.gameserver.packet.client2game.RequestConnectToGameServer;
+import com.gameserver.packet.client2game.EnterWorld;
 
 public class ClientPackets {
 
@@ -20,6 +21,9 @@ public class ClientPackets {
                 break;
             case 0x05:
                 new MoveToLocation(clientListenerThread,packet);
+                break;
+            case 0x06:
+                new EnterWorld(clientListenerThread, packet);
                 break;
         }
     }

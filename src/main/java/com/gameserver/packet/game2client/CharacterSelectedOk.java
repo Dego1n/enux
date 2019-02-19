@@ -19,10 +19,5 @@ public class CharacterSelectedOk  extends AbstractSendablePacket implements ISer
     public void build() {
         writeH(0x03);
 
-        writeD(character.getLocationX());
-        writeD(character.getLocationY());
-        writeD(character.getLocationZ());
-
-        writeS(character.getName());
     }
 }

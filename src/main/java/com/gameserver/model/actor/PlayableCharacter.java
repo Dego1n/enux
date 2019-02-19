@@ -24,4 +24,48 @@ public class PlayableCharacter {
 
         name = character.getName();
     }
+
+    public ClientListenerThread getClientListenerThread() {
+        return clientListenerThread;
+    }
+
+    public void setClientListenerThread(ClientListenerThread clientListenerThread) {
+        this.clientListenerThread = clientListenerThread;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getLocationX() {
+        return locationX;
+    }
+
+    public void setLocationX(int locationX) {
+        this.locationX = locationX;
+    }
+
+    public int getLocationY() {
+        return locationY;
+    }
+
+    public void setLocationY(int locationY) {
+        this.locationY = locationY;
+    }
+
+    public int getLocationZ() {
+        return locationZ;
+    }
+
+    public void setLocationZ(int locationZ) {
+        this.locationZ = locationZ;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
