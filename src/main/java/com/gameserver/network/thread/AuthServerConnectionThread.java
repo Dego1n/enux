@@ -1,5 +1,6 @@
 package com.gameserver.network.thread;
 
+import com.gameserver.packet.game2auth.Pong;
 import com.gameserver.packet.game2auth.RequestRegisterGameServer;
 import com.gameserver.packet.AbstractSendablePacket;
 
@@ -87,6 +88,13 @@ class AuthServerPacketHandler {
     static void handlePacket(AuthServerConnectionThread authServer, byte [] packet)
     {
         short packetID = (short)(((packet[1] & 0xFF) << 8) | (packet[0] & 0xFF));
+        switch(packetID)
+        {
+            case 0x02: //Ping
+                authServer.sendPacket(new Pong());
+                break;
+        }
         System.out.println("received packet from auth server with opcode: "+packetID);
     }
 }
+

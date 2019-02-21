@@ -129,8 +129,6 @@ public class ClientListenerThread {
 
     public void receivedGameSessionKey(int gameSessionKey) {
         //TODO make stuff with checking gameSessionKey
-        //TODO send character list
-
         //TODO получить аккаунт_ид от сервера авторизации
         //TODO отправлять персонажей именно этого аккаунта
 
