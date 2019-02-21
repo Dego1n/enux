@@ -1,5 +1,6 @@
 package com.gameserver.network;
 
+import com.gameserver.config.Config;
 import com.gameserver.network.instance.GameServerSocketInstance;
 import com.gameserver.network.thread.ClientListenerThread;
 
@@ -15,10 +16,10 @@ public class GameServerSocket {
     {
         try
         {
-            System.out.println("Listening clients "+6987); //TODO: config
+            System.out.println("Listening clients on "+ Config.GAME_SOCKET_LISTEN_ADDRESS+":"+Config.GAME_SOCKET_LISTEN_PORT);
             // Создаем AsynchronousServerSocketChannel, адрес и порт слушателя достаем из конфига
             final AsynchronousServerSocketChannel listener =
-                    AsynchronousServerSocketChannel.open().bind(new InetSocketAddress("127.0.0.1",6987)); //TODO: config
+                    AsynchronousServerSocketChannel.open().bind(new InetSocketAddress( Config.GAME_SOCKET_LISTEN_ADDRESS,Config.GAME_SOCKET_LISTEN_PORT));
 
             // Делаем коллбек на accept
             listener.accept( null, new CompletionHandler<AsynchronousSocketChannel,Void>() {

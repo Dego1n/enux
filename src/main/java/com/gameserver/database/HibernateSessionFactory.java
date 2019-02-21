@@ -1,5 +1,6 @@
 package com.gameserver.database;
 
+import com.gameserver.config.Config;
 import com.gameserver.database.entity.character.Character;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -9,7 +10,6 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.util.Properties;
 
-//TODO: Вынести все в конфиг как на сервере авторизации
 public class HibernateSessionFactory {
     private static SessionFactory sessionFactory;
 
@@ -25,21 +25,22 @@ public class HibernateSessionFactory {
 
                 Properties settings = new Properties();
 
-                settings.put(Environment.DRIVER, "org.postgresql.Driver");
+                settings.put(Environment.DRIVER, Config.DATABASE_DRIVER);
 
-                settings.put(Environment.URL, "jdbc:postgresql://localhost:15432/postgres?useSSL=false");
+                settings.put(Environment.URL, Config.DATABASE_URL);
 
-                settings.put(Environment.USER, "postgres");
+                settings.put(Environment.USER, Config.DATABASE_USER);
 
-                settings.put(Environment.PASS, "root");
+                settings.put(Environment.PASS, Config.DATABASE_PASSWORD);
 
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL95Dialect");
+                settings.put(Environment.DIALECT, Config.DATABASE_DIALECT);
 
-                settings.put(Environment.SHOW_SQL, "true");
+                settings.put(Environment.SHOW_SQL, Config.DATABASE_SHOW_SQL);
 
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-                settings.put(Environment.HBM2DDL_AUTO, "update");
+                settings.put(Environment.HBM2DDL_AUTO, Config.DATABASE_HBM2DLL);
+
 
                 configuration.setProperties(settings);
 

@@ -1,5 +1,6 @@
 package com.gameserver.network;
 
+import com.gameserver.config.Config;
 import com.gameserver.network.thread.AuthServerConnectionThread;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class AuthServerSocket {
 
     public void EstablishConnection() throws IOException {
         AsynchronousSocketChannel client = AsynchronousSocketChannel.open();
-        InetSocketAddress hostAddress = new InetSocketAddress("127.0.0.1", 1234);
+        InetSocketAddress hostAddress = new InetSocketAddress(Config.AUTH_SERVER_ADDRESS, Config.AUTH_SERVER_GAME_LISTEN_PORT);
         client.connect(hostAddress, null,  new CompletionHandler<Void,Void>()
         {
             @Override
