@@ -1,10 +1,7 @@
 package com.gameserver.packet;
 
 import com.gameserver.network.thread.ClientListenerThread;
-import com.gameserver.packet.client2game.CharacterSelected;
-import com.gameserver.packet.client2game.MoveToLocation;
-import com.gameserver.packet.client2game.RequestConnectToGameServer;
-import com.gameserver.packet.client2game.EnterWorld;
+import com.gameserver.packet.client2game.*;
 
 public class ClientPackets {
 
@@ -18,6 +15,9 @@ public class ClientPackets {
                 break;
             case 0x02:
                 new CharacterSelected(clientListenerThread,packet);
+                break;
+            case 0x03:
+                new RequestCreateCharacter(clientListenerThread,packet);
                 break;
             case 0x05:
                 new MoveToLocation(clientListenerThread,packet);

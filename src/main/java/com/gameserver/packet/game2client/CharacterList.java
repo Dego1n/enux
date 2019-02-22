@@ -34,6 +34,8 @@ public class CharacterList  extends AbstractSendablePacket implements IServerPac
             writeD(character.getLocationX());
             writeD(character.getLocationY());
             writeD(character.getLocationZ());
+            writeH(character.getRace().getValue());
+            writeH(character.getCharacterClass().getValue());
         }
         System.out.println("sent char list");
     }

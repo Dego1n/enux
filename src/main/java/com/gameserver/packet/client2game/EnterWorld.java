@@ -16,6 +16,8 @@ public class EnterWorld extends AbstractReceivablePacket {
 
     @Override
     protected void handle() {
-        _clientListenerThread.sendPacket(new UserInfo(_clientListenerThread.playableCharacter));
+
+        if(_clientListenerThread.playableCharacter != null)
+            _clientListenerThread.sendPacket(new UserInfo(_clientListenerThread.playableCharacter));
     }
 }

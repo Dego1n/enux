@@ -2,6 +2,8 @@ package com.gameserver.database.presets;
 
 import com.gameserver.database.dao.character.CharacterDao;
 import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.staticdata.CharacterClass;
+import com.gameserver.database.staticdata.Race;
 
 public class CharacterPresets {
 
@@ -23,6 +25,8 @@ public class CharacterPresets {
             character.setLocationY(-310);
             character.setLocationZ(184);
             character.setName("PlayTest");
+            character.setRace(Race.Human);
+            character.setCharacterClass(CharacterClass.Fighter);
 
             characterDao.save(character);
         }

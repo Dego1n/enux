@@ -1,5 +1,8 @@
 package com.gameserver.database.entity.character;
 
+import com.gameserver.database.staticdata.CharacterClass;
+import com.gameserver.database.staticdata.Race;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +19,14 @@ public class Character {
 
     @Column(name = "name")
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "race")
+    private Race race;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "class")
+    private CharacterClass characterClass;
 
     @Column(name = "location_x")
     private int locationX;
@@ -68,5 +79,21 @@ public class Character {
 
     public void setLocationZ(int locationZ) {
         this.locationZ = locationZ;
+    }
+
+    public Race getRace() {
+        return race;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
+    }
+
+    public CharacterClass getCharacterClass() {
+        return characterClass;
+    }
+
+    public void setCharacterClass(CharacterClass characterClass) {
+        this.characterClass = characterClass;
     }
 }
