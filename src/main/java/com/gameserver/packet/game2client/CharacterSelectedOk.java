@@ -18,6 +18,6 @@ public class CharacterSelectedOk  extends AbstractSendablePacket implements ISer
     @Override
     public void build() {
         writeH(0x03);
-
+        writeH(character.getRace().getValue());
     }
 }
