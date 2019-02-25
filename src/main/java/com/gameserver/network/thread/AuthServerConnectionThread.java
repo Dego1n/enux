@@ -112,16 +112,19 @@ public class AuthServerConnectionThread {
 
 class AuthServerPacketHandler {
 
+    private final static short PING = 0x02;
+
     static void handlePacket(AuthServerConnectionThread authServer, byte [] packet)
     {
+
         short packetID = (short)(((packet[1] & 0xFF) << 8) | (packet[0] & 0xFF));
+
         switch(packetID)
         {
-            case 0x02: //Ping
+            case PING:
                 authServer.sendPacket(new Pong());
                 break;
         }
-        System.out.println("received packet from auth server with opcode: "+packetID);
     }
 }
 
