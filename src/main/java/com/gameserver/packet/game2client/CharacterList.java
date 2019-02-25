@@ -37,6 +37,5 @@ public class CharacterList  extends AbstractSendablePacket implements IServerPac
             writeH(character.getRace().getValue());
             writeH(character.getCharacterClass().getValue());
         }
-        System.out.println("sent char list");
     }
 }

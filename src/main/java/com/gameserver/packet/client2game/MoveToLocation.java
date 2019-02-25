@@ -26,8 +26,6 @@ public class MoveToLocation extends AbstractReceivablePacket {
         int targetY = readD();
         int targetZ = readD();
 
-        System.out.println("OriginX: "+originX+ " OriginY: "+originY+" OriginZ: "+originZ);
-        System.out.println("TargetX: "+targetX+ " TargetY: "+targetY+" TargetZ: "+targetZ);
         _clientListenerThread.sendPacket(new MoveActorToLocation(targetX,targetY,targetZ));
     }
 }

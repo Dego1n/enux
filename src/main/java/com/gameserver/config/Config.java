@@ -1,8 +1,13 @@
 package com.gameserver.config;
 
 import com.gameserver.util.PropertiesParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Config {
+
+    private static final Logger log = LoggerFactory.getLogger(Config.class);
+
     private static final String configDir = "./config";
 
     private static final String gameSocketProperties = configDir + "/network/gamesocket.ini";
@@ -26,7 +31,7 @@ public class Config {
 
     public static void Load()
     {
-        System.out.println("Reading configuration files");
+        log.info("Loading configuration files");
 
         PropertiesParser configParser = new PropertiesParser(gameSocketProperties);
         GAME_SOCKET_LISTEN_ADDRESS = configParser.getString("ListenAddress", "127.0.0.1");

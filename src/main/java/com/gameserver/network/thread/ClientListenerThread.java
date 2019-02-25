@@ -7,6 +7,8 @@ import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.ClientPackets;
 import com.gameserver.packet.game2client.CharacterList;
 import com.gameserver.packet.game2client.CharacterSelectedOk;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -20,6 +22,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class ClientListenerThread {
+
+    private static final Logger log = LoggerFactory.getLogger(ClientListenerThread.class);
+
     private final AsynchronousSocketChannel _socketChannel;
 
     private short protocolVersion;
@@ -58,7 +63,6 @@ public class ClientListenerThread {
                     thread.writeIsPending = false;
                 }
             });
-            System.out.println("Sending this: " + Arrays.toString(packet.prepareAndGetData()));
         }
     }
 
@@ -86,23 +90,18 @@ public class ClientListenerThread {
                 //Читаем пакет
                 _socketChannel.read(byteBuffer).get(20, TimeUnit.SECONDS);
 
-                System.out.println(Arrays.toString(byteBuffer.array()));
-
                 //Передаем пакет Хендлеру
                 ClientPackets.HandlePacket(this,byteBuffer.array());
             }
         }
         catch (InterruptedException | ExecutionException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } catch (TimeoutException e)
         {
             // The user exceeded the 20 second timeout, so close the connection
-            _socketChannel.write( ByteBuffer.wrap( "Good Bye\n".getBytes() ) );
-            System.out.println( "Connection timed out, closing connection" );
         }
 
-        System.out.println( "End of conversation" );
         try
         {
             // Close the connection if we need to
@@ -113,17 +112,16 @@ public class ClientListenerThread {
         }
         catch (IOException e1)
         {
-            e1.printStackTrace();
+            log.error(e1.getMessage());
         }
     }
 
     public void closeConnection()
     {
-        System.out.println("trying to close connection");
         try {
             _socketChannel.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
