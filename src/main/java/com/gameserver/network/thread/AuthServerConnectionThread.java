@@ -3,6 +3,8 @@ package com.gameserver.network.thread;
 import com.gameserver.packet.game2auth.Pong;
 import com.gameserver.packet.game2auth.RequestRegisterGameServer;
 import com.gameserver.packet.AbstractSendablePacket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -16,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class AuthServerConnectionThread {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthServerConnectionThread.class);
 
     private AsynchronousSocketChannel _socketChannel;
 
@@ -78,23 +82,18 @@ public class AuthServerConnectionThread {
                 //Читаем пакет
                 _socketChannel.read(byteBuffer).get(20, TimeUnit.SECONDS);
 
-                System.out.println(Arrays.toString(byteBuffer.array()));
-
                 //Передаем пакет Хендлеру
                 AuthServerPacketHandler.handlePacket(this,byteBuffer.array());
             }
         }
         catch (InterruptedException | ExecutionException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } catch (TimeoutException e)
         {
             // The user exceeded the 20 second timeout, so close the connection
-            _socketChannel.write( ByteBuffer.wrap( "Good Bye\n".getBytes() ) );
-            System.out.println( "Connection timed out, closing connection" );
         }
 
-        System.out.println( "End of conversation" );
         try
         {
             // Close the connection if we need to
@@ -105,7 +104,7 @@ public class AuthServerConnectionThread {
         }
         catch (IOException e1)
         {
-            e1.printStackTrace();
+            log.error(e1.getMessage());
         }
     }
 }

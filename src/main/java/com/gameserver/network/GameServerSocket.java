@@ -3,6 +3,8 @@ package com.gameserver.network;
 import com.gameserver.config.Config;
 import com.gameserver.network.instance.GameServerSocketInstance;
 import com.gameserver.network.thread.ClientListenerThread;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,11 +14,13 @@ import java.nio.channels.CompletionHandler;
 
 public class GameServerSocket {
 
+    private static final Logger log = LoggerFactory.getLogger(GameServerSocket.class);
+
     public GameServerSocket()
     {
         try
         {
-            System.out.println("Listening clients on "+ Config.GAME_SOCKET_LISTEN_ADDRESS+":"+Config.GAME_SOCKET_LISTEN_PORT);
+            log.info("Listening clients on {}:{}",Config.GAME_SOCKET_LISTEN_ADDRESS, Config.GAME_SOCKET_LISTEN_PORT);
             // Создаем AsynchronousServerSocketChannel, адрес и порт слушателя достаем из конфига
             final AsynchronousServerSocketChannel listener =
                     AsynchronousServerSocketChannel.open().bind(new InetSocketAddress( Config.GAME_SOCKET_LISTEN_ADDRESS,Config.GAME_SOCKET_LISTEN_PORT));
@@ -29,8 +33,6 @@ public class GameServerSocket {
                 {
                     // Принимаем соединение
                     listener.accept( null, this );
-                    System.out.println("Got clientListenerThread");
-                    ///
 
                     ClientListenerThread clientListenerThread = GameServerSocketInstance.getInstance().newClient(ch);
                     clientListenerThread.receivableStream();

@@ -19,7 +19,6 @@ public class RequestConnectToGameServer extends AbstractReceivablePacket {
 
         int gameSessionKey = readD();
 
-        System.out.println("Client trying to connect with session_key: "+gameSessionKey);
         _clientListenerThread.receivedGameSessionKey(gameSessionKey);
     }
 }

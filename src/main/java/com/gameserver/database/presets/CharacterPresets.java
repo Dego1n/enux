@@ -4,8 +4,12 @@ import com.gameserver.database.dao.character.CharacterDao;
 import com.gameserver.database.entity.character.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CharacterPresets {
+
+    private static final Logger log = LoggerFactory.getLogger(CharacterPresets.class);
 
     public static void Load()
     {
@@ -13,7 +17,7 @@ public class CharacterPresets {
 
         if(characterDao.getCharacterByName("PlayTest") == null)
         {
-            System.out.println("Creating character PlayTest");
+            log.info("Creating character PlayTest");
 
             Character character = new Character();
 
@@ -32,7 +36,7 @@ public class CharacterPresets {
         }
         else
         {
-            System.out.println("Character already exists, skipping");
+            log.info("Character already exists, skipping");
         }
     }
 }
