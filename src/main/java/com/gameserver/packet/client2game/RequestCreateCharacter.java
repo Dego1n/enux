@@ -51,9 +51,9 @@ public class RequestCreateCharacter extends AbstractReceivablePacket {
         }
 
         //TODO: change location
-        character.setLocationX(165);
-        character.setLocationY(-310);
-        character.setLocationZ(184);
+        character.setLocationX(2820);
+        character.setLocationY(3990);
+        character.setLocationZ(-5740);
 
         character.setAccountId(1); //TODO change to account
 

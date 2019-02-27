@@ -1,7 +1,12 @@
 package com.gameserver.model.actor;
 
 import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.staticdata.CharacterClass;
+import com.gameserver.database.staticdata.Race;
+import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
+
+import java.util.List;
 
 public class PlayableCharacter {
 
@@ -13,6 +18,9 @@ public class PlayableCharacter {
     private int locationZ;
     private String name;
 
+    private Race race;
+    private CharacterClass characterClass;
+
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
         this.clientListenerThread = clientListenerThread;
@@ -23,6 +31,9 @@ public class PlayableCharacter {
         locationZ = character.getLocationZ();
 
         name = character.getName();
+
+        race = character.getRace();
+        characterClass = character.getCharacterClass();
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -67,5 +78,27 @@ public class PlayableCharacter {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Race getRace() {
+        return race;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
+    }
+
+    public CharacterClass getCharacterClass() {
+        return characterClass;
+    }
+
+    public void setCharacterClass(CharacterClass characterClass) {
+        this.characterClass = characterClass;
+    }
+
+
+    public List<PlayableCharacter> nearbyPlayers()
+    {
+        return World.getInstance().getPlayersInRadius(this,10000);
     }
 }
