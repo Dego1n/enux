@@ -19,7 +19,9 @@ public class UserInfo extends AbstractSendablePacket implements IServerPacket {
     public void build() {
 
         writeH(0x06);
-        writeD(_character.getId());
+        writeD(_character.getObjectId());
+        writeH(_character.getRace().getValue());
+        writeH(_character.getCharacterClass().getValue());
         writeD(_character.getLocationX());
         writeD(_character.getLocationY());
         writeD(_character.getLocationZ());

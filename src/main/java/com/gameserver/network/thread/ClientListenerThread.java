@@ -2,6 +2,7 @@ package com.gameserver.network.thread;
 
 import com.gameserver.database.dao.character.CharacterDao;
 import com.gameserver.database.entity.character.Character;
+import com.gameserver.model.World;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.ClientPackets;
@@ -53,13 +54,17 @@ public class ClientListenerThread {
                     thread.writeIsPending = false;
                     if(packetBuffer.size() > 0)
                     {
-                        thread.sendPacket(packetBuffer.get(0));
+                        //TODO: пофиксил здесь важный баг, сделать тоже самое в треде с сервером авторизации
+                        //TODO: и в самом сервере авторизации
+                        AbstractSendablePacket packet = packetBuffer.get(0);
+                        thread.sendPacket(packet);
+                        packetBuffer.remove(packet);
                     }
                 }
 
                 @Override
                 public void failed(Throwable exc, ClientListenerThread thread) {
-                    //TODO: close connection?
+                    closeConnection();
                     thread.writeIsPending = false;
                 }
             });
@@ -97,27 +102,21 @@ public class ClientListenerThread {
         catch (InterruptedException | ExecutionException e)
         {
             log.error(e.getMessage());
+            closeConnection();
         } catch (TimeoutException e)
         {
-            // The user exceeded the 20 second timeout, so close the connection
+            closeConnection();
         }
 
-        try
-        {
-            // Close the connection if we need to
-            if( _socketChannel.isOpen() )
-            {
-                _socketChannel.close();
-            }
-        }
-        catch (IOException e1)
-        {
-            log.error(e1.getMessage());
-        }
+       closeConnection();
     }
 
     public void closeConnection()
     {
+        if(playableCharacter != null)
+        {
+            World.getInstance().removePlayerFromWorld(playableCharacter);
+        }
         try {
             _socketChannel.close();
         } catch (IOException e) {

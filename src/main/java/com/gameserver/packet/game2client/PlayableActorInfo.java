@@ -16,9 +16,8 @@ public class PlayableActorInfo extends AbstractSendablePacket implements IServer
 
     @Override
     public void build() {
-
         writeH(0x07);
-        writeH(_character.getId());
+        writeD(_character.getObjectId());
         writeH(_character.getRace().getValue());
         writeH(_character.getCharacterClass().getValue());
 

@@ -3,6 +3,7 @@ package com.gameserver.model.actor;
 import com.gameserver.database.entity.character.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
+import com.gameserver.factory.idfactory.CharacterIdFactory;
 import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
 
@@ -12,6 +13,7 @@ public class PlayableCharacter {
 
     private ClientListenerThread clientListenerThread;
 
+    private int objectId;
     private int id;
     private int locationX;
     private int locationY;
@@ -23,6 +25,8 @@ public class PlayableCharacter {
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
+        objectId = CharacterIdFactory.getInstance().getFreeId();
+
         this.clientListenerThread = clientListenerThread;
 
         id = character.getId();
@@ -44,6 +48,9 @@ public class PlayableCharacter {
         this.clientListenerThread = clientListenerThread;
     }
 
+    public int getObjectId() {
+        return objectId;
+    }
     public int getId() {
         return id;
     }
@@ -101,4 +108,5 @@ public class PlayableCharacter {
     {
         return World.getInstance().getPlayersInRadius(this,10000);
     }
+
 }

@@ -1,6 +1,7 @@
 package com.gameserver.model;
 
 import com.gameserver.model.actor.PlayableCharacter;
+import com.gameserver.packet.game2client.DestroyActor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +35,23 @@ public class World {
         players.add(player);
     }
 
+    public void removePlayerFromWorld(PlayableCharacter player)
+    {
+        for(PlayableCharacter pc : getPlayersInRadius(player,10000))
+        {
+            pc.getClientListenerThread().sendPacket(new DestroyActor(player.getObjectId()));
+        }
+        players.remove(player);
+    }
+
     public List<PlayableCharacter> getPlayersInRadius(PlayableCharacter character, float radius)
     {
         List<PlayableCharacter> actors = new ArrayList<>();
 
         for(PlayableCharacter player : players)
         {
+            if (player == character)
+                continue;
             if(
                     Math.sqrt(
                         Math.pow((player.getLocationX() - character.getLocationX()),2) +

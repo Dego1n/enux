@@ -27,10 +27,10 @@ public class EnterWorld extends AbstractReceivablePacket {
             PlayableCharacter character = _clientListenerThread.playableCharacter;
             _clientListenerThread.sendPacket(new UserInfo(character));
             World.getInstance().addPlayerToWorld(character);
-
             for (PlayableCharacter actor : character.nearbyPlayers())
             {
                 _clientListenerThread.sendPacket(new PlayableActorInfo(actor));
+                actor.getClientListenerThread().sendPacket(new PlayableActorInfo(character));
             }
         }
     }
