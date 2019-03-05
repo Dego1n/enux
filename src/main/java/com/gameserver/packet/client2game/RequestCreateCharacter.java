@@ -1,11 +1,11 @@
 package com.gameserver.packet.client2game;
 
-import com.gameserver.database.dao.character.CharacterDao;
+import com.gameserver.database.dao.actor.CharacterDao;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.entity.actor.Character;
 import com.gameserver.packet.game2client.CharacterList;
 
 public class RequestCreateCharacter extends AbstractReceivablePacket {

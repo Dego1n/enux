@@ -2,6 +2,8 @@ package com.gameserver;
 
 import com.gameserver.config.Config;
 import com.gameserver.database.presets.CharacterPresets;
+import com.gameserver.database.presets.NPCPresets;
+import com.gameserver.model.World;
 import com.gameserver.network.AuthServerSocket;
 import com.gameserver.network.instance.GameServerSocketInstance;
 
@@ -12,8 +14,12 @@ public class GameServer {
     {
 
         Config.Load();
+        /* PRESETS_START */
         CharacterPresets.Load();
+        NPCPresets.Load();
+        /* PRESETS_END */
 
+        World.getInstance();
         try {
             new AuthServerSocket().EstablishConnection();
             GameServerSocketInstance.getInstance();

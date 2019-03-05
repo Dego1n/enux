@@ -3,7 +3,7 @@ package com.gameserver.packet.game2client;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.entity.actor.Character;
 
 import java.util.List;
 

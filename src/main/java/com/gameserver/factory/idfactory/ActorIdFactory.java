@@ -5,21 +5,21 @@ package com.gameserver.factory.idfactory;
  * Copyright (c) 02.03.2019
  */
 
-public class CharacterIdFactory {
+public class ActorIdFactory {
 
-    private static CharacterIdFactory _instance;
+    private static ActorIdFactory _instance;
 
-    public static CharacterIdFactory getInstance()
+    public static ActorIdFactory getInstance()
     {
         if(_instance == null)
-            _instance = new CharacterIdFactory();
+            _instance = new ActorIdFactory();
 
         return _instance;
     }
 
     private int _nextIdValue;
 
-    private CharacterIdFactory()
+    private ActorIdFactory()
     {
         _nextIdValue = 1;
     }

@@ -1,7 +1,7 @@
-package com.gameserver.database.dao.character;
+package com.gameserver.database.dao.actor;
 
 import com.gameserver.database.HibernateSessionFactory;
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.entity.actor.Character;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

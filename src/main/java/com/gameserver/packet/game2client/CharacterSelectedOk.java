@@ -1,6 +1,6 @@
 package com.gameserver.packet.game2client;
 
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.entity.actor.Character;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 

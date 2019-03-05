@@ -1,5 +1,8 @@
 package com.gameserver.model;
 
+import com.gameserver.database.dao.actor.NPCDao;
+import com.gameserver.model.actor.BaseActor;
+import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.game2client.DestroyActor;
 import org.slf4j.Logger;
@@ -22,49 +25,86 @@ public class World {
         return _instance;
     }
 
-    private List<PlayableCharacter> players;
+    private List<BaseActor> actors;
 
     private World()
     {
         log.info("Initializing world");
-        players = new ArrayList<>();
+        actors = new ArrayList<>();
+        log.info("Spawning NPCS");
+        log.info("Spawned {} NPCs",SpawnNpcs());
+
+    }
+
+    public int SpawnNpcs()
+    {
+        int count = 0;
+        NPCDao npcDao = new NPCDao();
+        for(com.gameserver.database.entity.actor.NPCActor npcActor : npcDao.getAllNpcs())
+        {
+            actors.add(new NPCActor(npcActor));
+            count++;
+        }
+
+        return count;
     }
 
     public void addPlayerToWorld(PlayableCharacter player)
     {
-        players.add(player);
+        actors.add(player);
     }
 
     public void removePlayerFromWorld(PlayableCharacter player)
     {
-        for(PlayableCharacter pc : getPlayersInRadius(player,10000))
+        for(BaseActor pc : getActorsInRadius(player,10000))
         {
-            pc.getClientListenerThread().sendPacket(new DestroyActor(player.getObjectId()));
+            if(pc instanceof PlayableCharacter)
+                ((PlayableCharacter)pc).getClientListenerThread().sendPacket(new DestroyActor(player.getObjectId()));
         }
-        players.remove(player);
+        actors.remove(player);
     }
 
-    public List<PlayableCharacter> getPlayersInRadius(PlayableCharacter character, float radius)
+    public List<BaseActor> getActorsInRadius(BaseActor character, float radius)
     {
-        List<PlayableCharacter> actors = new ArrayList<>();
+        List<BaseActor> actorsInRaidus = new ArrayList<>();
 
-        for(PlayableCharacter player : players)
+        for(BaseActor actor : actors)
         {
-            if (player == character)
+            if (actor == character)
                 continue;
             if(
                     Math.sqrt(
-                        Math.pow((player.getLocationX() - character.getLocationX()),2) +
-                        Math.pow((player.getLocationY() - character.getLocationY()),2) +
-                        Math.pow((player.getLocationZ() - character.getLocationZ()),2)
+                        Math.pow((actor.getLocationX() - character.getLocationX()),2) +
+                        Math.pow((actor.getLocationY() - character.getLocationY()),2) +
+                        Math.pow((actor.getLocationZ() - character.getLocationZ()),2)
                     ) <= radius
             )
             {
-                actors.add(player);
+                actorsInRaidus.add(actor);
             }
         }
 
-        return actors;
+        return actorsInRaidus;
     }
 
+    public List<PlayableCharacter> getPlayableCharactersInRadius(BaseActor actor, float radius)
+    {
+        List<PlayableCharacter> characters = new ArrayList<>();
+        for(BaseActor baseActor : getActorsInRadius(actor,radius))
+        {
+            if(baseActor instanceof PlayableCharacter)
+                characters.add((PlayableCharacter) baseActor);
+        }
+        return characters;
+    }
+    public BaseActor getActorByObjectId(int objectId)
+    {
+        for(BaseActor ba : actors)
+        {
+            if(ba.getObjectId() == objectId)
+                return ba;
+        }
+
+        return null;
+    }
 }

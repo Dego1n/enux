@@ -1,7 +1,7 @@
 package com.gameserver.database.presets;
 
-import com.gameserver.database.dao.character.CharacterDao;
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.dao.actor.CharacterDao;
+import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ public class CharacterPresets {
 
         if(characterDao.getCharacterByName("PlayTest") == null)
         {
-            log.info("Creating character PlayTest");
+            log.info("Creating actor PlayTest");
 
             Character character = new Character();
 

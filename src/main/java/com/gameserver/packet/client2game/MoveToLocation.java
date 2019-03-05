@@ -1,5 +1,6 @@
 package com.gameserver.packet.client2game;
 
+import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
@@ -35,10 +36,10 @@ public class MoveToLocation extends AbstractReceivablePacket {
 
         _clientListenerThread.sendPacket(new MoveActorToLocation(character.getObjectId(),targetX,targetY,targetZ));
 
-        for (PlayableCharacter actor : character.nearbyPlayers())
+        for (PlayableCharacter pc : character.nearbyPlayers())
         {
-            if(actor.getClientListenerThread() != null) {
-                actor.getClientListenerThread().sendPacket(new MoveActorToLocation(character.getObjectId(),targetX,targetY,targetZ));
+            if(pc.getClientListenerThread() != null) {
+                pc.getClientListenerThread().sendPacket(new MoveActorToLocation(character.getObjectId(),targetX,targetY,targetZ));
             }
         }
     }

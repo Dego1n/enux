@@ -1,43 +1,34 @@
 package com.gameserver.model.actor;
 
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
-import com.gameserver.database.staticdata.Race;
-import com.gameserver.factory.idfactory.CharacterIdFactory;
 import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
 
 import java.util.List;
 
-public class PlayableCharacter {
+public class PlayableCharacter extends BaseActor {
 
     private ClientListenerThread clientListenerThread;
 
-    private int objectId;
-    private int id;
-    private int locationX;
-    private int locationY;
-    private int locationZ;
-    private String name;
-
-    private Race race;
     private CharacterClass characterClass;
+
+    private BaseActor target;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
-        objectId = CharacterIdFactory.getInstance().getFreeId();
+        super();
 
+        setClientListenerThread(clientListenerThread);
         this.clientListenerThread = clientListenerThread;
 
         id = character.getId();
-        locationX = character.getLocationX();
-        locationY = character.getLocationY();
-        locationZ = character.getLocationZ();
-
-        name = character.getName();
-
-        race = character.getRace();
-        characterClass = character.getCharacterClass();
+        setLocationX(character.getLocationX());
+        setLocationY(character.getLocationY());
+        setLocationZ(character.getLocationZ());
+        setName(character.getName());
+        setRace(character.getRace());
+        setCharacterClass(character.getCharacterClass());
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -48,53 +39,6 @@ public class PlayableCharacter {
         this.clientListenerThread = clientListenerThread;
     }
 
-    public int getObjectId() {
-        return objectId;
-    }
-    public int getId() {
-        return id;
-    }
-
-    public int getLocationX() {
-        return locationX;
-    }
-
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
-    }
-
-    public int getLocationY() {
-        return locationY;
-    }
-
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }
-
-    public int getLocationZ() {
-        return locationZ;
-    }
-
-    public void setLocationZ(int locationZ) {
-        this.locationZ = locationZ;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Race getRace() {
-        return race;
-    }
-
-    public void setRace(Race race) {
-        this.race = race;
-    }
-
     public CharacterClass getCharacterClass() {
         return characterClass;
     }
@@ -103,10 +47,34 @@ public class PlayableCharacter {
         this.characterClass = characterClass;
     }
 
+    public BaseActor getTarget() {
+        return target;
+    }
+
+    public void setTarget(BaseActor target) {
+        this.target = target;
+    }
+
+    public List<BaseActor> nearbyActors()
+    {
+        return World.getInstance().getActorsInRadius(this,10000);
+    }
 
     public List<PlayableCharacter> nearbyPlayers()
     {
-        return World.getInstance().getPlayersInRadius(this,10000);
+        return World.getInstance().getPlayableCharactersInRadius(this,10000);
     }
 
+    public void action(int objectId) {
+        BaseActor actor = World.getInstance().getActorByObjectId(objectId);
+        if(actor != null)
+        {
+            target = actor;
+            System.out.println("Set target for client: "+actor.getName());
+        }
+        else
+        {
+            System.out.println("Client requested action for non existing target. Id: "+objectId);
+        }
+    }
 }

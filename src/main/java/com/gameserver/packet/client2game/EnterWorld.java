@@ -1,13 +1,14 @@
 package com.gameserver.packet.client2game;
 
 import com.gameserver.model.World;
+import com.gameserver.model.actor.BaseActor;
+import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
+import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.PlayableActorInfo;
 import com.gameserver.packet.game2client.UserInfo;
-
-import java.util.List;
 
 public class EnterWorld extends AbstractReceivablePacket {
 
@@ -27,10 +28,16 @@ public class EnterWorld extends AbstractReceivablePacket {
             PlayableCharacter character = _clientListenerThread.playableCharacter;
             _clientListenerThread.sendPacket(new UserInfo(character));
             World.getInstance().addPlayerToWorld(character);
-            for (PlayableCharacter actor : character.nearbyPlayers())
+            for (BaseActor actor : character.nearbyActors())
             {
-                _clientListenerThread.sendPacket(new PlayableActorInfo(actor));
-                actor.getClientListenerThread().sendPacket(new PlayableActorInfo(character));
+                if(actor instanceof PlayableCharacter) {
+                    _clientListenerThread.sendPacket(new PlayableActorInfo((PlayableCharacter) actor));
+                    ((PlayableCharacter)actor).getClientListenerThread().sendPacket(new PlayableActorInfo(character));
+                }
+                else if (actor instanceof NPCActor)
+                {
+                    _clientListenerThread.sendPacket(new ActorInfo(actor));
+                }
             }
         }
     }

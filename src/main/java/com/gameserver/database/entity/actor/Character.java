@@ -1,4 +1,4 @@
-package com.gameserver.database.entity.character;
+package com.gameserver.database.entity.actor;
 
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;

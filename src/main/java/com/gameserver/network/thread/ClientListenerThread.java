@@ -1,7 +1,7 @@
 package com.gameserver.network.thread;
 
-import com.gameserver.database.dao.character.CharacterDao;
-import com.gameserver.database.entity.character.Character;
+import com.gameserver.database.dao.actor.CharacterDao;
+import com.gameserver.database.entity.actor.Character;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
@@ -16,7 +16,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
