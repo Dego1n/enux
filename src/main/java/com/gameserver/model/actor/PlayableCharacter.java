@@ -4,6 +4,7 @@ import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
+import com.gameserver.packet.game2client.TargetSelected;
 
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class PlayableCharacter extends BaseActor {
         if(actor != null)
         {
             target = actor;
-            System.out.println("Set target for client: "+actor.getName());
+            clientListenerThread.sendPacket(new TargetSelected(objectId));
         }
         else
         {
