@@ -4,6 +4,7 @@ import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
+import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.TargetSelected;
 
 import java.util.List;
@@ -48,6 +49,11 @@ public class PlayableCharacter extends BaseActor {
         this.characterClass = characterClass;
     }
 
+    public void sendPacket(AbstractSendablePacket packet)
+    {
+        clientListenerThread.sendPacket(packet);
+    }
+
     public BaseActor getTarget() {
         return target;
     }
@@ -68,14 +74,30 @@ public class PlayableCharacter extends BaseActor {
 
     public void action(int objectId) {
         BaseActor actor = World.getInstance().getActorByObjectId(objectId);
-        if(actor != null)
-        {
-            target = actor;
-            clientListenerThread.sendPacket(new TargetSelected(objectId));
+        if(actor != null) {
+
+            if (target == actor)
+            {
+                if(actor instanceof NPCActor)
+                {
+                    //TODO: проверка растояния
+                    ((NPCActor) actor).getNpcAi().onTalk(this);
+                }
+            }
+            else
+            {
+                target = actor;
+                sendPacket(new TargetSelected(objectId));
+            }
         }
         else
         {
             System.out.println("Client requested action for non existing target. Id: "+objectId);
         }
+    }
+
+    public void sendDialog(BaseActor actor, String dialog)
+    {
+        System.out.println("Should send dialog. ActorId: "+actor.getId() + ". Dialog: "+dialog);
     }
 }

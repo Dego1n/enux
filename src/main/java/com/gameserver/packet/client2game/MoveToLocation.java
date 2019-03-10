@@ -38,9 +38,7 @@ public class MoveToLocation extends AbstractReceivablePacket {
 
         for (PlayableCharacter pc : character.nearbyPlayers())
         {
-            if(pc.getClientListenerThread() != null) {
-                pc.getClientListenerThread().sendPacket(new MoveActorToLocation(character.getObjectId(),targetX,targetY,targetZ));
-            }
+            pc.sendPacket(new MoveActorToLocation(character.getObjectId(),targetX,targetY,targetZ));
         }
     }
 }

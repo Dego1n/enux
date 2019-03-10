@@ -97,6 +97,19 @@ public class World {
         }
         return characters;
     }
+
+    public List<PlayableCharacter> getAllPlayers()
+    {
+        List<PlayableCharacter> list = new ArrayList<>();
+
+        for(BaseActor actor : actors)
+        {
+            if(actor instanceof PlayableCharacter)
+                list.add((PlayableCharacter)actor);
+        }
+        
+        return list;
+    }
     public BaseActor getActorByObjectId(int objectId)
     {
         for(BaseActor ba : actors)
