@@ -5,6 +5,7 @@ import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
+import com.gameserver.packet.game2client.Dialog;
 import com.gameserver.packet.game2client.TargetSelected;
 
 import java.util.List;
@@ -96,8 +97,9 @@ public class PlayableCharacter extends BaseActor {
         }
     }
 
-    public void sendDialog(BaseActor actor, String dialog)
+    public void sendDialog(String dialog)
     {
-        System.out.println("Should send dialog. ActorId: "+actor.getId() + ". Dialog: "+dialog);
+        System.out.println("Should send dialog. Dialog: "+dialog);
+        sendPacket(new Dialog(dialog));
     }
 }

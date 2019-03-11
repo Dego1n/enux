@@ -1,1 +1,7 @@
+Hello! This is a first NPC of the world.
+
+Information about current server:
+
 Players online: $PlayersOnline
+
+<button type="npc_dialog" object_id="$npc_id" ref="platform_info">Platform Info</>

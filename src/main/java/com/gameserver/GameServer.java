@@ -23,7 +23,7 @@ public class GameServer {
         /* PRESETS_END */
 
         World.getInstance();
-        ((NPCActor)World.getInstance().getActorByObjectId(1)).getNpcAi().onTalk(new PlayableCharacter(null, new CharacterDao().getCharacterByName("PlayTest")));
+//        ((NPCActor)World.getInstance().getActorByObjectId(1)).getNpcAi().onTalk(new PlayableCharacter(null, new CharacterDao().getCharacterByName("PlayTest")));
         try {
             new AuthServerSocket().EstablishConnection();
             GameServerSocketInstance.getInstance();

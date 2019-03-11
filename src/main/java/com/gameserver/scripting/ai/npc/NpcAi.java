@@ -20,6 +20,7 @@ public class NpcAi {
         scriptRootDirectory = scriptPath;
         script = JsePlatform.standardGlobals();
         script.get("dofile").call(LuaValue.valueOf(scriptPath) + "/npc_ai.lua");
+        script.set("npc", CoerceJavaToLua.coerce(npcActor));
         registerGlobals();
     }
 
@@ -37,7 +38,6 @@ public class NpcAi {
     public void onTalk(PlayableCharacter character)
     {
         LuaValue luaPc = CoerceJavaToLua.coerce(character);
-        LuaValue luaNpc = CoerceJavaToLua.coerce(npcActor);
-        script.get("onTalk").call(luaNpc,luaPc);
+        script.get("onTalk").call(luaPc);
     }
 }

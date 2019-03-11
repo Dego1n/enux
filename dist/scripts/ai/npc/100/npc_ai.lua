@@ -1,4 +1,4 @@
-function onTalk(NPCActor, PlayableCharacter, dialog)
+function onTalk(PlayableCharacter, dialog)
     dialog = dialog or "index"
     print("Trigger on Talk")
     print(PlayableCharacter:getName())
@@ -6,7 +6,7 @@ function onTalk(NPCActor, PlayableCharacter, dialog)
     print("dir" .. self_path)
     print(dialog)
     if dialog == "index" then
-        PlayableCharacter:sendDialog(NPCActor,renderDefaultDialog())
+        prepareDialogAndSend(PlayableCharacter, renderDefaultDialog())
     end
 
 end
@@ -17,4 +17,7 @@ function renderDefaultDialog()
     return dialog
 end
 
-
+function prepareDialogAndSend(PlayableCharacter, dialog)
+    dialog = string.gsub(dialog, "$npc_id", npc:getObjectId())
+    PlayableCharacter:sendDialog(dialog)
+end
