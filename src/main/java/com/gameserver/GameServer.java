@@ -15,7 +15,6 @@ import java.io.IOException;
 public class GameServer {
     public static void main(String[] args)
     {
-
         Config.Load();
         /* PRESETS_START */
         CharacterPresets.Load();

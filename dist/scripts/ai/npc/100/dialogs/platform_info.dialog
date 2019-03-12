@@ -1,0 +1,8 @@
+Server information:
+
+Java version: $java_ver
+Operation System: $os_name
+OS Version: $os_ver
+OS Architecture: $os_arch
+
+<button type="npc_dialog" object_id="$npc_id" ref="index">Back</>

@@ -13,6 +13,7 @@ public class ClientPackets {
     private final static short MOVE_TO_LOCATION = 0x05;
     private final static short ENTER_WORLD = 0x06;
     private final static short ACTION = 0x07;
+    private final static short REQUEST_DIALOG = 0x08;
 
     public static void HandlePacket(ClientListenerThread clientListenerThread, byte [] packet)
     {
@@ -36,6 +37,9 @@ public class ClientPackets {
                 break;
             case ACTION:
                 new Action(clientListenerThread,packet);
+                break;
+            case REQUEST_DIALOG:
+                new RequestDialog(clientListenerThread,packet);
                 break;
         }
     }
