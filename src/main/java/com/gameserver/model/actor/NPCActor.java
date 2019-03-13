@@ -1,5 +1,6 @@
 package com.gameserver.model.actor;
 
+import com.gameserver.config.Config;
 import com.gameserver.scripting.ai.npc.NpcAi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,7 @@ public class NPCActor extends BaseActor {
         setRace(npcActor.getRace());
         setTemplateId(npcActor.getTemplateId());
 
-        String path = "./scripts/ai/npc/"+id;
-
-        if(Files.isDirectory(Paths.get("./dist/config")))
-        {
-            //From Editor
-            path = "./dist/scripts/ai/npc/"+id;
-        }
+        String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+id;
 
         if(new File(path).exists())
         {

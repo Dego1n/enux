@@ -29,8 +29,11 @@ public class Config {
     public static String DATABASE_SHOW_SQL;
     public static String DATABASE_HBM2DLL;
 
-    private static String generalProperties = configDir + "/general.ini";
+    private static String generalProperties = configDir + "/general/general.ini";
     public static String GAME_SERVER_NAME;
+
+    private static String datapackProperties = configDir + "/general/datapack.ini";
+    public static String DATAPACK_PATH;
 
     public static void Load()
     {
@@ -42,7 +45,8 @@ public class Config {
             log.info("Seems like game server is running from IDE. Using path: ./dist/config");
             gameSocketProperties = "./dist/config/network/gamesocket.ini";
             databaseProperties = "./dist/config/database/database.ini";
-            generalProperties = "./dist/config/general.ini";
+            generalProperties = "./dist/config/general/general.ini";
+            datapackProperties = "./dist/config/general/datapack.ini";
         }
 
         PropertiesParser configParser = new PropertiesParser(gameSocketProperties);
@@ -62,6 +66,15 @@ public class Config {
 
         configParser = new PropertiesParser(generalProperties);
         GAME_SERVER_NAME = configParser.getString("ServerName", "NoNameServer");
+
+        configParser = new PropertiesParser(datapackProperties);
+
+        DATAPACK_PATH = configParser.getString("DatapackPath", "/data/");
+        //Если из IDE - перезаписываем путь
+        if(Files.isDirectory(Paths.get("./dist/data")))
+        {
+            DATAPACK_PATH = "./dist/data/";
+        }
     }
 
 }
