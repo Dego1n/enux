@@ -1,15 +1,15 @@
-package com.gameserver.database.dao.actor;
+package com.gameserver.database.dao.spawn;
 
 import com.gameserver.database.HibernateSessionFactory;
-import com.gameserver.database.entity.actor.NPCActor;
+import com.gameserver.database.entity.spawn.Spawn;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class NPCDao {
+public class SpawnDao {
 
-    public void save(NPCActor npc) {
+    public void save(Spawn spawn) {
 
         Transaction transaction = null;
 
@@ -21,7 +21,7 @@ public class NPCDao {
 
             // save the account object
 
-            session.save(npc);
+            session.save(spawn);
 
             // commit transaction
 
@@ -41,18 +41,18 @@ public class NPCDao {
 
     }
 
-    public List<NPCActor> getAllNpcs()
+    public List<Spawn> getAllSpawns()
     {
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
 
-            return session.createQuery("from NPCActor", NPCActor.class).list();
+            return session.createQuery("from Spawn", Spawn.class).list();
         }
     }
 
-    public NPCActor getNpcById(int id)
+    public Spawn getFirstSpawnForActorId(int id)
     {
         try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            return session.createQuery("from NPCActor where id = :id", NPCActor.class).setParameter("id", id).list().stream().findFirst().orElse(null);
+            return session.createQuery("from Spawn where actor_id = :id", Spawn.class).setParameter("id", id).list().stream().findFirst().orElse(null);
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.gameserver.model.actor;
 
 import com.gameserver.config.Config;
+import com.gameserver.database.entity.spawn.Spawn;
+import com.gameserver.instance.DataEngine;
 import com.gameserver.scripting.ai.npc.NpcAi;
+import com.gameserver.template.NPC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,16 +18,17 @@ public class NPCActor extends BaseActor {
 
     private NpcAi npcAi;
 
-    public NPCActor(com.gameserver.database.entity.actor.NPCActor npcActor)
+    public NPCActor(Spawn spawn)
     {
         super();
-        id = npcActor.getId();
-        setLocationX(npcActor.getLocationX());
-        setLocationY(npcActor.getLocationY());
-        setLocationZ(npcActor.getLocationZ());
-        setName(npcActor.getName());
-        setRace(npcActor.getRace());
-        setTemplateId(npcActor.getTemplateId());
+        NPC npc = DataEngine.getInstance().getNPCById(spawn.getActorId());
+        id = npc.getId();
+        setLocationX(spawn.getLocationX());
+        setLocationY(spawn.getLocationY());
+        setLocationZ(spawn.getLocationZ());
+        setName(npc.getName());
+        //setRace(npcActor.getRace());
+        setTemplateId(npc.getTemplateId());
 
         String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+id;
 

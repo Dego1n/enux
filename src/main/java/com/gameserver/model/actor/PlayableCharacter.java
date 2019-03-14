@@ -16,7 +16,6 @@ public class PlayableCharacter extends BaseActor {
 
     private CharacterClass characterClass;
 
-    private BaseActor target;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -53,14 +52,6 @@ public class PlayableCharacter extends BaseActor {
     public void sendPacket(AbstractSendablePacket packet)
     {
         clientListenerThread.sendPacket(packet);
-    }
-
-    public BaseActor getTarget() {
-        return target;
-    }
-
-    public void setTarget(BaseActor target) {
-        this.target = target;
     }
 
     public List<BaseActor> nearbyActors()

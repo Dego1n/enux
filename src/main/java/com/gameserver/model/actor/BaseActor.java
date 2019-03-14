@@ -2,6 +2,12 @@ package com.gameserver.model.actor;
 
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.factory.idfactory.ActorIdFactory;
+import com.gameserver.model.actor.ai.AiState;
+import com.gameserver.model.actor.ai.BaseAI;
+import com.gameserver.task.Task;
+import com.gameserver.task.actortask.AttackTask;
+
+import java.util.*;
 
 public abstract class BaseActor {
 
@@ -16,9 +22,19 @@ public abstract class BaseActor {
 
     private int templateId;
 
+    protected BaseActor target;
+
+    protected BaseAI _ai;
+
+    protected List<Task> _tasks;
+
+    private float attackSpeed = 1.0f;
+
     public BaseActor()
     {
         objectId = ActorIdFactory.getInstance().getFreeId();
+        _ai = new BaseAI();
+        _tasks = new ArrayList<>();
     }
 
     public int getObjectId() {
@@ -75,5 +91,40 @@ public abstract class BaseActor {
 
     public void setTemplateId(int templateId) {
         this.templateId = templateId;
+    }
+
+    public BaseActor getTarget() {
+        return target;
+    }
+
+    public void setTarget(BaseActor target) {
+        this.target = target;
+    }
+
+    public BaseAI getAi() {
+        return _ai;
+    }
+
+    public void requestAttack()
+    {
+        if(target == null)
+            return;
+
+        //TODO: Проверка пожилого расстояния
+        _ai.changeStatus(AiState.ATTACKING);
+        _tasks.add(new Task(new AttackTask(this,target),0, (long)(attackSpeed*1000)));
+    }
+    public void attack(BaseActor target)
+    {
+        System.out.println("Attack tick from: "+getName()+" to "+target.getName());
+    }
+
+    public List<Task> getTasks() {
+        return _tasks;
+    }
+
+    public void stopTask(Task task) {
+        task.timer.cancel();
+        _tasks.remove(task);
     }
 }

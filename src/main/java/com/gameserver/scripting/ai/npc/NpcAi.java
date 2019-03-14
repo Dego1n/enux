@@ -39,12 +39,16 @@ public class NpcAi {
 
     public void onTalk(PlayableCharacter character)
     {
+        if(script == null)
+            return;
         LuaValue luaPc = CoerceJavaToLua.coerce(character);
         script.get("onTalk").call(luaPc);
     }
 
     public void requestDialog(PlayableCharacter character, String dialog)
     {
+        if(script == null)
+            return;
         LuaValue luaPc = CoerceJavaToLua.coerce(character);
         LuaValue luaDialog = CoerceJavaToLua.coerce(dialog);
         script.get("Dialog").call(luaPc, luaDialog);

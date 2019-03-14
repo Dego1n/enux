@@ -1,3 +1,11 @@
 Arissa:
   id: 100
   name: Arissa
+  template_id: 100
+  is_friendly: true
+
+Zombie:
+  id: 101
+  name: Zombie
+  template_id: 101
+  is_friendly: false
