@@ -15,6 +15,7 @@ public class ClientPackets {
     private final static short ACTION = 0x07;
     private final static short REQUEST_DIALOG = 0x08;
     private final static short REQUEST_ATTACK = 0x09;
+    private final static short VALIDATE_POSITION = 0x0A;
 
     public static void HandlePacket(ClientListenerThread clientListenerThread, byte [] packet)
     {
@@ -44,6 +45,9 @@ public class ClientPackets {
                 break;
             case REQUEST_ATTACK:
                 new RequestAttack(clientListenerThread,packet);
+                break;
+            case VALIDATE_POSITION:
+                new ValidatePosition(clientListenerThread,packet);
                 break;
         }
     }

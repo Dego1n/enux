@@ -16,6 +16,9 @@ public abstract class BaseActor {
     private int locationX;
     private int locationY;
     private int locationZ;
+
+    private boolean isFriendly = true;
+
     private String name;
 
     private Race race;
@@ -67,6 +70,14 @@ public abstract class BaseActor {
 
     public void setLocationZ(int locationZ) {
         this.locationZ = locationZ;
+    }
+
+    public boolean isFriendly() {
+        return isFriendly;
+    }
+
+    public void setFriendly(boolean friendly) {
+        isFriendly = friendly;
     }
 
     public String getName() {

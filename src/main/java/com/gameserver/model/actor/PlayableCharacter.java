@@ -6,7 +6,10 @@ import com.gameserver.model.World;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.Dialog;
+import com.gameserver.packet.game2client.MoveToPawn;
 import com.gameserver.packet.game2client.TargetSelected;
+import com.gameserver.util.math.xyz.Math2d;
+import com.gameserver.util.math.xyz.Math3d;
 
 import java.util.List;
 
@@ -72,8 +75,15 @@ public class PlayableCharacter extends BaseActor {
             {
                 if(actor instanceof NPCActor)
                 {
-                    //TODO: проверка растояния
-                    ((NPCActor) actor).getNpcAi().onTalk(this);
+                    System.out.println(Math2d.calculateBetweenTwoActorsIn2d(this,actor));
+                    if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400)
+                    {
+                        ((NPCActor) actor).getNpcAi().onTalk(this);
+                    }
+                    else
+                    {
+                        sendPacket(new MoveToPawn(this,actor,300));
+                    }
                 }
             }
             else

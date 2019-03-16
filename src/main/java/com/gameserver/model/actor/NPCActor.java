@@ -26,6 +26,7 @@ public class NPCActor extends BaseActor {
         setLocationX(spawn.getLocationX());
         setLocationY(spawn.getLocationY());
         setLocationZ(spawn.getLocationZ());
+        setFriendly(npc.isFriendly());
         setName(npc.getName());
         //setRace(npcActor.getRace());
         setTemplateId(npc.getTemplateId());
@@ -40,7 +41,7 @@ public class NPCActor extends BaseActor {
         {
             log.warn("Not found AI script for npc id: {}",id);
         }
-
+        System.out.println("actor "+getName()+ "is friendly: "+isFriendly());
     }
 
     public NpcAi getNpcAi() {

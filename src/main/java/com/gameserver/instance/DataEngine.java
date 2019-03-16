@@ -60,7 +60,7 @@ public class DataEngine {
             String name = (String)npc.get("name");
             int templateId = (int)npc.get("template_id");
             boolean isFriendly = (boolean)npc.get("is_friendly");
-
+            System.out.println(isFriendly);
             npcList.add(new NPC(id,templateId,name,isFriendly));
             count++;
         }

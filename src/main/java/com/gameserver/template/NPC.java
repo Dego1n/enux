@@ -11,7 +11,7 @@ public class NPC {
         this.id = id;
         this.templateId = templateId;
         this.name = name;
-        this.isFriendly = isFriendly();
+        this.isFriendly = isFriendly;
     }
 
     public int getId() {
