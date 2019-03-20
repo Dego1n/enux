@@ -5,27 +5,21 @@ import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 import com.gameserver.packet.ServerPackets;
 
-public class MoveToPawn extends AbstractSendablePacket implements IServerPacket {
+public class StateInfo extends AbstractSendablePacket implements IServerPacket {
 
     BaseActor _actor;
-    BaseActor _actorTarget;
-    float _radius;
 
-    public MoveToPawn(BaseActor actor, BaseActor actorTarget, float radius)
+    public StateInfo(BaseActor actor)
     {
         super();
         _actor = actor;
-        _actorTarget = actorTarget;
-        _radius = radius;
         build();
     }
 
     @Override
     public void build() {
-        writeH(ServerPackets.MOVE_TO_PAWN);
-
+        writeH(ServerPackets.STATE_INFO);
         writeD(_actor.getObjectId());
-        writeD(_actorTarget.getObjectId());
-        writeD(Math.round(_radius));
+        writeH(_actor.isAttacking() ? 1 : 0);
     }
 }

@@ -3,6 +3,7 @@ package com.gameserver.packet.game2client;
 import com.gameserver.model.actor.BaseActor;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
 
@@ -17,7 +18,7 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
     @Override
     public void build() {
         System.out.println("Notifying about npc: "+actor.getName());
-        writeH(0x09);
+        writeH(ServerPackets.ACTOR_INFO);
         writeD(actor.getObjectId());
         writeD(actor.getTemplateId());
 

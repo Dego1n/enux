@@ -3,6 +3,7 @@ package com.gameserver.packet.game2client;
 import com.gameserver.database.entity.actor.Character;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class CharacterSelectedOk  extends AbstractSendablePacket implements IServerPacket {
 
@@ -17,7 +18,7 @@ public class CharacterSelectedOk  extends AbstractSendablePacket implements ISer
     }
     @Override
     public void build() {
-        writeH(0x03);
+        writeH(ServerPackets.CHARACTER_SELECTED_OK);
         writeH(character.getRace().getValue());
     }
 }

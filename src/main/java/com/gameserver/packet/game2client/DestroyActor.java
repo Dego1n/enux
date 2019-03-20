@@ -7,6 +7,7 @@ package com.gameserver.packet.game2client;
 
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class DestroyActor extends AbstractSendablePacket implements IServerPacket {
 
@@ -21,7 +22,7 @@ public class DestroyActor extends AbstractSendablePacket implements IServerPacke
 
     @Override
     public void build() {
-        writeH(0x08);
+        writeH(ServerPackets.DESTROY_ACTOR);
         writeD(_objectId);
     }
 }

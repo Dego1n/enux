@@ -3,11 +3,13 @@ package com.gameserver.model.actor;
 import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.model.World;
+import com.gameserver.model.actor.ai.base.IntentionType;
+import com.gameserver.model.actor.ai.base.intention.IntentionAction;
+import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
+import com.gameserver.model.actor.ai.base.intention.IntentionMoveTo;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
-import com.gameserver.packet.game2client.Dialog;
-import com.gameserver.packet.game2client.MoveToPawn;
-import com.gameserver.packet.game2client.TargetSelected;
+import com.gameserver.packet.game2client.*;
 import com.gameserver.util.math.xyz.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
 
@@ -67,6 +69,41 @@ public class PlayableCharacter extends BaseActor {
         return World.getInstance().getPlayableCharactersInRadius(this,10000);
     }
 
+    public void moveToLocation(int x, int y, int z)
+    {
+        if(getActorIntention().getIntention().intentionType == IntentionType.INTENTION_IDLE)
+        {
+            setIsMoving(true);
+            sendPacket(new MoveActorToLocation(getObjectId(),x,y,z));
+
+            for (PlayableCharacter pc : nearbyPlayers())
+            {
+                pc.sendPacket(new MoveActorToLocation(getObjectId(),x,y,z));
+            }
+        }
+        else
+        {
+            getActorIntention().setIntention(new IntentionMoveTo(x,y,z));
+        }
+    }
+
+    public void moveToActor(BaseActor actor, int distance)
+    {
+        setIsMoving(true);
+        sendPacket(new MoveToPawn(this,actor,distance));
+    }
+
+    public void moveToActor(BaseActor actor)
+    {
+        moveToActor(actor,350);
+    }
+
+    public void stopMoving()
+    {
+        setIsMoving(false);
+        sendPacket(new StopMoving(this));
+    }
+
     public void action(int objectId) {
         BaseActor actor = World.getInstance().getActorByObjectId(objectId);
         if(actor != null) {
@@ -76,13 +113,14 @@ public class PlayableCharacter extends BaseActor {
                 if(actor instanceof NPCActor)
                 {
                     System.out.println(Math2d.calculateBetweenTwoActorsIn2d(this,actor));
-                    if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400)
+                    if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400 && !isAttacking())
                     {
                         ((NPCActor) actor).getNpcAi().onTalk(this);
                     }
                     else
                     {
-                        sendPacket(new MoveToPawn(this,actor,300));
+                        _actorIntention.setIntention(new IntentionAction(actor, true));
+                        _actorIntention.intentionThink();
                     }
                 }
             }

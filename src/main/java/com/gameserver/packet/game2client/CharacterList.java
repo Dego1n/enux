@@ -4,6 +4,7 @@ import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 
 import com.gameserver.database.entity.actor.Character;
+import com.gameserver.packet.ServerPackets;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class CharacterList  extends AbstractSendablePacket implements IServerPac
     @Override
     public void build() {
 
-        writeH(0x02);
+        writeH(ServerPackets.CHARACTER_LIST);
 
         writeH(_characters.size());
 

@@ -3,6 +3,7 @@ package com.gameserver.packet.game2client;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class UserInfo extends AbstractSendablePacket implements IServerPacket {
 
@@ -18,7 +19,7 @@ public class UserInfo extends AbstractSendablePacket implements IServerPacket {
     @Override
     public void build() {
 
-        writeH(0x06);
+        writeH(ServerPackets.USER_INFO);
         writeD(_character.getObjectId());
         writeH(_character.getRace().getValue());
         writeH(_character.getCharacterClass().getValue());

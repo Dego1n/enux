@@ -2,10 +2,14 @@ package com.gameserver.model.actor;
 
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.factory.idfactory.ActorIdFactory;
-import com.gameserver.model.actor.ai.AiState;
-import com.gameserver.model.actor.ai.BaseAI;
+import com.gameserver.model.actor.ai.base.ActorIntention;
+import com.gameserver.model.actor.ai.base.IntentionType;
+import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
+import com.gameserver.packet.game2client.MoveToPawn;
+import com.gameserver.packet.game2client.StateInfo;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.AttackTask;
+import com.gameserver.util.math.xyz.Math3d;
 
 import java.util.*;
 
@@ -17,6 +21,9 @@ public abstract class BaseActor {
     private int locationY;
     private int locationZ;
 
+    private boolean isMoving = false;
+    private boolean isAttacking = false;
+
     private boolean isFriendly = true;
 
     private String name;
@@ -27,17 +34,15 @@ public abstract class BaseActor {
 
     protected BaseActor target;
 
-    protected BaseAI _ai;
+    ActorIntention _actorIntention;
 
     protected List<Task> _tasks;
-
-    private float attackSpeed = 1.0f;
 
     public BaseActor()
     {
         objectId = ActorIdFactory.getInstance().getFreeId();
-        _ai = new BaseAI();
         _tasks = new ArrayList<>();
+        _actorIntention = new ActorIntention(this);
     }
 
     public int getObjectId() {
@@ -112,8 +117,24 @@ public abstract class BaseActor {
         this.target = target;
     }
 
-    public BaseAI getAi() {
-        return _ai;
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void setIsMoving(boolean moving) {
+        isMoving = moving;
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setIsAttacking(boolean attacking) {
+        isAttacking = attacking;
+    }
+
+    public ActorIntention getActorIntention() {
+        return _actorIntention;
     }
 
     public void requestAttack()
@@ -121,13 +142,21 @@ public abstract class BaseActor {
         if(target == null)
             return;
 
-        //TODO: Проверка пожилого расстояния
-        _ai.changeStatus(AiState.ATTACKING);
-        _tasks.add(new Task(new AttackTask(this,target),0, (long)(attackSpeed*1000)));
+        _actorIntention.setIntention(new IntentionAttack(target,true));
+        _actorIntention.intentionThink();
+        //_tasks.add(new Task(new AttackTask(this,target),0, (long)(attackSpeed*1000)));
     }
     public void attack(BaseActor target)
     {
         System.out.println("Attack tick from: "+getName()+" to "+target.getName());
+        if(_actorIntention.getIntention().intentionType != IntentionType.INTENTION_ATTACK) {
+            isAttacking = false;
+            if(this instanceof PlayableCharacter)
+            {
+                ((PlayableCharacter) this).sendPacket(new StateInfo(this));
+            }
+        }
+        _actorIntention.intentionThink();
     }
 
     public List<Task> getTasks() {

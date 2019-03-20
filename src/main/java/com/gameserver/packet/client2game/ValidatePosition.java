@@ -20,11 +20,20 @@ public class ValidatePosition extends AbstractReceivablePacket {
         int y = readD();
         int z = readD();
 
+        boolean stoppedMoving = readH() == 1; //TODO: handle
+
         //TODO:
         PlayableCharacter pc = _clientListenerThread.playableCharacter;
         pc.setLocationX(x);
         pc.setLocationY(y);
         pc.setLocationZ(z);
+
+        if(stoppedMoving)
+        {
+            pc.setIsMoving(false);
+        }
+
+        pc.getActorIntention().intentionThink();
 
         System.out.println("Validated position for "+pc.getName()+" x:"+x+" y:"+y+" z:"+z);
     }
