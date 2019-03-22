@@ -3,6 +3,7 @@ package com.gameserver.packet.game2client;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class PlayableActorInfo extends AbstractSendablePacket implements IServerPacket {
 
@@ -14,9 +15,8 @@ public class PlayableActorInfo extends AbstractSendablePacket implements IServer
         build();
     }
 
-    @Override
-    public void build() {
-        writeH(0x07);
+    private void build() {
+        writeH(ServerPackets.PLAYABLE_ACTOR_INFO);
         writeD(_character.getObjectId());
         writeH(_character.getRace().getValue());
         writeH(_character.getCharacterClass().getValue());
@@ -24,6 +24,9 @@ public class PlayableActorInfo extends AbstractSendablePacket implements IServer
         writeD(_character.getLocationX());
         writeD(_character.getLocationY());
         writeD(_character.getLocationZ());
+
+        writeD(_character.getPcBaseStats().getCollisionHeight());
+        writeD(_character.getPcBaseStats().getCollisionRadius());
 
         writeS(_character.getName());
 

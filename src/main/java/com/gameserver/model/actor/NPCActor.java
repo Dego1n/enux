@@ -1,12 +1,14 @@
 package com.gameserver.model.actor;
 
+import com.gameserver.config.Config;
+import com.gameserver.database.entity.spawn.Spawn;
+import com.gameserver.instance.DataEngine;
 import com.gameserver.scripting.ai.npc.NpcAi;
+import com.gameserver.template.NPC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class NPCActor extends BaseActor {
 
@@ -14,24 +16,21 @@ public class NPCActor extends BaseActor {
 
     private NpcAi npcAi;
 
-    public NPCActor(com.gameserver.database.entity.actor.NPCActor npcActor)
+    public NPCActor(Spawn spawn)
     {
         super();
-        id = npcActor.getId();
-        setLocationX(npcActor.getLocationX());
-        setLocationY(npcActor.getLocationY());
-        setLocationZ(npcActor.getLocationZ());
-        setName(npcActor.getName());
-        setRace(npcActor.getRace());
-        setTemplateId(npcActor.getTemplateId());
+        NPC npc = DataEngine.getInstance().getNPCById(spawn.getActorId());
+        id = npc.getId();
+        setLocationX(spawn.getLocationX());
+        setLocationY(spawn.getLocationY());
+        setLocationZ(spawn.getLocationZ());
+        setFriendly(npc.isFriendly());
+        setName(npc.getName());
+        setTemplateId(npc.getTemplateId());
+        setCollisionHeight(npc.getCollisionHeight());
+        setCollisionRadius(npc.getCollisionRadius());
 
-        String path = "./scripts/ai/npc/"+id;
-
-        if(Files.isDirectory(Paths.get("./dist/config")))
-        {
-            //From Editor
-            path = "./dist/scripts/ai/npc/"+id;
-        }
+        String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+id;
 
         if(new File(path).exists())
         {
@@ -41,7 +40,6 @@ public class NPCActor extends BaseActor {
         {
             log.warn("Not found AI script for npc id: {}",id);
         }
-
     }
 
     public NpcAi getNpcAi() {

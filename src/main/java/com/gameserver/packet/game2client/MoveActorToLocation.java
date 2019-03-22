@@ -2,6 +2,7 @@ package com.gameserver.packet.game2client;
 
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class MoveActorToLocation extends AbstractSendablePacket implements IServerPacket {
 
@@ -20,9 +21,8 @@ public class MoveActorToLocation extends AbstractSendablePacket implements IServ
         build();
     }
 
-    @Override
-    public void build() {
-        writeH(0x05);
+    private void build() {
+        writeH(ServerPackets.MOVE_ACTOR_TO_LOCATION);
         writeD(objectId);
         writeD(x);
         writeD(y);

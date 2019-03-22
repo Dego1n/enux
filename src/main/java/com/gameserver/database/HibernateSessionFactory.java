@@ -2,7 +2,7 @@ package com.gameserver.database;
 
 import com.gameserver.config.Config;
 import com.gameserver.database.entity.actor.Character;
-import com.gameserver.database.entity.actor.NPCActor;
+import com.gameserver.database.entity.spawn.Spawn;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -47,7 +47,7 @@ public class HibernateSessionFactory {
 
                 //TODO: move this
                 configuration.addAnnotatedClass(Character.class);
-                configuration.addAnnotatedClass(NPCActor.class);
+                configuration.addAnnotatedClass(Spawn.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 

@@ -9,13 +9,12 @@ public class RequestConnectToGameServer extends AbstractReceivablePacket {
 
     public RequestConnectToGameServer(ClientListenerThread clientListenerThread, byte[] packet)
     {
-        super(clientListenerThread, packet);
+        super(packet);
         _clientListenerThread = clientListenerThread;
         handle(); //TODO: может вызывается само из абстрактного класса? нужно закомментировать и проверить
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
 
         int gameSessionKey = readD();
 

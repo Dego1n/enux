@@ -1,6 +1,7 @@
 package com.gameserver.model;
 
-import com.gameserver.database.dao.actor.NPCDao;
+import com.gameserver.database.dao.spawn.SpawnDao;
+import com.gameserver.database.entity.spawn.Spawn;
 import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
@@ -36,13 +37,13 @@ public class World {
 
     }
 
-    public int SpawnNpcs()
+    private int SpawnNpcs()
     {
         int count = 0;
-        NPCDao npcDao = new NPCDao();
-        for(com.gameserver.database.entity.actor.NPCActor npcActor : npcDao.getAllNpcs())
+        SpawnDao spawnDao = new SpawnDao();
+        for(Spawn spawn : spawnDao.getAllSpawns())
         {
-            actors.add(new NPCActor(npcActor));
+            actors.add(new NPCActor(spawn));
             count++;
         }
 
@@ -56,10 +57,10 @@ public class World {
 
     public void removePlayerFromWorld(PlayableCharacter player)
     {
-        for(BaseActor pc : getActorsInRadius(player,10000))
+        for(BaseActor pc : getActorsInRadius(player,100000))
         {
             if(pc instanceof PlayableCharacter)
-                ((PlayableCharacter)pc).getClientListenerThread().sendPacket(new DestroyActor(player.getObjectId()));
+                ((PlayableCharacter)pc).sendPacket(new DestroyActor(player.getObjectId()));
         }
         actors.remove(player);
     }

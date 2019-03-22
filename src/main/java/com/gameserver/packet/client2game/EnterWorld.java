@@ -15,13 +15,12 @@ public class EnterWorld extends AbstractReceivablePacket {
     private final ClientListenerThread _clientListenerThread;
 
     public EnterWorld(ClientListenerThread listenerThread, byte[] packet) {
-        super(listenerThread, packet);
+        super(packet);
         _clientListenerThread = listenerThread;
         handle();
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
 
         if(_clientListenerThread.playableCharacter != null) {
 

@@ -11,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +67,7 @@ public class AuthServerConnectionThread {
                 ByteBuffer byteBuffer = ByteBuffer.allocate( 2 );
 
                 // Читаем размер пакета
-                int bytesRead = _socketChannel.read( byteBuffer ).get( 3, TimeUnit.MINUTES );
+                _socketChannel.read( byteBuffer ).get( 3, TimeUnit.MINUTES );
 
                 //Конвертим байтбаффер в массив байтов
                 byte[] bytePacketSize =  byteBuffer.array();

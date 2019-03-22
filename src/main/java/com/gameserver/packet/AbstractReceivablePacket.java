@@ -8,18 +8,14 @@ public abstract class AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractReceivablePacket.class);
 
-    private final ClientListenerThread _listenerThread;
     private final byte[] packet;
     private int pointer;
 
-    protected AbstractReceivablePacket(ClientListenerThread listenerThread, byte[] packet)
+    protected AbstractReceivablePacket(byte[] packet)
     {
-        _listenerThread = listenerThread;
         this.packet = packet;
         this.pointer = 2; //skipping packet id
     }
-
-    protected abstract void handle();
 
     protected int readD()
     {
@@ -64,14 +60,6 @@ public abstract class AbstractReceivablePacket {
             log.error(e.getMessage());
         }
 
-        return result;
-    }
-
-    public final byte[] readB(int length)
-    {
-        byte[] result = new byte[length];
-        System.arraycopy(packet, pointer, result, 0, length);
-        pointer += length;
         return result;
     }
 

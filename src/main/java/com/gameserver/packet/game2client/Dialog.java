@@ -2,6 +2,7 @@ package com.gameserver.packet.game2client;
 
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
+import com.gameserver.packet.ServerPackets;
 
 public class Dialog extends AbstractSendablePacket implements IServerPacket {
 
@@ -14,9 +15,8 @@ public class Dialog extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    @Override
-    public void build() {
-        writeH(0x0b);
+    private void build() {
+        writeH(ServerPackets.DIALOG);
         writeS(_dialog);
     }
 }

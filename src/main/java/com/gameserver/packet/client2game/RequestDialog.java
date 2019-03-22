@@ -11,13 +11,12 @@ public class RequestDialog extends AbstractReceivablePacket {
     private final ClientListenerThread _clientListenerThread;
 
     public RequestDialog(ClientListenerThread listenerThread, byte[] packet) {
-        super(listenerThread, packet);
+        super(packet);
         _clientListenerThread = listenerThread;
         handle();
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
         int objectId = readH();
         String dialog = readS();
         BaseActor actor = World.getInstance().getActorByObjectId(objectId);
