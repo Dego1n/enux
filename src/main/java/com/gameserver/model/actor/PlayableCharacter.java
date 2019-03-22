@@ -59,6 +59,16 @@ public class PlayableCharacter extends BaseActor {
         clientListenerThread.sendPacket(packet);
     }
 
+    public void sendPacketAndBroadcastToNearbyPlayers(AbstractSendablePacket packet)
+    {
+        sendPacket(packet);
+
+        for(PlayableCharacter pc : nearbyPlayers())
+        {
+            pc.sendPacket(packet);
+        }
+    }
+
     public List<BaseActor> nearbyActors()
     {
         return World.getInstance().getActorsInRadius(this,10000);
@@ -66,7 +76,7 @@ public class PlayableCharacter extends BaseActor {
 
     public List<PlayableCharacter> nearbyPlayers()
     {
-        return World.getInstance().getPlayableCharactersInRadius(this,10000);
+        return World.getInstance().getPlayableCharactersInRadius(this,100000);
     }
 
     public void moveToLocation(int x, int y, int z)
@@ -74,12 +84,7 @@ public class PlayableCharacter extends BaseActor {
         if(getActorIntention().getIntention().intentionType == IntentionType.INTENTION_IDLE)
         {
             setIsMoving(true);
-            sendPacket(new MoveActorToLocation(getObjectId(),x,y,z));
-
-            for (PlayableCharacter pc : nearbyPlayers())
-            {
-                pc.sendPacket(new MoveActorToLocation(getObjectId(),x,y,z));
-            }
+            sendPacketAndBroadcastToNearbyPlayers(new MoveActorToLocation(getObjectId(),x,y,z));
         }
         else
         {
@@ -90,7 +95,7 @@ public class PlayableCharacter extends BaseActor {
     public void moveToActor(BaseActor actor, int distance)
     {
         setIsMoving(true);
-        sendPacket(new MoveToPawn(this,actor,distance));
+        sendPacketAndBroadcastToNearbyPlayers(new MoveToPawn(this,actor,distance));
     }
 
     public void moveToActor(BaseActor actor)
@@ -101,7 +106,7 @@ public class PlayableCharacter extends BaseActor {
     public void stopMoving()
     {
         setIsMoving(false);
-        sendPacket(new StopMoving(this));
+        sendPacketAndBroadcastToNearbyPlayers(new StopMoving(this));
     }
 
     public void action(int objectId) {

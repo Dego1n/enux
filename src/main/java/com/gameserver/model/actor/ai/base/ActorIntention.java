@@ -115,7 +115,7 @@ public class ActorIntention {
                 if(_actor.isMoving()) {
                     ((PlayableCharacter) _actor).stopMoving();
                 }
-                ((PlayableCharacter) _actor).sendPacket(new Attack(_actor,_int.Target));
+                ((PlayableCharacter) _actor).sendPacketAndBroadcastToNearbyPlayers(new Attack(_actor,_int.Target));
                 new Task(new AttackTask(_actor,_int.Target), (int) ((1 / 0.8f)*1000)); //TODO: 0.8f - attack speed, get from stats instead of const
             }
         }

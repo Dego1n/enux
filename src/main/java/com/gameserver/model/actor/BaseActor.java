@@ -153,7 +153,7 @@ public abstract class BaseActor {
             isAttacking = false;
             if(this instanceof PlayableCharacter)
             {
-                ((PlayableCharacter) this).sendPacket(new StateInfo(this));
+                ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new StateInfo(this));
             }
         }
         _actorIntention.intentionThink();

@@ -57,7 +57,7 @@ public class World {
 
     public void removePlayerFromWorld(PlayableCharacter player)
     {
-        for(BaseActor pc : getActorsInRadius(player,10000))
+        for(BaseActor pc : getActorsInRadius(player,100000))
         {
             if(pc instanceof PlayableCharacter)
                 ((PlayableCharacter)pc).getClientListenerThread().sendPacket(new DestroyActor(player.getObjectId()));

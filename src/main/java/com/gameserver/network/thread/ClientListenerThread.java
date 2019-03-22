@@ -102,9 +102,11 @@ public class ClientListenerThread {
         {
             log.error(e.getMessage());
             closeConnection();
+            return;
         } catch (TimeoutException e)
         {
             closeConnection();
+            return;
         }
 
        closeConnection();
