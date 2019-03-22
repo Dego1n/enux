@@ -15,8 +15,7 @@ public class StopMoving extends AbstractSendablePacket implements IServerPacket 
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.STOP_MOVING);
         writeD(_actor.getObjectId());
     }

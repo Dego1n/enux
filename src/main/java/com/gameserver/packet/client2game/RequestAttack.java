@@ -8,13 +8,12 @@ public class RequestAttack extends AbstractReceivablePacket {
 
     private ClientListenerThread _clientListenerThread;
     public RequestAttack(ClientListenerThread listenerThread, byte[] packet) {
-        super(listenerThread, packet);
+        super(packet);
         _clientListenerThread = listenerThread;
         handle();
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
         PlayableCharacter pc = _clientListenerThread.playableCharacter;
         pc.requestAttack();
     }

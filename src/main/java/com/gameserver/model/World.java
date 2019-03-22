@@ -37,7 +37,7 @@ public class World {
 
     }
 
-    public int SpawnNpcs()
+    private int SpawnNpcs()
     {
         int count = 0;
         SpawnDao spawnDao = new SpawnDao();
@@ -60,7 +60,7 @@ public class World {
         for(BaseActor pc : getActorsInRadius(player,100000))
         {
             if(pc instanceof PlayableCharacter)
-                ((PlayableCharacter)pc).getClientListenerThread().sendPacket(new DestroyActor(player.getObjectId()));
+                ((PlayableCharacter)pc).sendPacket(new DestroyActor(player.getObjectId()));
         }
         actors.remove(player);
     }

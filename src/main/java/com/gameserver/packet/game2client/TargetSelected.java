@@ -17,8 +17,7 @@ public class TargetSelected extends AbstractSendablePacket implements IServerPac
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.TARGET_SELECTED);
 
         writeD(objectId);

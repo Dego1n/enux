@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public abstract class AbstractSendablePacket implements IServerPacket {
 
@@ -64,18 +63,6 @@ public abstract class AbstractSendablePacket implements IServerPacket {
         _bao.write(0);
     }
 
-    protected void writeB(byte[] array)
-    {
-        try
-        {
-            _bao.write(array);
-        }
-        catch (IOException e)
-        {
-            log.error(e.getMessage());
-        }
-    }
-
     protected void writeQ(long value)
     {
         _bao.write((int) (value & 0xff));
@@ -86,11 +73,6 @@ public abstract class AbstractSendablePacket implements IServerPacket {
         _bao.write((int) ((value >> 40) & 0xff));
         _bao.write((int) ((value >> 48) & 0xff));
         _bao.write((int) ((value >> 56) & 0xff));
-    }
-
-    public int getLength()
-    {
-        return _bao.size() + 2;
     }
 
     public byte[] prepareAndGetData()
@@ -104,7 +86,6 @@ public abstract class AbstractSendablePacket implements IServerPacket {
 
         return packet;
     }
-    abstract public void build();
 
     public byte[] getData()
     {

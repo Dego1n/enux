@@ -8,13 +8,12 @@ public class Action extends AbstractReceivablePacket {
     private final ClientListenerThread _clientListenerThread;
 
     public Action(ClientListenerThread clientListenerThread, byte[] packet) {
-        super(clientListenerThread, packet);
+        super(packet);
         _clientListenerThread = clientListenerThread;
         handle();
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
         int objectId = readD();
         _clientListenerThread.playableCharacter.action(objectId);
     }

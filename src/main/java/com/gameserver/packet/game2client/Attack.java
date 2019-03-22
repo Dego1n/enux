@@ -7,8 +7,8 @@ import com.gameserver.packet.ServerPackets;
 
 public class Attack extends AbstractSendablePacket implements IServerPacket {
 
-    BaseActor _actor;
-    BaseActor _target;
+    private BaseActor _actor;
+    private BaseActor _target;
 
     public Attack(BaseActor actor,BaseActor target)
     {
@@ -18,8 +18,7 @@ public class Attack extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.ATTACK);
         writeD(_actor.getObjectId());
         writeD(_target.getObjectId());

@@ -21,8 +21,7 @@ public class CharacterList  extends AbstractSendablePacket implements IServerPac
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
 
         writeH(ServerPackets.CHARACTER_LIST);
 

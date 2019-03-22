@@ -5,11 +5,9 @@ import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.model.actor.ai.base.intention.*;
 import com.gameserver.packet.game2client.Attack;
-import com.gameserver.packet.game2client.MoveToPawn;
-import com.gameserver.packet.game2client.StopMoving;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.AttackTask;
-import com.gameserver.util.math.xyz.Math2d;
+import com.gameserver.util.math.xy.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
 
 public class ActorIntention {
@@ -26,6 +24,12 @@ public class ActorIntention {
 
     public void intentionThink()
     {
+        if(_actor instanceof PlayableCharacter)
+        {
+            if(((PlayableCharacter) _actor).getClientListenerThread() == null)
+                return;
+        }
+
         switch(_intention.intentionType)
         {
             case INTENTION_IDLE:
@@ -119,13 +123,6 @@ public class ActorIntention {
                 new Task(new AttackTask(_actor,_int.Target), (int) ((1 / 0.8f)*1000)); //TODO: 0.8f - attack speed, get from stats instead of const
             }
         }
-
-    }
-
-
-
-    private void IntentionAttack(IntentionAttack intentionAttack)
-    {
 
     }
 }

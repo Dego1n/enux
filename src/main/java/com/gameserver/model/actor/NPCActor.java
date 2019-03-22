@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class NPCActor extends BaseActor {
 
@@ -28,8 +26,9 @@ public class NPCActor extends BaseActor {
         setLocationZ(spawn.getLocationZ());
         setFriendly(npc.isFriendly());
         setName(npc.getName());
-        //setRace(npcActor.getRace());
         setTemplateId(npc.getTemplateId());
+        setCollisionHeight(npc.getCollisionHeight());
+        setCollisionRadius(npc.getCollisionRadius());
 
         String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+id;
 
@@ -41,7 +40,6 @@ public class NPCActor extends BaseActor {
         {
             log.warn("Not found AI script for npc id: {}",id);
         }
-        System.out.println("actor "+getName()+ "is friendly: "+isFriendly());
     }
 
     public NpcAi getNpcAi() {

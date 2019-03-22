@@ -5,17 +5,14 @@ import com.gameserver.factory.idfactory.ActorIdFactory;
 import com.gameserver.model.actor.ai.base.ActorIntention;
 import com.gameserver.model.actor.ai.base.IntentionType;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
-import com.gameserver.packet.game2client.MoveToPawn;
 import com.gameserver.packet.game2client.StateInfo;
 import com.gameserver.task.Task;
-import com.gameserver.task.actortask.AttackTask;
-import com.gameserver.util.math.xyz.Math3d;
 
 import java.util.*;
 
 public abstract class BaseActor {
 
-    protected int objectId;
+    private int objectId;
     protected int id;
     private int locationX;
     private int locationY;
@@ -32,11 +29,14 @@ public abstract class BaseActor {
 
     private int templateId;
 
-    protected BaseActor target;
+    private int collisionHeight;
+    private int collisionRadius;
+
+    BaseActor target;
 
     ActorIntention _actorIntention;
 
-    protected List<Task> _tasks;
+    private List<Task> _tasks;
 
     public BaseActor()
     {
@@ -47,10 +47,6 @@ public abstract class BaseActor {
 
     public int getObjectId() {
         return objectId;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getLocationX() {
@@ -81,7 +77,7 @@ public abstract class BaseActor {
         return isFriendly;
     }
 
-    public void setFriendly(boolean friendly) {
+    void setFriendly(boolean friendly) {
         isFriendly = friendly;
     }
 
@@ -89,7 +85,7 @@ public abstract class BaseActor {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -97,7 +93,7 @@ public abstract class BaseActor {
         return race;
     }
 
-    public void setRace(Race race) {
+    void setRace(Race race) {
         this.race = race;
     }
 
@@ -105,8 +101,24 @@ public abstract class BaseActor {
         return templateId;
     }
 
-    public void setTemplateId(int templateId) {
+    void setTemplateId(int templateId) {
         this.templateId = templateId;
+    }
+
+    public int getCollisionHeight() {
+        return collisionHeight;
+    }
+
+    void setCollisionHeight(int collisionHeight) {
+        this.collisionHeight = collisionHeight;
+    }
+
+    public int getCollisionRadius() {
+        return collisionRadius;
+    }
+
+    void setCollisionRadius(int collisionRadius) {
+        this.collisionRadius = collisionRadius;
     }
 
     public BaseActor getTarget() {
@@ -144,7 +156,6 @@ public abstract class BaseActor {
 
         _actorIntention.setIntention(new IntentionAttack(target,true));
         _actorIntention.intentionThink();
-        //_tasks.add(new Task(new AttackTask(this,target),0, (long)(attackSpeed*1000)));
     }
     public void attack(BaseActor target)
     {
@@ -157,14 +168,5 @@ public abstract class BaseActor {
             }
         }
         _actorIntention.intentionThink();
-    }
-
-    public List<Task> getTasks() {
-        return _tasks;
-    }
-
-    public void stopTask(Task task) {
-        task.timer.cancel();
-        _tasks.remove(task);
     }
 }

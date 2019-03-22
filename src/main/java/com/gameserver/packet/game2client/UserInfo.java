@@ -16,8 +16,7 @@ public class UserInfo extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
 
         writeH(ServerPackets.USER_INFO);
         writeD(_character.getObjectId());
@@ -26,6 +25,9 @@ public class UserInfo extends AbstractSendablePacket implements IServerPacket {
         writeD(_character.getLocationX());
         writeD(_character.getLocationY());
         writeD(_character.getLocationZ());
+
+        writeD(_character.getPcBaseStats().getCollisionHeight());
+        writeD(_character.getPcBaseStats().getCollisionRadius());
 
         writeS(_character.getName());
     }

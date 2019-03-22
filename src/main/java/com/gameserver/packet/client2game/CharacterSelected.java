@@ -9,13 +9,12 @@ public class CharacterSelected extends AbstractReceivablePacket {
 
     public CharacterSelected(ClientListenerThread clientListenerThread, byte[] packet)
     {
-        super(clientListenerThread, packet);
+        super(packet);
         _clientListenerThread = clientListenerThread;
         handle(); //TODO: может вызывается само из абстрактного класса? нужно закомментировать и проверить
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
 
         int characterId = readD();
         _clientListenerThread.characterSelected(characterId);

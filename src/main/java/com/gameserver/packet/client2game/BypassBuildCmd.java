@@ -12,13 +12,12 @@ public class BypassBuildCmd extends AbstractReceivablePacket {
     private ClientListenerThread clientListenerThread;
 
     public BypassBuildCmd(ClientListenerThread listenerThread, byte[] packet) {
-        super(listenerThread, packet);
+        super(packet);
         clientListenerThread = listenerThread;
         handle();
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
         log.warn("Client sent not implemented packet: "+this.getClass().getName());
     }
 }

@@ -1,7 +1,9 @@
 package com.gameserver.instance;
 
 import com.gameserver.config.Config;
+import com.gameserver.database.staticdata.Race;
 import com.gameserver.template.NPC;
+import com.gameserver.template.pc.PCBaseStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -29,12 +31,15 @@ public class DataEngine {
     }
 
     private List<NPC> npcList;
+    private List<PCBaseStats> pcBaseStats;
 
-    DataEngine()
+    private DataEngine()
     {
         npcList = new ArrayList<>();
+        pcBaseStats = new ArrayList<>();
 
         log.info("Loaded {} NPC Data",LoadNPCData());
+        log.info("Loaded {} PC Base Stats",LoadPCBaseStats());
     }
 
     private int LoadNPCData()
@@ -47,7 +52,7 @@ public class DataEngine {
             log.error("Can't read npc yaml file");
             log.error(e.getMessage());
             return -1;
-        };
+        }
 
         Yaml yaml = new Yaml();
         Map<String, Object> object = yaml.load(npcYaml);
@@ -60,8 +65,44 @@ public class DataEngine {
             String name = (String)npc.get("name");
             int templateId = (int)npc.get("template_id");
             boolean isFriendly = (boolean)npc.get("is_friendly");
-            System.out.println(isFriendly);
-            npcList.add(new NPC(id,templateId,name,isFriendly));
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> collision = (Map<String,Object>)npc.get("collision");
+            int collisionHeight = (int)collision.get("height");
+            int collisionRadius = (int)collision.get("radius");
+            npcList.add(new NPC(id,templateId,name,isFriendly,collisionHeight,collisionRadius));
+            count++;
+        }
+
+        return count;
+    }
+
+    private int LoadPCBaseStats()
+    {
+        int count = 0;
+        String pcBaseStatsYaml;
+        try {
+            pcBaseStatsYaml = new String(Files.readAllBytes(Paths.get(Config.DATAPACK_PATH + "pc/pc_base_stats.yaml")), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            log.error("Can't read pc_base_stats.yml file");
+            log.error(e.getMessage());
+            return -1;
+        }
+
+        Yaml yaml = new Yaml();
+        Map<String, Object> object = yaml.load(pcBaseStatsYaml);
+        for(Map.Entry<String, Object> entry : object.entrySet())
+        {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> pc =  (Map<String, Object>)entry.getValue();
+            Race race = Race.valueOf((int)pc.get("race_id"));
+            int collisionHeight = (int)pc.get("collisionHeight");
+            int collisionRadius = (int)pc.get("collisionRadius");
+
+            PCBaseStats pcbs = new PCBaseStats(race);
+            pcbs.setCollisionHeight(collisionHeight);
+            pcbs.setCollisionRadius(collisionRadius);
+            pcBaseStats.add(pcbs);
             count++;
         }
 
@@ -74,6 +115,17 @@ public class DataEngine {
             if(npc.getId() == id)
                 return npc;
         }
+        return null;
+    }
+
+    public PCBaseStats GetPCBaseStatsByRace(Race race)
+    {
+        for(PCBaseStats pcbs : pcBaseStats)
+        {
+            if(pcbs.getRace() == race)
+                return pcbs;
+        }
+
         return null;
     }
 }

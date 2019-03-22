@@ -15,8 +15,7 @@ public class Dialog extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.DIALOG);
         writeS(_dialog);
     }

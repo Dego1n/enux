@@ -80,7 +80,7 @@ public class ClientListenerThread {
                 ByteBuffer byteBuffer = ByteBuffer.allocate( 2 );
 
                 // Читаем размер пакета
-                int bytesRead = _socketChannel.read( byteBuffer ).get( 3, TimeUnit.MINUTES );
+                _socketChannel.read( byteBuffer ).get( 3, TimeUnit.MINUTES );
 
                 //Конвертим байтбаффер в массив байтов
                 byte[] bytePacketSize =  byteBuffer.array();
@@ -112,11 +112,13 @@ public class ClientListenerThread {
        closeConnection();
     }
 
-    public void closeConnection()
+    private void closeConnection()
     {
         if(playableCharacter != null)
         {
             World.getInstance().removePlayerFromWorld(playableCharacter);
+            this.playableCharacter.setClientListenerThread(null);
+            this.playableCharacter = null;
         }
         try {
             _socketChannel.close();

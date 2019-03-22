@@ -14,12 +14,11 @@ public class RequestCreateCharacter extends AbstractReceivablePacket {
 
     public RequestCreateCharacter(ClientListenerThread clientListenerThread, byte[] packet)
     {
-        super(clientListenerThread,packet);
+        super(packet);
         _clientListenerThread = clientListenerThread;
         handle();
     }
-    @Override
-    protected void handle() {
+    private void handle() {
         String name = readS();
         int race = readH();
         int characterClass = readH();

@@ -4,7 +4,7 @@ import com.gameserver.model.actor.BaseActor;
 
 public class Math3d {
 
-    public static double calculateDistanceBetween3dPoints(float x1, float y1, float z1, float x2, float y2, float z2)
+    private static double calculateDistanceBetween3dPoints(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         return Math.sqrt(
           Math.pow((x2 - x1), 2) +

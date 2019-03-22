@@ -10,7 +10,7 @@ public class Pong extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    public void build() {
+    private void build() {
         writeH(0x02); //packetID
     }
 }

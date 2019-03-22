@@ -1,0 +1,8 @@
+Human_Fighter:
+  race_id: 0
+  collisionHeight: 80
+  collisionRadius: 22
+Female_Elf:
+  race_id: 1
+  collisionHeight: 80
+  collisionRadius: 22

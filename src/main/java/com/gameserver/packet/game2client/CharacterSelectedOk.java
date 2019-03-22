@@ -16,8 +16,7 @@ public class CharacterSelectedOk  extends AbstractSendablePacket implements ISer
 
         build();
     }
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.CHARACTER_SELECTED_OK);
         writeH(character.getRace().getValue());
     }

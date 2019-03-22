@@ -4,14 +4,18 @@ public class NPC {
     private int id;
     private int templateId;
     private String name;
+    private int collisionHeight;
+    private int collisionRadius;
 
     private boolean isFriendly;
 
-    public NPC(int id, int templateId, String name, boolean isFriendly) {
+    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius) {
         this.id = id;
         this.templateId = templateId;
         this.name = name;
         this.isFriendly = isFriendly;
+        this.collisionHeight = collisionHeight;
+        this.collisionRadius = collisionRadius;
     }
 
     public int getId() {
@@ -36,6 +40,22 @@ public class NPC {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getCollisionHeight() {
+        return collisionHeight;
+    }
+
+    public void setCollisionHeight(int collisionHeight) {
+        this.collisionHeight = collisionHeight;
+    }
+
+    public int getCollisionRadius() {
+        return collisionRadius;
+    }
+
+    public void setCollisionRadius(int collisionRadius) {
+        this.collisionRadius = collisionRadius;
     }
 
     public boolean isFriendly() {

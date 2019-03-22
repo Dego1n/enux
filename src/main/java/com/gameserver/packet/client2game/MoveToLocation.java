@@ -1,18 +1,8 @@
 package com.gameserver.packet.client2game;
 
 import com.gameserver.model.actor.PlayableCharacter;
-import com.gameserver.model.actor.ai.base.ActorIntention;
-import com.gameserver.model.actor.ai.base.IntentionType;
-import com.gameserver.model.actor.ai.base.intention.AbstractIntention;
-import com.gameserver.model.actor.ai.base.intention.IntentionMoveTo;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
-import com.gameserver.packet.game2client.MoveActorToLocation;
-import com.gameserver.task.Task;
-import com.gameserver.task.actortask.AttackTask;
-
-import java.util.Iterator;
-import java.util.List;
 
 public class MoveToLocation extends AbstractReceivablePacket {
 
@@ -20,13 +10,12 @@ public class MoveToLocation extends AbstractReceivablePacket {
 
     public MoveToLocation(ClientListenerThread clientListenerThread, byte[] packet)
     {
-        super(clientListenerThread, packet);
+        super(packet);
         _clientListenerThread = clientListenerThread;
         handle(); //TODO: может вызывается само из абстрактного класса? нужно закомментировать и проверить
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
 
         int originX = readD();
         int originY = readD();

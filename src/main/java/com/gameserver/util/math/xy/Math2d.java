@@ -1,9 +1,14 @@
-package com.gameserver.util.math.xyz;
+package com.gameserver.util.math.xy;
 
 import com.gameserver.model.actor.BaseActor;
 
+/*
+ * @author Dego1n
+ * Copyright (c) 23.03.2019
+ */
+
 public class Math2d {
-    public static double calculateDistanceBetween2dPoints(float x1, float y1, float x2, float y2)
+    private static double calculateDistanceBetween2dPoints(float x1, float y1, float x2, float y2)
     {
         return Math.sqrt(
                 Math.pow((x2 - x1), 2) +
@@ -13,10 +18,6 @@ public class Math2d {
 
     public static double calculateBetweenTwoActorsIn2d(BaseActor actor, BaseActor actorTarget)
     {
-        System.out.println(actor.getLocationX());
-        System.out.println(actor.getLocationY());
-        System.out.println(actorTarget.getLocationX());
-        System.out.println(actorTarget.getLocationY());
         return calculateDistanceBetween2dPoints(
                 actor.getLocationX(),
                 actor.getLocationY(),

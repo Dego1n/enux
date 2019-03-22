@@ -23,7 +23,7 @@ public class GameServerSocketInstance {
 
     private GameServerSocketInstance()
     {
-        GameServerSocket _socket = new GameServerSocket();
+        new GameServerSocket();
         _clientListenerThreads = new ArrayList<>();
     }
 

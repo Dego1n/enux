@@ -7,7 +7,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
 
-    BaseActor actor;
+    private BaseActor actor;
     public ActorInfo(BaseActor actor)
     {
         super();
@@ -15,9 +15,7 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    @Override
-    public void build() {
-        System.out.println("Notifying about npc: "+actor.getName());
+    private void build() {
         writeH(ServerPackets.ACTOR_INFO);
         writeD(actor.getObjectId());
         writeD(actor.getTemplateId());
@@ -25,6 +23,9 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
         writeD(actor.getLocationX());
         writeD(actor.getLocationY());
         writeD(actor.getLocationZ());
+
+        writeD(actor.getCollisionHeight());
+        writeD(actor.getCollisionRadius());
 
         writeH(actor.isFriendly() ? 1 : 0);
 

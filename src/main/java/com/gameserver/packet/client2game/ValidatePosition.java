@@ -9,13 +9,12 @@ public class ValidatePosition extends AbstractReceivablePacket {
     private ClientListenerThread _clientListenerThread;
 
     public ValidatePosition(ClientListenerThread listenerThread, byte[] packet) {
-        super(listenerThread, packet);
+        super(packet);
         _clientListenerThread = listenerThread;
         handle();
     }
 
-    @Override
-    protected void handle() {
+    private void handle() {
         int x = readD();
         int y = readD();
         int z = readD();

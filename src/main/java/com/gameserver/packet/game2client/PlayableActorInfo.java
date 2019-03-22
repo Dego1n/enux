@@ -15,8 +15,7 @@ public class PlayableActorInfo extends AbstractSendablePacket implements IServer
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.PLAYABLE_ACTOR_INFO);
         writeD(_character.getObjectId());
         writeH(_character.getRace().getValue());
@@ -25,6 +24,9 @@ public class PlayableActorInfo extends AbstractSendablePacket implements IServer
         writeD(_character.getLocationX());
         writeD(_character.getLocationY());
         writeD(_character.getLocationZ());
+
+        writeD(_character.getPcBaseStats().getCollisionHeight());
+        writeD(_character.getPcBaseStats().getCollisionRadius());
 
         writeS(_character.getName());
 

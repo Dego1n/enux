@@ -3,9 +3,15 @@ Arissa:
   name: Arissa
   template_id: 100
   is_friendly: true
+  collision:
+    height: 100
+    radius: 25
 
 Zombie:
   id: 101
   name: Zombie
   template_id: 101
   is_friendly: false
+  collision:
+    height: 105
+    radius: 30

@@ -20,8 +20,7 @@ public class DestroyActor extends AbstractSendablePacket implements IServerPacke
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.DESTROY_ACTOR);
         writeD(_objectId);
     }

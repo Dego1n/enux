@@ -2,16 +2,16 @@ package com.gameserver.model.actor;
 
 import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
+import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.IntentionType;
 import com.gameserver.model.actor.ai.base.intention.IntentionAction;
-import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
 import com.gameserver.model.actor.ai.base.intention.IntentionMoveTo;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
-import com.gameserver.util.math.xyz.Math2d;
-import com.gameserver.util.math.xyz.Math3d;
+import com.gameserver.template.pc.PCBaseStats;
+import com.gameserver.util.math.xy.Math2d;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class PlayableCharacter extends BaseActor {
     private ClientListenerThread clientListenerThread;
 
     private CharacterClass characterClass;
-
+    private PCBaseStats pcBaseStats;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -36,6 +36,7 @@ public class PlayableCharacter extends BaseActor {
         setName(character.getName());
         setRace(character.getRace());
         setCharacterClass(character.getCharacterClass());
+        pcBaseStats = DataEngine.getInstance().GetPCBaseStatsByRace(character.getRace());
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -50,7 +51,11 @@ public class PlayableCharacter extends BaseActor {
         return characterClass;
     }
 
-    public void setCharacterClass(CharacterClass characterClass) {
+    public PCBaseStats getPcBaseStats() {
+        return pcBaseStats;
+    }
+
+    private void setCharacterClass(CharacterClass characterClass) {
         this.characterClass = characterClass;
     }
 
@@ -98,11 +103,6 @@ public class PlayableCharacter extends BaseActor {
         sendPacketAndBroadcastToNearbyPlayers(new MoveToPawn(this,actor,distance));
     }
 
-    public void moveToActor(BaseActor actor)
-    {
-        moveToActor(actor,350);
-    }
-
     public void stopMoving()
     {
         setIsMoving(false);
@@ -117,7 +117,6 @@ public class PlayableCharacter extends BaseActor {
             {
                 if(actor instanceof NPCActor)
                 {
-                    System.out.println(Math2d.calculateBetweenTwoActorsIn2d(this,actor));
                     if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400 && !isAttacking())
                     {
                         ((NPCActor) actor).getNpcAi().onTalk(this);
@@ -143,7 +142,6 @@ public class PlayableCharacter extends BaseActor {
 
     public void sendDialog(String dialog)
     {
-        System.out.println("Should send dialog. Dialog: "+dialog);
         sendPacket(new Dialog(dialog));
     }
 }

@@ -7,7 +7,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class StateInfo extends AbstractSendablePacket implements IServerPacket {
 
-    BaseActor _actor;
+    private BaseActor _actor;
 
     public StateInfo(BaseActor actor)
     {
@@ -16,8 +16,7 @@ public class StateInfo extends AbstractSendablePacket implements IServerPacket {
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.STATE_INFO);
         writeD(_actor.getObjectId());
         writeH(_actor.isAttacking() ? 1 : 0);

@@ -1,7 +1,6 @@
 package com.gameserver.task.actortask;
 
 import com.gameserver.model.actor.BaseActor;
-import com.gameserver.model.actor.PlayableCharacter;
 
 import java.util.TimerTask;
 

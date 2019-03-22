@@ -21,8 +21,7 @@ public class MoveActorToLocation extends AbstractSendablePacket implements IServ
         build();
     }
 
-    @Override
-    public void build() {
+    private void build() {
         writeH(ServerPackets.MOVE_ACTOR_TO_LOCATION);
         writeD(objectId);
         writeD(x);

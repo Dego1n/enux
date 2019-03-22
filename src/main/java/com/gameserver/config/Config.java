@@ -50,9 +50,9 @@ public class Config {
         }
 
         PropertiesParser configParser = new PropertiesParser(gameSocketProperties);
-        GAME_SOCKET_LISTEN_ADDRESS = configParser.getString("ListenAddress", "192.168.1.83");
+        GAME_SOCKET_LISTEN_ADDRESS = configParser.getString("ListenAddress", "127.0.0.1");
         GAME_SOCKET_LISTEN_PORT = configParser.getShort("ListenPort", (short)6987);
-        AUTH_SERVER_ADDRESS = configParser.getString("AuthServerAddress", "192.168.1.83");
+        AUTH_SERVER_ADDRESS = configParser.getString("AuthServerAddress", "127.0.0.1");
         AUTH_SERVER_GAME_LISTEN_PORT = configParser.getShort("AuthServerGameListenPort", (short)1234);
 
         configParser = new PropertiesParser(databaseProperties);
