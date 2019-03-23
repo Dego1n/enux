@@ -1,5 +1,6 @@
 package com.gameserver.packet.client2game;
 
+import com.gameserver.config.Config;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.NPCActor;
@@ -8,6 +9,7 @@ import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
 import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.PlayableActorInfo;
+import com.gameserver.packet.game2client.SystemMessage;
 import com.gameserver.packet.game2client.UserInfo;
 
 public class EnterWorld extends AbstractReceivablePacket {
@@ -25,7 +27,7 @@ public class EnterWorld extends AbstractReceivablePacket {
         if(_clientListenerThread.playableCharacter != null) {
 
             PlayableCharacter character = _clientListenerThread.playableCharacter;
-            _clientListenerThread.sendPacket(new UserInfo(character));
+            character.sendPacket(new UserInfo(character));
             World.getInstance().addPlayerToWorld(character);
             for (BaseActor actor : character.nearbyActors())
             {
@@ -38,6 +40,8 @@ public class EnterWorld extends AbstractReceivablePacket {
                     _clientListenerThread.sendPacket(new ActorInfo(actor));
                 }
             }
+            character.sendPacket(new SystemMessage("Entered to server: "+ Config.GAME_SERVER_NAME));
+            character.sendPacket(new SystemMessage("Welcome to the world!"));
         }
     }
 }

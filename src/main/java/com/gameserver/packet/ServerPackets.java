@@ -13,6 +13,8 @@ public class ServerPackets {
     public final static short MOVE_TO_PAWN = 0x0c;
     public final static short STOP_MOVING = 0x0d;
     public final static short ATTACK = 0x0e;
+    public final static short SYSTEM_MESSAGE = 0x0f;
+    public final static short ACTOR_SAY = 0x10;
 
 
     public final static short STATE_INFO = 0x22;

@@ -2,10 +2,13 @@ package com.gameserver.model.actor;
 
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.factory.idfactory.ActorIdFactory;
+import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.ActorIntention;
 import com.gameserver.model.actor.ai.base.IntentionType;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
+import com.gameserver.packet.game2client.ActorSay;
 import com.gameserver.packet.game2client.StateInfo;
+import com.gameserver.scripting.api.WorldInstanceApi;
 import com.gameserver.task.Task;
 
 import java.util.*;
@@ -168,5 +171,22 @@ public abstract class BaseActor {
             }
         }
         _actorIntention.intentionThink();
+    }
+
+    public void say(String message)
+    {
+        System.out.println("client "+getName()+" trying to say: "+message);
+        ActorSay actorSayPacket = new ActorSay(this,this.getName(),message);
+        if(this instanceof PlayableCharacter)
+        {
+            ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(actorSayPacket);
+        }
+        else
+        {
+            for(PlayableCharacter pc : World.getInstance().getPlayableCharactersInRadius(this,10000))
+            {
+                pc.sendPacket(actorSayPacket);
+            }
+        }
     }
 }

@@ -18,6 +18,8 @@ public class Say extends AbstractReceivablePacket {
     }
 
     private void handle() {
-        log.warn("Client sent not implemented packet: "+this.getClass().getName());
+        String message = readS();
+
+        clientListenerThread.playableCharacter.say(message);
     }
 }

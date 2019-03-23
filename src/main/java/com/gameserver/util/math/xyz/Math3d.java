@@ -24,4 +24,26 @@ public class Math3d {
                 actorTarget.getLocationZ()
         );
     }
+
+    /**
+     * Возможно не правильно считается с коллизиями в 3d пространстве! Скорее всего нужно учитывать collisionHeight
+     * @param actor
+     * @param actorTarget
+     * @param useCollision
+     * @return
+     */
+    public static double calculateBetweenTwoActors(BaseActor actor, BaseActor actorTarget, boolean useCollision)
+    {
+        double distanceWithoutCollision = calculateBetweenTwoActors(actor,actorTarget);
+
+        if(useCollision)
+        {
+            double distanceWithCollision = distanceWithoutCollision - actor.getCollisionRadius() - actorTarget.getCollisionRadius();
+            return distanceWithCollision > 0 ? distanceWithCollision : 0;
+        }
+        else
+        {
+            return distanceWithoutCollision;
+        }
+    }
 }

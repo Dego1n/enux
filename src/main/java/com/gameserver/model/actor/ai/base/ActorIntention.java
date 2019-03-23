@@ -68,12 +68,12 @@ public class ActorIntention {
             return;
 
         IntentionAction _int = (IntentionAction) _intention;
-        if(Math2d.calculateBetweenTwoActorsIn2d(_actor,_int.Target) > 400)
+        if(Math2d.calculateBetweenTwoActorsIn2d(_actor,_int.Target,true) > 200)
         {
             if(!_actor.isMoving() || _int.ForceMoveToPawn) {
                 _int.ForceMoveToPawn = false;
                 if (_actor instanceof PlayableCharacter) {
-                    ((PlayableCharacter) _actor).moveToActor(_int.Target, 350);
+                    ((PlayableCharacter) _actor).moveToActor(_int.Target, 150);
                 }
             }
         }
@@ -101,9 +101,9 @@ public class ActorIntention {
     }
 
     private void onIntentionAttack() {
-        int weaponAttackDistance = 350; //TODO: change this const to var
+        int weaponAttackDistance = 150; //TODO: change this const to var
         IntentionAttack _int = (IntentionAttack) _intention;
-        if (Math3d.calculateBetweenTwoActors(_actor, _int.Target) > weaponAttackDistance) {
+        if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) > weaponAttackDistance) {
             if (!_actor.isMoving() || _int.ForceMoveToPawn) {
                 _int.ForceMoveToPawn = false;
                 if (_actor instanceof PlayableCharacter) {

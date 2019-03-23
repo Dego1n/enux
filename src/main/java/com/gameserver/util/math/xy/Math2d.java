@@ -25,4 +25,17 @@ public class Math2d {
                 actorTarget.getLocationY()
         );
     }
+    public static double calculateBetweenTwoActorsIn2d(BaseActor actor, BaseActor actorTarget, boolean useCollision)
+    {
+        double distanceWithoutCollision = calculateBetweenTwoActorsIn2d(actor, actorTarget);
+        if(useCollision) {
+            double distanceWithCollision = distanceWithoutCollision - actor.getCollisionRadius() - actorTarget.getCollisionRadius();
+
+            return distanceWithCollision > 0 ? distanceWithCollision : 0;
+        }
+        else
+        {
+            return distanceWithoutCollision;
+        }
+    }
 }
