@@ -10,7 +10,7 @@ import com.gameserver.model.actor.ai.base.intention.IntentionMoveTo;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
-import com.gameserver.template.pc.PCBaseStats;
+import com.gameserver.template.stats.BaseStats;
 import com.gameserver.util.math.xy.Math2d;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class PlayableCharacter extends BaseActor {
     private ClientListenerThread clientListenerThread;
 
     private CharacterClass characterClass;
-    private PCBaseStats pcBaseStats;
+    private BaseStats baseStats;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -36,7 +36,7 @@ public class PlayableCharacter extends BaseActor {
         setName(character.getName());
         setRace(character.getRace());
         setCharacterClass(character.getCharacterClass());
-        pcBaseStats = DataEngine.getInstance().GetPCBaseStatsByRace(character.getRace());
+        baseStats = DataEngine.getInstance().GetPCBaseStatsByRace(character.getRace());
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -51,8 +51,8 @@ public class PlayableCharacter extends BaseActor {
         return characterClass;
     }
 
-    public PCBaseStats getPcBaseStats() {
-        return pcBaseStats;
+    public BaseStats getBaseStats() {
+        return baseStats;
     }
 
     private void setCharacterClass(CharacterClass characterClass) {

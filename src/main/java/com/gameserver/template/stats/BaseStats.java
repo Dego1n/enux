@@ -1,4 +1,4 @@
-package com.gameserver.template.pc;
+package com.gameserver.template.stats;
 
 /*
  * @author Dego1n
@@ -7,14 +7,14 @@ package com.gameserver.template.pc;
 
 import com.gameserver.database.staticdata.Race;
 
-public class PCBaseStats {
+public class BaseStats {
 
     private Race race;
 
     private int collisionHeight;
     private int collisionRadius;
 
-    public PCBaseStats(Race race)
+    public BaseStats(Race race)
     {
         this.race = race;
     }

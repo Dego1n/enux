@@ -3,7 +3,7 @@ package com.gameserver.instance;
 import com.gameserver.config.Config;
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.template.NPC;
-import com.gameserver.template.pc.PCBaseStats;
+import com.gameserver.template.stats.BaseStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -31,12 +31,12 @@ public class DataEngine {
     }
 
     private List<NPC> npcList;
-    private List<PCBaseStats> pcBaseStats;
+    private List<BaseStats> baseStats;
 
     private DataEngine()
     {
         npcList = new ArrayList<>();
-        pcBaseStats = new ArrayList<>();
+        baseStats = new ArrayList<>();
 
         log.info("Loaded {} NPC Data",LoadNPCData());
         log.info("Loaded {} PC Base Stats",LoadPCBaseStats());
@@ -99,10 +99,10 @@ public class DataEngine {
             int collisionHeight = (int)pc.get("collisionHeight");
             int collisionRadius = (int)pc.get("collisionRadius");
 
-            PCBaseStats pcbs = new PCBaseStats(race);
+            BaseStats pcbs = new BaseStats(race);
             pcbs.setCollisionHeight(collisionHeight);
             pcbs.setCollisionRadius(collisionRadius);
-            pcBaseStats.add(pcbs);
+            baseStats.add(pcbs);
             count++;
         }
 
@@ -118,9 +118,9 @@ public class DataEngine {
         return null;
     }
 
-    public PCBaseStats GetPCBaseStatsByRace(Race race)
+    public BaseStats GetPCBaseStatsByRace(Race race)
     {
-        for(PCBaseStats pcbs : pcBaseStats)
+        for(BaseStats pcbs : baseStats)
         {
             if(pcbs.getRace() == race)
                 return pcbs;

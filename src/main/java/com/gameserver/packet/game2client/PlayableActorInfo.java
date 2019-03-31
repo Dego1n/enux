@@ -25,8 +25,8 @@ public class PlayableActorInfo extends AbstractSendablePacket implements IServer
         writeD(_character.getLocationY());
         writeD(_character.getLocationZ());
 
-        writeD(_character.getPcBaseStats().getCollisionHeight());
-        writeD(_character.getPcBaseStats().getCollisionRadius());
+        writeD(_character.getBaseStats().getCollisionHeight());
+        writeD(_character.getBaseStats().getCollisionRadius());
 
         writeS(_character.getName());
 
