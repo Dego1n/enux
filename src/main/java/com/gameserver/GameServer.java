@@ -7,6 +7,7 @@ import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
 import com.gameserver.network.AuthServerSocket;
 import com.gameserver.network.instance.GameServerSocketInstance;
+import com.gameserver.tick.GameTickController;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class GameServer {
         SpawnPresets.Load();
         /* PRESETS_END */
 
+        GameTickController.init();
         World.getInstance();
 //        ((NPCActor)World.getInstance().getActorByObjectId(1)).getNpcAi().onTalk(new PlayableCharacter(null, new CharacterDao().getCharacterByName("PlayTest")));
         try {

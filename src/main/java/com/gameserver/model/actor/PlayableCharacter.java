@@ -119,10 +119,6 @@ public class PlayableCharacter extends BaseActor {
                 {
                     if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400 && !isAttacking())
                     {
-                        ((NPCActor) actor).getNpcAi().onTalk(this);
-                    }
-                    else
-                    {
                         _actorIntention.setIntention(new IntentionAction(actor, true));
                         _actorIntention.intentionThink();
                     }

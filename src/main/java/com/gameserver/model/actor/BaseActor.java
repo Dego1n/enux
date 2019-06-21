@@ -10,6 +10,8 @@ import com.gameserver.packet.game2client.ActorSay;
 import com.gameserver.packet.game2client.StateInfo;
 import com.gameserver.scripting.api.WorldInstanceApi;
 import com.gameserver.task.Task;
+import com.gameserver.tick.GameTickController;
+import com.gameserver.tick.job.IntentionThinkJob;
 
 import java.util.*;
 
@@ -23,7 +25,7 @@ public abstract class BaseActor {
 
     private boolean isMoving = false;
     private boolean isAttacking = false;
-
+    private boolean canAttack = true;
     private boolean isFriendly = true;
 
     private String name;
@@ -39,7 +41,11 @@ public abstract class BaseActor {
 
     ActorIntention _actorIntention;
 
+    IntentionThinkJob _intentionThinkJob;
+
     private List<Task> _tasks;
+
+
 
     public BaseActor()
     {
@@ -158,7 +164,8 @@ public abstract class BaseActor {
             return;
 
         _actorIntention.setIntention(new IntentionAttack(target,true));
-        _actorIntention.intentionThink();
+//        GameTickController.getInstance().addJob();
+//        _actorIntention.intentionThink();
     }
     public void attack(BaseActor target)
     {
@@ -188,5 +195,13 @@ public abstract class BaseActor {
                 pc.sendPacket(actorSayPacket);
             }
         }
+    }
+
+    public boolean isCanAttack() {
+        return canAttack;
+    }
+
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
     }
 }
