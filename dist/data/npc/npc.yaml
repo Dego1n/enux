@@ -3,6 +3,8 @@ Arissa:
   name: Arissa
   template_id: 100
   is_friendly: true
+  hp: 100.0
+  respawn_time: 5
   collision:
     height: 100
     radius: 25
@@ -12,6 +14,8 @@ Zombie:
   name: Zombie
   template_id: 101
   is_friendly: false
+  hp: 100.0
+  respawn_time: 5
   collision:
     height: 105
     radius: 30

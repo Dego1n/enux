@@ -15,6 +15,7 @@ public class ServerPackets {
     public final static short ATTACK = 0x0e;
     public final static short SYSTEM_MESSAGE = 0x0f;
     public final static short ACTOR_SAY = 0x10;
+    public final static short ACTOR_DIED = 0x11;
 
 
     public final static short STATE_INFO = 0x22;

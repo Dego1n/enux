@@ -19,6 +19,6 @@ public class StateInfo extends AbstractSendablePacket implements IServerPacket {
     private void build() {
         writeH(ServerPackets.STATE_INFO);
         writeD(_actor.getObjectId());
-        writeH(_actor.isAttacking() ? 1 : 0);
+        writeH(0); //больше не используется ? //writeH(_actor.isAttacking() ? 1 : 0);
     }
 }

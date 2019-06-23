@@ -5,6 +5,7 @@ import com.gameserver.database.entity.spawn.Spawn;
 import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
+import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.DestroyActor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,16 +44,36 @@ public class World {
         SpawnDao spawnDao = new SpawnDao();
         for(Spawn spawn : spawnDao.getAllSpawns())
         {
-            actors.add(new NPCActor(spawn));
+            spawnNpc(spawn);
             count++;
         }
 
         return count;
     }
 
+    private void spawnNpc(Spawn spawn)
+    {
+        actors.add(new NPCActor(spawn));
+    }
+
+    public void spawnNpcAndBroadcast(Spawn spawn)
+    {
+        NPCActor actor = new NPCActor(spawn);
+        actors.add(actor);
+        for(PlayableCharacter pc : getPlayableCharactersInRadius(actor,100000))
+        {
+            pc.sendPacket(new ActorInfo(actor));
+        }
+    }
+
     public void addPlayerToWorld(PlayableCharacter player)
     {
         actors.add(player);
+    }
+
+    public void removeActorFromWorld(BaseActor actor)
+    {
+        actors.remove(actor);
     }
 
     public void removePlayerFromWorld(PlayableCharacter player)

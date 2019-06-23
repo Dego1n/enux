@@ -6,10 +6,12 @@ import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.ActorIntention;
 import com.gameserver.model.actor.ai.base.IntentionType;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
-import com.gameserver.packet.game2client.ActorSay;
-import com.gameserver.packet.game2client.StateInfo;
+import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
+import com.gameserver.packet.game2client.*;
 import com.gameserver.scripting.api.WorldInstanceApi;
 import com.gameserver.task.Task;
+import com.gameserver.task.actortask.ResetAttackCooldown;
+import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.tick.GameTickController;
 import com.gameserver.tick.job.IntentionThinkJob;
 
@@ -24,13 +26,15 @@ public abstract class BaseActor {
     private int locationZ;
 
     private boolean isMoving = false;
-    private boolean isAttacking = false;
     private boolean canAttack = true;
     private boolean isFriendly = true;
 
     private String name;
 
     private Race race;
+
+    private double currentHp;
+    private double maxHp;
 
     private int templateId;
 
@@ -146,13 +150,6 @@ public abstract class BaseActor {
         isMoving = moving;
     }
 
-    public boolean isAttacking() {
-        return isAttacking;
-    }
-
-    public void setIsAttacking(boolean attacking) {
-        isAttacking = attacking;
-    }
 
     public ActorIntention getActorIntention() {
         return _actorIntention;
@@ -164,20 +161,38 @@ public abstract class BaseActor {
             return;
 
         _actorIntention.setIntention(new IntentionAttack(target,true));
-//        GameTickController.getInstance().addJob();
-//        _actorIntention.intentionThink();
     }
     public void attack(BaseActor target)
     {
-        System.out.println("Attack tick from: "+getName()+" to "+target.getName());
-        if(_actorIntention.getIntention().intentionType != IntentionType.INTENTION_ATTACK) {
-            isAttacking = false;
-            if(this instanceof PlayableCharacter)
+        setCanAttack(false);
+        if(target.getCurrentHp() > 0 ) {
+            float damage = calculateAttackDamageToTarget(target);
+            target.setCurrentHp(target.getCurrentHp() - damage);
+            ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " received " + damage + " damage!"));
+            if(target.getCurrentHp() < 0)
             {
-                ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new StateInfo(this));
+                this.getActorIntention().setIntention(new IntentionIdle());
+                ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " died!"));
+                ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
+                if(target instanceof NPCActor) {
+
+                    new Task(new SpawnActorTask(((NPCActor) target).getSpawn()), (int) ((((NPCActor) target).getRespawnTime()) * 1000));
+
+                    World.getInstance().removeActorFromWorld(target);
+                }
+            }
+            else {
+                ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
             }
         }
-        _actorIntention.intentionThink();
+        ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new Attack(this, target));
+        new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+    }
+
+    public float calculateAttackDamageToTarget(BaseActor target)
+    {
+        Random rnd = new Random();
+        return 10 + rnd.nextFloat() * (20 - 10);
     }
 
     public void say(String message)
@@ -203,5 +218,21 @@ public abstract class BaseActor {
 
     public void setCanAttack(boolean canAttack) {
         this.canAttack = canAttack;
+    }
+
+    public double getCurrentHp() {
+        return currentHp;
+    }
+
+    public void setCurrentHp(double currentHp) {
+        this.currentHp = currentHp;
+    }
+
+    public double getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(double maxHp) {
+        this.maxHp = maxHp;
     }
 }

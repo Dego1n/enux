@@ -65,12 +65,14 @@ public class DataEngine {
             String name = (String)npc.get("name");
             int templateId = (int)npc.get("template_id");
             boolean isFriendly = (boolean)npc.get("is_friendly");
+            double hp = (double)npc.get("hp");
+            int respawnTime = (int)npc.get("respawn_time");
 
             @SuppressWarnings("unchecked")
             Map<String, Object> collision = (Map<String,Object>)npc.get("collision");
             int collisionHeight = (int)collision.get("height");
             int collisionRadius = (int)collision.get("radius");
-            npcList.add(new NPC(id,templateId,name,isFriendly,collisionHeight,collisionRadius));
+            npcList.add(new NPC(id,templateId,name,isFriendly,collisionHeight,collisionRadius, hp, respawnTime));
             count++;
         }
 

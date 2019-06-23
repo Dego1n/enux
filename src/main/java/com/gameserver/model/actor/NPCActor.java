@@ -16,6 +16,10 @@ public class NPCActor extends BaseActor {
 
     private NpcAi npcAi;
 
+    private int respawnTime;
+
+    private Spawn spawn;
+
     public NPCActor(Spawn spawn)
     {
         super();
@@ -29,6 +33,10 @@ public class NPCActor extends BaseActor {
         setTemplateId(npc.getTemplateId());
         setCollisionHeight(npc.getCollisionHeight());
         setCollisionRadius(npc.getCollisionRadius());
+        setCurrentHp(npc.getHp());
+        setMaxHp(npc.getHp());
+        respawnTime = npc.getRespawnTime();
+        this.spawn = spawn;
 
         String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+id;
 
@@ -44,5 +52,21 @@ public class NPCActor extends BaseActor {
 
     public NpcAi getNpcAi() {
         return npcAi;
+    }
+
+    public int getRespawnTime() {
+        return respawnTime;
+    }
+
+    public void setRespawnTime(int respawnTime) {
+        this.respawnTime = respawnTime;
+    }
+
+    public Spawn getSpawn() {
+        return spawn;
+    }
+
+    public void setSpawn(Spawn spawn) {
+        this.spawn = spawn;
     }
 }

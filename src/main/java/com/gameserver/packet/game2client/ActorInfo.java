@@ -29,6 +29,9 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
 
         writeH(actor.isFriendly() ? 1 : 0);
 
+        writeD((int)actor.getCurrentHp());
+        writeD((int)actor.getMaxHp());
+
         writeS(actor.getName());
     }
 }

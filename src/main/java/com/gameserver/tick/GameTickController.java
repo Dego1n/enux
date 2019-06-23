@@ -42,13 +42,15 @@ public class GameTickController extends Thread {
         log.info("Intention think job created");
 
         while (true) {
-            if(_jobs.size() > 0) {
-                log.info("Executing {} jobs", _jobs.size());
+            try{
+                for(AbstractTickJob job : _jobs)
+                {
+                    job.runJob();
+                }
             }
-
-            for(AbstractTickJob job : _jobs)
+            catch (Exception ex)
             {
-                job.runJob();
+                ex.printStackTrace();
             }
 
             long nextTickTime, sleepTime;

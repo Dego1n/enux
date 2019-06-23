@@ -7,15 +7,21 @@ public class NPC {
     private int collisionHeight;
     private int collisionRadius;
 
+    private int respawnTime;
+
+    private double hp;
+
     private boolean isFriendly;
 
-    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius) {
+    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime) {
         this.id = id;
         this.templateId = templateId;
         this.name = name;
         this.isFriendly = isFriendly;
         this.collisionHeight = collisionHeight;
         this.collisionRadius = collisionRadius;
+        this.hp = hp;
+        this.respawnTime = respawnTime;
     }
 
     public int getId() {
@@ -64,5 +70,17 @@ public class NPC {
 
     public void setFriendly(boolean friendly) {
         isFriendly = friendly;
+    }
+
+    public double getHp() {
+        return hp;
+    }
+
+    public int getRespawnTime() {
+        return respawnTime;
+    }
+
+    public void setRespawnTime(int respawnTime) {
+        this.respawnTime = respawnTime;
     }
 }

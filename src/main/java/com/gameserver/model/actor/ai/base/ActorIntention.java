@@ -76,26 +76,13 @@ public class ActorIntention {
 
     private void onIntentionAction()
     {
-        if(_actor.isAttacking())
-            return;
-
         IntentionAction _int = (IntentionAction) _intention;
-        if(Math2d.calculateBetweenTwoActorsIn2d(_actor,_int.Target,true) > 200)
-        {
-//            if(!_actor.isMoving() || _int.ForceMoveToPawn) {
-//                _int.ForceMoveToPawn = false;
-//                if (_actor instanceof PlayableCharacter) {
-//                    ((PlayableCharacter) _actor).moveToActor(_int.Target, 150);
-//                }
-//            }
-        }
-        else
+        if(Math2d.calculateBetweenTwoActorsIn2d(_actor,_int.Target,true) < 200)
         {
             _intention = new IntentionIdle();
             if(_int.Target instanceof NPCActor && _actor instanceof PlayableCharacter)
             {
                 ((NPCActor) _int.Target).getNpcAi().onTalk((PlayableCharacter) _actor);
-                //((PlayableCharacter) _actor).stopMoving();
             }
         }
     }
@@ -103,8 +90,6 @@ public class ActorIntention {
     private void onIntentionMoveTo()
     {
         IntentionMoveTo _int = (IntentionMoveTo) _intention;
-        if(_actor.isAttacking())
-            return;
         _intention = new IntentionIdle();
         if(_actor instanceof PlayableCharacter)
         {
@@ -115,32 +100,13 @@ public class ActorIntention {
     private void onIntentionAttack() {
         int weaponAttackDistance = 150; //TODO: change this const to var
         IntentionAttack _int = (IntentionAttack) _intention;
-        if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) > weaponAttackDistance) {
-            //not need anymore?
-//            if (!_actor.isMoving() || _int.ForceMoveToPawn) {
-//                _int.ForceMoveToPawn = false;
-//                if (_actor instanceof PlayableCharacter) {
-//                    ((PlayableCharacter) _actor).moveToActor(_int.Target,weaponAttackDistance-50);
-//                }
-//            }
-        }
-        else
+        if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) < weaponAttackDistance)
         {
             //TODO: зачем здесь проверка на PlayableCharacter
             if(_actor instanceof PlayableCharacter)
             {
                 if(_actor.isCanAttack()) {
-                    //not need anymore?
-//                _actor.setIsAttacking(true);
-//                if(_actor.isMoving()) {
-//                    ((PlayableCharacter) _actor).stopMoving();
-//                }
-                    _actor.setCanAttack(false);
-                    ((PlayableCharacter) _actor).sendPacketAndBroadcastToNearbyPlayers(new Attack(_actor, _int.Target));
-                    //No need anymore?
-//                new Task(new AttackTask(_actor,_int.Target), (int) ((1 / 0.8f)*1000)); //TODO: 0.8f - attack speed, get from stats instead of const
-
-                    new Task(new ResetAttackCooldown(_actor), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+                    _actor.attack(_int.Target);
                 }
             }
         }
