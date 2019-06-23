@@ -35,6 +35,7 @@ public class ClientPackets {
     private final static short SAY_PRIVATE = 0x1a;
     private final static short BYPASS_BUILD_CMD = 0x1b;
     private final static short USE_ITEM = 0x1c;
+    private final static short REQUEST_INVENTORY = 0x1d;
 
     public static void HandlePacket(ClientListenerThread clientListenerThread, byte [] packet)
     {
@@ -121,6 +122,9 @@ public class ClientPackets {
                 break;
             case USE_ITEM:
                 new UseItem(clientListenerThread,packet);
+                break;
+            case REQUEST_INVENTORY:
+                new RequestInventory(clientListenerThread,packet);
                 break;
         }
     }

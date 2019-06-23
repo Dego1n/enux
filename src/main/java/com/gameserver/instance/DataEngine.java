@@ -2,7 +2,9 @@ package com.gameserver.instance;
 
 import com.gameserver.config.Config;
 import com.gameserver.database.staticdata.Race;
+import com.gameserver.instance.loader.WeaponsLoader;
 import com.gameserver.template.NPC;
+import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.stats.BaseStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ public class DataEngine {
 
     private List<NPC> npcList;
     private List<BaseStats> baseStats;
+    private List<BaseItem> items;
 
     private DataEngine()
     {
@@ -40,6 +43,8 @@ public class DataEngine {
 
         log.info("Loaded {} NPC Data",LoadNPCData());
         log.info("Loaded {} PC Base Stats",LoadPCBaseStats());
+        items = WeaponsLoader.LoadWeapons();
+        log.info("Loaded {} Weapons", items.size());
     }
 
     private int LoadNPCData()
