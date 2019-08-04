@@ -18,6 +18,8 @@ public class UseItem extends AbstractReceivablePacket {
     }
 
     private void handle() {
-        log.warn("Client sent not implemented packet: "+this.getClass().getName());
+        int objectId = readD();
+        boolean fromInventory = readH() == 1;
+        clientListenerThread.playableCharacter.useItem(objectId, fromInventory);
     }
 }

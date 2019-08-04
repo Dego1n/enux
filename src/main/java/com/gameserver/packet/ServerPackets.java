@@ -20,5 +20,6 @@ public class ServerPackets {
 
 
     public final static short STATE_INFO = 0x22;
+    public final static short PC_ACTOR_INFO = 0x23;
 
 }

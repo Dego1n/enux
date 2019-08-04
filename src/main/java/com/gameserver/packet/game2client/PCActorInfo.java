@@ -1,14 +1,15 @@
 package com.gameserver.packet.game2client;
 
-import com.gameserver.model.actor.BaseActor;
+import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 import com.gameserver.packet.ServerPackets;
 
-public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
+public class PCActorInfo extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor actor;
-    public ActorInfo(BaseActor actor)
+    private PlayableCharacter actor;
+
+    public PCActorInfo(PlayableCharacter actor)
     {
         super();
         this.actor = actor;
@@ -16,7 +17,7 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
     }
 
     private void build() {
-        writeH(ServerPackets.ACTOR_INFO);
+        writeH(ServerPackets.PC_ACTOR_INFO);
         writeD(actor.getObjectId());
         writeD(actor.getTemplateId());
 
@@ -33,6 +34,12 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
         writeD((int)actor.getMaxHp());
 
         writeS(actor.getName());
+
+        /* EquipInfo start */
+
+        writeD(actor.getEquipInfo().getRightHand().getItemId());
+
+        /* EquipInfo end */
 
     }
 }

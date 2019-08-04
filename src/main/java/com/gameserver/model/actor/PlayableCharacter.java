@@ -7,12 +7,17 @@ import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.IntentionType;
 import com.gameserver.model.actor.ai.base.intention.IntentionAction;
 import com.gameserver.model.actor.ai.base.intention.IntentionMoveTo;
+import com.gameserver.model.actor.playable.equip.EquipInfo;
+import com.gameserver.model.item.Item;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
+import com.gameserver.template.item.BaseItem;
+import com.gameserver.template.item.WeaponItem;
 import com.gameserver.template.stats.BaseStats;
 import com.gameserver.util.math.xy.Math2d;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayableCharacter extends BaseActor {
@@ -21,6 +26,10 @@ public class PlayableCharacter extends BaseActor {
 
     private CharacterClass characterClass;
     private BaseStats baseStats;
+
+    private List<Item> _inventory;
+
+    private EquipInfo _equipInfo;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -37,6 +46,16 @@ public class PlayableCharacter extends BaseActor {
         setRace(character.getRace());
         setCharacterClass(character.getCharacterClass());
         baseStats = DataEngine.getInstance().GetPCBaseStatsByRace(character.getRace());
+
+        _equipInfo = new EquipInfo();
+        _inventory = new ArrayList<>();
+        //TODO: remove after
+        _inventory.add(new Item(DataEngine.getInstance().getItemById(1)));
+        _inventory.add(new Item(DataEngine.getInstance().getItemById(2)));
+        _inventory.add(new Item(DataEngine.getInstance().getItemById(1)));
+        _inventory.add(new Item(DataEngine.getInstance().getItemById(2)));
+        _inventory.add(new Item(DataEngine.getInstance().getItemById(1)));
+        _equipInfo.setRightHand(_inventory.get(1));
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -53,6 +72,14 @@ public class PlayableCharacter extends BaseActor {
 
     public BaseStats getBaseStats() {
         return baseStats;
+    }
+
+    public List<Item> getInventory() {
+        return _inventory;
+    }
+
+    public EquipInfo getEquipInfo() {
+        return _equipInfo;
     }
 
     private void setCharacterClass(CharacterClass characterClass) {
@@ -139,5 +166,21 @@ public class PlayableCharacter extends BaseActor {
     public void sendDialog(String dialog)
     {
         sendPacket(new Dialog(dialog));
+    }
+
+    public void useItem(int objectId, boolean fromInventory) {
+        Item item = getInventory().stream().filter(i -> (i.getObjectId() == objectId)).findFirst().orElse(null);
+        if (item == null)
+        {
+            //TODO: security audit
+            return;
+        }
+
+        _equipInfo.setRightHand(item);
+
+        if(fromInventory) {
+            sendPacket(new Inventory(_inventory, _equipInfo));
+        }
+        sendPacket(new PCActorInfo(this)); //TODO: also broadcast
     }
 }

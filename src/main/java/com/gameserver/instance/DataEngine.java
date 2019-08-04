@@ -125,6 +125,15 @@ public class DataEngine {
         return null;
     }
 
+    public BaseItem getItemById(int id) {
+        for(BaseItem item : items)
+        {
+            if(item.getId() == id)
+                return item;
+        }
+        return null;
+    }
+
     public BaseStats GetPCBaseStatsByRace(Race race)
     {
         for(BaseStats pcbs : baseStats)

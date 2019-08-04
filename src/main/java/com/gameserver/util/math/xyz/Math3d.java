@@ -13,15 +13,30 @@ public class Math3d {
         );
     }
 
+    public static double calculateDistanceBetween2dPoints(float x1, float y1, float x2, float y2)
+    {
+        return Math.sqrt(
+                Math.pow((x2 - x1), 2) +
+                Math.pow((y2 - y1), 2)
+        );
+    }
+
     public static double calculateBetweenTwoActors(BaseActor actor, BaseActor actorTarget)
     {
-        return calculateDistanceBetween3dPoints(
+        //TODO: считаем в 2D пространстве вместо 3D пока не решили проблему с падением акторов. позже поменять на 3D
+//        return calculateDistanceBetween3dPoints(
+//                actor.getLocationX(),
+//                actor.getLocationY(),
+//                actor.getLocationZ(),
+//                actorTarget.getLocationX(),
+//                actorTarget.getLocationY(),
+//                actorTarget.getLocationZ()
+//        );
+        return calculateDistanceBetween2dPoints(
                 actor.getLocationX(),
                 actor.getLocationY(),
-                actor.getLocationZ(),
                 actorTarget.getLocationX(),
-                actorTarget.getLocationY(),
-                actorTarget.getLocationZ()
+                actorTarget.getLocationY()
         );
     }
 

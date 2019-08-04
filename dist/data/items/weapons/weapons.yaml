@@ -1,3 +1,7 @@
 Sword:
   id: 1
   name: Sword
+
+Another Sword:
+  id: 2
+  name: Another Sword

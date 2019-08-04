@@ -1,7 +1,6 @@
 package com.gameserver.instance.loader;
 
 import com.gameserver.config.Config;
-import com.gameserver.template.NPC;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.WeaponItem;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class WeaponsLoader {
         try {
             weaponsYaml = new String(Files.readAllBytes(Paths.get(Config.DATAPACK_PATH + "items/weapons/weapons.yaml")), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error("Can't read npc yaml file");
+            log.error("Can't read weapons yaml file");
             log.error(e.getMessage());
             return null;
         }

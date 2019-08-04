@@ -15,6 +15,6 @@ public class RequestInventory extends AbstractReceivablePacket {
     }
 
     private void handle() {
-        _clientListenerThread.playableCharacter.sendPacket(new Inventory());
+        _clientListenerThread.playableCharacter.sendPacket(new Inventory(_clientListenerThread.playableCharacter.getInventory(), _clientListenerThread.playableCharacter.getEquipInfo()));
     }
 }

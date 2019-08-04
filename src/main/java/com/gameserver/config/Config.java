@@ -40,13 +40,13 @@ public class Config {
         log.info("Loading configuration files");
 
         //Если запускаем из IDE
-        if(Files.isDirectory(Paths.get("./dist/config")))
+        if(Files.isDirectory(Paths.get("./dist/config")) || Files.isDirectory(Paths.get("./authserver")))
         {
-            log.info("Seems like game server is running from IDE. Using path: ./dist/config");
-            gameSocketProperties = "./dist/config/network/gamesocket.ini";
-            databaseProperties = "./dist/config/database/database.ini";
-            generalProperties = "./dist/config/general/general.ini";
-            datapackProperties = "./dist/config/general/datapack.ini";
+            log.info("Seems like game server is running from IDE. Fixing config directories");
+            gameSocketProperties = "./gameserver/dist/config/network/gamesocket.ini";
+            databaseProperties = "./gameserver/dist/config/database/database.ini";
+            generalProperties = "./gameserver/dist/config/general/general.ini";
+            datapackProperties = "./gameserver/dist/config/general/datapack.ini";
         }
 
         PropertiesParser configParser = new PropertiesParser(gameSocketProperties);
@@ -71,9 +71,9 @@ public class Config {
 
         DATAPACK_PATH = configParser.getString("DatapackPath", "/data/");
         //Если из IDE - перезаписываем путь
-        if(Files.isDirectory(Paths.get("./dist/data")))
+        if(Files.isDirectory(Paths.get("./dist/data")) || Files.isDirectory(Paths.get("./authserver")))
         {
-            DATAPACK_PATH = "./dist/data/";
+            DATAPACK_PATH = "./gameserver/dist/data/";
         }
     }
 
