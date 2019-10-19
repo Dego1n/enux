@@ -31,6 +31,8 @@ public class PlayableCharacter extends BaseActor {
 
     private EquipInfo _equipInfo;
 
+    private long currentExperience;
+
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
         super();
@@ -80,6 +82,14 @@ public class PlayableCharacter extends BaseActor {
 
     public EquipInfo getEquipInfo() {
         return _equipInfo;
+    }
+
+    public long getCurrentExperience() {
+        return currentExperience;
+    }
+
+    public void setCurrentExperience(long currentExperience) {
+        this.currentExperience = currentExperience;
     }
 
     private void setCharacterClass(CharacterClass characterClass) {

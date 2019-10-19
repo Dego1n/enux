@@ -47,6 +47,8 @@ public abstract class BaseActor {
 
     IntentionThinkJob _intentionThinkJob;
 
+    private int _level;
+
     private List<Task> _tasks;
 
 
@@ -150,6 +152,13 @@ public abstract class BaseActor {
         isMoving = moving;
     }
 
+    public int getLevel() {
+        return _level;
+    }
+
+    public void setLevel(int level) {
+        this._level = level;
+    }
 
     public ActorIntention getActorIntention() {
         return _actorIntention;
