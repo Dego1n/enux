@@ -41,7 +41,7 @@ public class Character {
     private int level;
 
     @Column(name = "experience")
-    private long experience;
+    private int experience;
 
     public int getId() {
         return id;
@@ -111,11 +111,11 @@ public class Character {
         this.level = level;
     }
 
-    public long getExperience() {
+    public int getExperience() {
         return experience;
     }
 
-    public void setExperience(long experience) {
+    public void setExperience(int experience) {
         this.experience = experience;
     }
 }

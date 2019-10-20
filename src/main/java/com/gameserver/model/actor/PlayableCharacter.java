@@ -31,7 +31,7 @@ public class PlayableCharacter extends BaseActor {
 
     private EquipInfo _equipInfo;
 
-    private long currentExperience;
+    private int currentExperience;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -86,11 +86,11 @@ public class PlayableCharacter extends BaseActor {
         return _equipInfo;
     }
 
-    public long getCurrentExperience() {
+    public int getCurrentExperience() {
         return currentExperience;
     }
 
-    public void setCurrentExperience(long currentExperience) {
+    public void setCurrentExperience(int currentExperience) {
         this.currentExperience = currentExperience;
     }
 
@@ -194,5 +194,16 @@ public class PlayableCharacter extends BaseActor {
             sendPacket(new Inventory(_inventory, _equipInfo));
         }
         sendPacket(new PCActorInfo(this)); //TODO: also broadcast
+    }
+
+    public void addExperience(int baseExperience) {
+        this.setCurrentExperience(this.getCurrentExperience() + baseExperience);
+        int level = DataEngine.getInstance().getLevelByExperience(this.getCurrentExperience());
+        this.sendPacket(new SystemMessage("Level by Exp: "+level+". Your current level: "+this.getLevel()));
+        if(level != this.getLevel())
+        {
+            this.setLevel(level);
+            this.sendPacket(new SystemMessage("Level up! Your level is now:" +getLevel()));
+        }
     }
 }

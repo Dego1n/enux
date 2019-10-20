@@ -163,4 +163,22 @@ public class DataEngine {
 
         return null;
     }
+
+    public int getLevelByExperience(int experience)
+    {
+        if( experience <= 0)
+            return 1;
+        int resultLevel = 1;
+        for(Map.Entry<Integer,Integer> level : this.experienceTable.entrySet())
+        {
+            if(experience >= level.getValue())
+            {
+                resultLevel = level.getKey();
+            }
+            if(level.getValue() > experience)
+                break;
+        }
+
+        return resultLevel;
+    }
 }

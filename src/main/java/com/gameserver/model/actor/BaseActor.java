@@ -4,15 +4,12 @@ import com.gameserver.database.staticdata.Race;
 import com.gameserver.factory.idfactory.ActorIdFactory;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.ActorIntention;
-import com.gameserver.model.actor.ai.base.IntentionType;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
 import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
 import com.gameserver.packet.game2client.*;
-import com.gameserver.scripting.api.WorldInstanceApi;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
-import com.gameserver.tick.GameTickController;
 import com.gameserver.tick.job.IntentionThinkJob;
 
 import java.util.*;
@@ -184,6 +181,9 @@ public abstract class BaseActor {
                 ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " died!"));
                 ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
                 if(target instanceof NPCActor) {
+                    ((PlayableCharacter) this).addExperience(((NPCActor) target).getBaseExperience());
+                    ((PlayableCharacter) this).sendPacket(new SystemMessage("You received "+((NPCActor) target).getBaseExperience()+" experience"));
+                    ((PlayableCharacter) this).sendPacket(new SystemMessage("You current EXP:  "+((PlayableCharacter) this).getCurrentExperience()));
 
                     new Task(new SpawnActorTask(((NPCActor) target).getSpawn()), (int) ((((NPCActor) target).getRespawnTime()) * 1000));
 

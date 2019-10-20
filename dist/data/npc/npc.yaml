@@ -16,7 +16,18 @@ Zombie:
   is_friendly: false
   hp: 100.0
   respawn_time: 5
-  base_experience: 24
+  base_experience: 100
   collision:
     height: 105
     radius: 30
+
+TestManequen:
+  id: 102
+  name: Manequen
+  template_id: 102
+  is_friendly: true
+  hp: 100.0
+  respawn_time: 5
+  collision:
+    height: 100
+    radius: 25
