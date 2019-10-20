@@ -20,6 +20,8 @@ public class NPCActor extends BaseActor {
 
     private Spawn spawn;
 
+    private int baseExperience;
+
     public NPCActor(Spawn spawn)
     {
         super();
@@ -35,6 +37,7 @@ public class NPCActor extends BaseActor {
         setCollisionRadius(npc.getCollisionRadius());
         setCurrentHp(npc.getHp());
         setMaxHp(npc.getHp());
+        setBaseExperience(npc.getBaseExperience());
         respawnTime = npc.getRespawnTime();
         this.spawn = spawn;
 
@@ -68,5 +71,13 @@ public class NPCActor extends BaseActor {
 
     public void setSpawn(Spawn spawn) {
         this.spawn = spawn;
+    }
+
+    public int getBaseExperience() {
+        return baseExperience;
+    }
+
+    public void setBaseExperience(int baseExperience) {
+        this.baseExperience = baseExperience;
     }
 }

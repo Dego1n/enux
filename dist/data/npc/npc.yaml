@@ -16,6 +16,7 @@ Zombie:
   is_friendly: false
   hp: 100.0
   respawn_time: 5
+  base_experience: 24
   collision:
     height: 105
     radius: 30

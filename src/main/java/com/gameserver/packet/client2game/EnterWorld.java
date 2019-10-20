@@ -42,6 +42,8 @@ public class EnterWorld extends AbstractReceivablePacket {
             }
             character.sendPacket(new SystemMessage("Entered to server: "+ Config.GAME_SERVER_NAME));
             character.sendPacket(new SystemMessage("Welcome to the world!"));
+            character.sendPacket(new SystemMessage("[Debug] Your level: "+character.getLevel()));
+            character.sendPacket(new SystemMessage("[Debug] Your Experience: "+character.getCurrentExperience()));
         }
     }
 }

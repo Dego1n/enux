@@ -25,7 +25,9 @@ public class CharacterPresets {
 
             character.setLocationX(2820);
             character.setLocationY(3990);
-            character.setLocationZ(-5740);
+            character.setLocationZ(4000);
+            character.setLevel(1);
+            character.setExperience(0);
             character.setName("PlayTest");
             character.setRace(Race.Human);
             character.setCharacterClass(CharacterClass.Fighter);

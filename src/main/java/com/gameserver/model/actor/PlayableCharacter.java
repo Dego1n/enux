@@ -46,6 +46,8 @@ public class PlayableCharacter extends BaseActor {
         setLocationZ(character.getLocationZ());
         setName(character.getName());
         setRace(character.getRace());
+        setLevel(character.getLevel());
+        setCurrentExperience(character.getExperience());
         setCharacterClass(character.getCharacterClass());
         baseStats = DataEngine.getInstance().GetPCBaseStatsByRace(character.getRace());
 

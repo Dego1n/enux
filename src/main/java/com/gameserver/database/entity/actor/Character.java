@@ -37,6 +37,12 @@ public class Character {
     @Column(name = "location_z")
     private int locationZ;
 
+    @Column(name = "level")
+    private int level;
+
+    @Column(name = "experience")
+    private long experience;
+
     public int getId() {
         return id;
     }
@@ -95,5 +101,21 @@ public class Character {
 
     public void setCharacterClass(CharacterClass characterClass) {
         this.characterClass = characterClass;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public long getExperience() {
+        return experience;
+    }
+
+    public void setExperience(long experience) {
+        this.experience = experience;
     }
 }

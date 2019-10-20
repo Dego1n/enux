@@ -13,7 +13,9 @@ public class NPC {
 
     private boolean isFriendly;
 
-    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime) {
+    private int baseExperience;
+
+    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime, int baseExperience) {
         this.id = id;
         this.templateId = templateId;
         this.name = name;
@@ -22,6 +24,7 @@ public class NPC {
         this.collisionRadius = collisionRadius;
         this.hp = hp;
         this.respawnTime = respawnTime;
+        this.baseExperience = baseExperience;
     }
 
     public int getId() {
@@ -82,5 +85,13 @@ public class NPC {
 
     public void setRespawnTime(int respawnTime) {
         this.respawnTime = respawnTime;
+    }
+
+    public int getBaseExperience() {
+        return baseExperience;
+    }
+
+    public void setBaseExperience(int baseExperience) {
+        this.baseExperience = baseExperience;
     }
 }

@@ -2,6 +2,7 @@ package com.gameserver.instance;
 
 import com.gameserver.config.Config;
 import com.gameserver.database.staticdata.Race;
+import com.gameserver.instance.loader.ExperienceLoader;
 import com.gameserver.instance.loader.WeaponsLoader;
 import com.gameserver.template.NPC;
 import com.gameserver.template.item.BaseItem;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class DataEngine {
 
@@ -35,6 +37,7 @@ public class DataEngine {
     private List<NPC> npcList;
     private List<BaseStats> baseStats;
     private List<BaseItem> items;
+    private Map<Integer, Integer> experienceTable;
 
     private DataEngine()
     {
@@ -45,6 +48,8 @@ public class DataEngine {
         log.info("Loaded {} PC Base Stats",LoadPCBaseStats());
         items = WeaponsLoader.LoadWeapons();
         log.info("Loaded {} Weapons", items.size());
+        experienceTable = ExperienceLoader.loadExperienceTable();
+        log.info("Loaded {} levels", experienceTable.size());
     }
 
     private int LoadNPCData()
@@ -73,11 +78,25 @@ public class DataEngine {
             double hp = (double)npc.get("hp");
             int respawnTime = (int)npc.get("respawn_time");
 
+            int baseExperience = (int)Optional.ofNullable(npc.get("base_experience")).orElse(0);
+
             @SuppressWarnings("unchecked")
             Map<String, Object> collision = (Map<String,Object>)npc.get("collision");
             int collisionHeight = (int)collision.get("height");
             int collisionRadius = (int)collision.get("radius");
-            npcList.add(new NPC(id,templateId,name,isFriendly,collisionHeight,collisionRadius, hp, respawnTime));
+            npcList.add(
+                    new NPC(
+                            id,
+                            templateId,
+                            name,
+                            isFriendly,
+                            collisionHeight,
+                            collisionRadius,
+                            hp,
+                            respawnTime,
+                            baseExperience
+                    )
+            );
             count++;
         }
 
