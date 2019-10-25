@@ -2,7 +2,6 @@ package com.gameserver;
 
 import com.gameserver.config.Config;
 import com.gameserver.database.presets.CharacterPresets;
-import com.gameserver.database.presets.SpawnPresets;
 import com.gameserver.instance.CommandEngine;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
@@ -19,7 +18,6 @@ public class GameServer {
         DataEngine.getInstance();
         /* PRESETS_START */
         CharacterPresets.Load();
-        SpawnPresets.Load();
         /* PRESETS_END */
 
         GameTickController.init();

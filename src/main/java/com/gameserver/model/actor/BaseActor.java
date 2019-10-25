@@ -185,7 +185,7 @@ public abstract class BaseActor {
                     ((PlayableCharacter) this).sendPacket(new SystemMessage("You received "+((NPCActor) target).getBaseExperience()+" experience"));
                     ((PlayableCharacter) this).sendPacket(new SystemMessage("You current EXP:  "+((PlayableCharacter) this).getCurrentExperience()));
 
-                    new Task(new SpawnActorTask(((NPCActor) target).getSpawn()), (int) ((((NPCActor) target).getRespawnTime()) * 1000));
+                    new Task(new SpawnActorTask(((NPCActor) target)), (int) ((((NPCActor) target).getRespawnTime()) * 1000));
 
                     World.getInstance().removeActorFromWorld(target);
                 }

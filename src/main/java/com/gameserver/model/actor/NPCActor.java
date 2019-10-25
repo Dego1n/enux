@@ -1,7 +1,6 @@
 package com.gameserver.model.actor;
 
 import com.gameserver.config.Config;
-import com.gameserver.database.entity.spawn.Spawn;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.scripting.ai.npc.NpcAi;
 import com.gameserver.template.NPC;
@@ -18,18 +17,27 @@ public class NPCActor extends BaseActor {
 
     private int respawnTime;
 
-    private Spawn spawn;
-
     private int baseExperience;
 
-    public NPCActor(Spawn spawn)
+    private int npc_id;
+
+    private int orig_x;
+
+    private int orig_y;
+
+    private int orig_z;
+
+    public NPCActor(int npc_id, int loc_x, int loc_y, int loc_z)
     {
         super();
-        NPC npc = DataEngine.getInstance().getNPCById(spawn.getActorId());
-        id = npc.getId();
-        setLocationX(spawn.getLocationX());
-        setLocationY(spawn.getLocationY());
-        setLocationZ(spawn.getLocationZ());
+        this.npc_id = npc_id;
+        this.orig_x = loc_x;
+        this.orig_y = loc_y;
+        this.orig_z = loc_z;
+        NPC npc = DataEngine.getInstance().getNPCById(npc_id);
+        setLocationX(loc_x);
+        setLocationY(loc_y);
+        setLocationZ(loc_z);
         setFriendly(npc.isFriendly());
         setName(npc.getName());
         setTemplateId(npc.getTemplateId());
@@ -39,9 +47,8 @@ public class NPCActor extends BaseActor {
         setMaxHp(npc.getHp());
         setBaseExperience(npc.getBaseExperience());
         respawnTime = npc.getRespawnTime();
-        this.spawn = spawn;
 
-        String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+id;
+        String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+npc_id;
 
         if(new File(path).exists())
         {
@@ -49,7 +56,7 @@ public class NPCActor extends BaseActor {
         }
         else
         {
-            log.warn("Not found AI script for npc id: {}",id);
+            log.warn("Not found AI script for npc id: {}",npc_id);
         }
     }
 
@@ -63,14 +70,6 @@ public class NPCActor extends BaseActor {
 
     public void setRespawnTime(int respawnTime) {
         this.respawnTime = respawnTime;
-    }
-
-    public Spawn getSpawn() {
-        return spawn;
-    }
-
-    public void setSpawn(Spawn spawn) {
-        this.spawn = spawn;
     }
 
     public int getBaseExperience() {

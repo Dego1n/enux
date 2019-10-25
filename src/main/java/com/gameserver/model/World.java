@@ -1,7 +1,6 @@
 package com.gameserver.model;
 
-import com.gameserver.database.dao.spawn.SpawnDao;
-import com.gameserver.database.entity.spawn.Spawn;
+import com.gameserver.config.Config;
 import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
@@ -9,9 +8,18 @@ import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.DestroyActor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class World {
 
@@ -40,29 +48,47 @@ public class World {
 
     private int SpawnNpcs()
     {
-        int count = 0;
-        SpawnDao spawnDao = new SpawnDao();
-        for(Spawn spawn : spawnDao.getAllSpawns())
-        {
-            spawnNpc(spawn);
-            count++;
+        try {
+            List<File> spawnFiles = Files.walk(Paths.get(Config.DATAPACK_PATH + "npc/spawn")).filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
+            for(File f : spawnFiles)
+            {
+                String npcYaml = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())), StandardCharsets.UTF_8);
+                Yaml yaml = new Yaml();
+                ArrayList<Map<String, Object>> spawns = yaml.load(npcYaml);
+
+                for(Map<String, Object> entry : spawns)
+                {
+                    NPCActor npc = new NPCActor((int)entry.get("npc_id"),
+                            (int)entry.get("x"),
+                            (int)entry.get("y"),
+                            (int)entry.get("z")
+                    );
+                    spawnNpc(npc);
+                }
+            }
+
+        } catch (IOException e) {
+            log.error("Can't read npc yaml file");
+            log.error(e.getMessage());
+            return -1;
         }
 
-        return count;
+        return actors.size();
+
+
     }
 
-    private void spawnNpc(Spawn spawn)
+    private void spawnNpc(NPCActor npc)
     {
-        actors.add(new NPCActor(spawn));
+        actors.add(npc);
     }
 
-    public void spawnNpcAndBroadcast(Spawn spawn)
+    public void spawnNpcAndBroadcast(NPCActor npc)
     {
-        NPCActor actor = new NPCActor(spawn);
-        actors.add(actor);
-        for(PlayableCharacter pc : getPlayableCharactersInRadius(actor,100000))
+        actors.add(npc);
+        for(PlayableCharacter pc : getPlayableCharactersInRadius(npc,100000))
         {
-            pc.sendPacket(new ActorInfo(actor));
+            pc.sendPacket(new ActorInfo(npc));
         }
     }
 

@@ -1,20 +1,20 @@
 package com.gameserver.task.actortask;
 
-import com.gameserver.database.entity.spawn.Spawn;
 import com.gameserver.model.World;
+import com.gameserver.model.actor.NPCActor;
 
 import java.util.TimerTask;
 
 public class SpawnActorTask extends TimerTask {
 
-    private Spawn spawn;
+    private NPCActor actor;
 
-    public SpawnActorTask(Spawn spawn)
+    public SpawnActorTask(NPCActor actor)
     {
-        this.spawn = spawn;
+        this.actor = actor;
     }
     @Override
     public void run() {
-        World.getInstance().spawnNpcAndBroadcast(spawn);
+        World.getInstance().spawnNpcAndBroadcast(this.actor);
     }
 }
