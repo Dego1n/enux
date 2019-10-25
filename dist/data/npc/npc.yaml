@@ -31,3 +31,26 @@ TestManequen:
   collision:
     height: 100
     radius: 25
+
+Berter:
+  id: 103
+  name: Berter
+  template_id: 102
+  is_friendly: true
+  hp: 100.0
+  respawn_time: 5
+  collision:
+    height: 96
+    radius: 25
+
+Gorbolg:
+  id: 104
+  name: Gorbolg
+  template_id: 101
+  is_friendly: false
+  hp: 75.0
+  respawn_time: 10
+  base_experience: 24
+  collision:
+    height: 105
+    radius: 30
