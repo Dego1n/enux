@@ -29,6 +29,7 @@ public class CommandEngine {
         this.registerCommand(new HelloCommand());
         this.registerCommand(new SendActorInfoCommand());
         this.registerCommand(new SpawnCommand());
+        this.registerCommand(new DebugNearestGeodataCommand());
         log.info("Loaded {} admin commands", _adminCommands.size());
     }
 

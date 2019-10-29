@@ -2,6 +2,7 @@ package com.gameserver;
 
 import com.gameserver.config.Config;
 import com.gameserver.database.presets.CharacterPresets;
+import com.gameserver.geodata.GeoEngine;
 import com.gameserver.instance.CommandEngine;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
@@ -20,10 +21,10 @@ public class GameServer {
         CharacterPresets.Load();
         /* PRESETS_END */
 
+        GeoEngine.getInstance();
         GameTickController.init();
         World.getInstance();
         CommandEngine.getInstance();
-//        ((NPCActor)World.getInstance().getActorByObjectId(1)).getNpcAi().onTalk(new PlayableCharacter(null, new CharacterDao().getCharacterByName("PlayTest")));
         try {
             new AuthServerSocket().EstablishConnection();
             GameServerSocketInstance.getInstance();
