@@ -24,32 +24,32 @@ public class GeoEngine {
         return _instance;
     }
 
-    //Р—РЅР°С‡РµРЅРёСЏ landscape РёР· Unreal
-    private final int world_map_x_start = Config.WORLD_MAP_X_START; //Р’С‹СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РёР· РѕРєРЅР° world composition
-    private final int world_map_y_start = Config.WORLD_MAP_Y_START; //Р’С‹СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РёР· РѕРєРЅР° world composition
+    //Значения landscape из Unreal
+    private final int world_map_x_start = Config.WORLD_MAP_X_START; //Высчитывается из окна world composition
+    private final int world_map_y_start = Config.WORLD_MAP_Y_START; //Высчитывается из окна world composition
     private final float world_map_x_scale = Config.WORLD_MAP_X_SCALE;
     private final float world_map_y_scale = Config.WORLD_MAP_Y_SCALE;
     private final float world_map_z_scale = Config.WORLD_MAP_Z_SCALE;
-    //РќРµ С‚РµСЃС‚РёСЂРѕРІР°Р»РѕСЃСЊ РµСЃР»Рё РЅРµ 0
+    //Не тестировалось если не 0
     private final float world_map_z_position = Config.WORLD_MAP_Z_POSITION;
 
-    //РџРѕС‚СЂР°С‡РµРЅРѕ 2 РґРЅСЏ РЅР° РІС‹С‡РёСЃР»РµРЅРёСЏ :(
+    //Потрачено 2 дня на вычисления :(
     private final float world_map_z_min = -256*world_map_z_scale + world_map_z_position;
     private final float world_map_z_max = 256*world_map_z_scale + world_map_z_position;
 
-    //Р‘СѓРґРµС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё Р·Р°РїРѕР»РЅРµРЅРѕ РїСЂРё Р·Р°РіСЂСѓР·РєРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ heightmap.
-    //Р¤Р°Р№Р» РґРѕСЃС‚Р°РІР°С‚СЊ С‚Р°Рє. Р’ Modes РІС‹Р±СЂР°С‚СЊ Landscape -> Sculpt -> РќР°Р¶Р°С‚СЊ РїСЂР°РІРѕР№ РєРЅРѕРїРєРѕР№ РЅР° Heightmap РІ Layers Рё Export to file (РІС‹Р±СЂР°С‚СЊ .png)
+    //Будет автоматически заполнено при загрузке изображения heightmap.
+    //Файл доставать так. В Modes выбрать Landscape -> Sculpt -> Нажать правой кнопкой на Heightmap в Layers и Export to file (выбрать .png)
     private int heightmap_image_width;
     private int heightmap_image_height;
 
-    //Р—РґРµСЃСЊ Р±СѓРґРµС‚ С…СЂР°РЅРёС‚СЃСЏ РґР°РЅРЅС‹Рµ СЃ РєР°СЂС‚РёРЅРєРё (Р—Р”Р•РЎР¬ РќР•Рў Р“РћРўРћР’Р«РҐ Z РљРћРћР Р”РРќРђРў)
+    //Здесь будет хранится данные с картинки (ЗДЕСЬ НЕТ ГОТОВЫХ Z КООРДИНАТ)
     private short[] _heightMap;
 
     public GeoEngine()
     {
         log.info("Building GeoData");
         BufferedImage image = null;
-        //Р—Р°РіСЂСѓР¶Р°РµРј РєР°СЂС‚РёРЅРєСѓ heightmap
+        //Загружаем картинку heightmap
         try {
             image = ImageIO.read(new File(System.getProperty("user.dir") + Config.HEIGHTMAP_PATH));
         } catch (IOException e) {
@@ -58,16 +58,16 @@ public class GeoEngine {
             System.exit(1);
         }
 
-        //Р’С‹С‚Р°СЃРєРёРІР°РµРј СЂР°Р·РјРµСЂС‹
+        //Вытаскиваем размеры
         heightmap_image_width = image.getWidth();
         heightmap_image_height = image.getHeight();
 
-        //Р’С‹С‚Р°СЃРєРёРІР°РµРј РґР°РЅРЅС‹Рµ РёР· РєР°СЂС‚РёРЅРєРё РІ РјР°СЃСЃРёРІ
+        //Вытаскиваем данные из картинки в массив
         DataBufferUShort buffer = (DataBufferUShort) image.getRaster().getDataBuffer();
         _heightMap = buffer.getData();
         log.info("Geodata builded! Loaded {} points", _heightMap.length);
 
-        //РўРµСЃС‚С‹
+        //Тесты
 //        System.out.println("[TEST] VALUE: " +getNearestZ(51090, 220600) + " EXPECTED: "+-5870);
 //        System.out.println("[TEST] VALUE: " +getNearestZ(94660, 246010) + " EXPECTED: "+1258);
 //        System.out.println("[TEST] VALUE: " +getNearestZ(-197920, 62280) + " EXPECTED: "+1441);
@@ -82,15 +82,15 @@ public class GeoEngine {
 
     public float getNearestZ(float x, float y)
     {
-        //РџСЂРµРѕР±СЂР°Р·СѓРµРј РєРѕРѕСЂРґРёРЅР°С‚С‹ СЃ РјРёСЂР° РІ РєРѕРѕСЂРґРёРЅР°С‚С‹ РєР°СЂС‚РёРЅРєРё heightmap
+        //Преобразуем координаты с мира в координаты картинки heightmap
         int geoX = Math.round((x - world_map_x_start)/world_map_x_scale);
         int geoY = Math.round((y - world_map_y_start)/world_map_y_scale);
 
-        //heightValue - РѕС‚ 0 РґРѕ 65535
+        //heightValue - от 0 до 65535
         int heightValue = _heightMap[geoX + geoY * heightmap_image_width] & 0xffff;
 
-        //32768 - СЌС‚Рѕ Z=0
-        //РџРѕС‚СЂР°С‡РµРЅРѕ 2 РґРЅСЏ РЅР° РІС‹С‡РёСЃР»РµРЅРёРµ :(
+        //32768 - это Z=0
+        //Потрачено 2 дня на вычисление :(
         return 256 * world_map_z_scale / 32768f * heightValue + world_map_z_min + world_map_z_position;
     }
 

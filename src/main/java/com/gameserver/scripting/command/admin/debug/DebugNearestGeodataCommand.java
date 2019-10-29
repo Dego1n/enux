@@ -1,11 +1,12 @@
-package com.gameserver.scripting.command.admin;
+package com.gameserver.scripting.command.admin.debug;
 
 import com.gameserver.geodata.GeoEngine;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.game2client.DebugDrawSphere;
 import com.gameserver.packet.game2client.SystemMessage;
+import com.gameserver.scripting.command.admin.AbstractAdminCommand;
 
-public class DebugNearestGeodataCommand extends AbstractAdminCommand{
+public class DebugNearestGeodataCommand extends AbstractAdminCommand {
     private final int multiplicator = 100;
     @Override
     public void execute(PlayableCharacter character, String command) {

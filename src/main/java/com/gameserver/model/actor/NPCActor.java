@@ -2,6 +2,7 @@ package com.gameserver.model.actor;
 
 import com.gameserver.config.Config;
 import com.gameserver.instance.DataEngine;
+import com.gameserver.model.actor.ai.type.AttackableAI;
 import com.gameserver.scripting.ai.npc.NpcAi;
 import com.gameserver.template.NPC;
 import org.slf4j.Logger;
@@ -39,6 +40,10 @@ public class NPCActor extends BaseActor {
         setLocationY(loc_y);
         setLocationZ(loc_z);
         setFriendly(npc.isFriendly());
+        if(!npc.isFriendly())
+        {
+            setAi(new AttackableAI(this));
+        }
         setName(npc.getName());
         setTemplateId(npc.getTemplateId());
         setCollisionHeight(npc.getCollisionHeight());

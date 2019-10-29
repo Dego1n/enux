@@ -118,11 +118,6 @@ public class PlayableCharacter extends BaseActor {
         return World.getInstance().getActorsInRadius(this,10000);
     }
 
-    public List<PlayableCharacter> nearbyPlayers()
-    {
-        return World.getInstance().getPlayableCharactersInRadius(this,100000);
-    }
-
     public void moveToLocation(int x, int y, int z)
     {
         if(getActorIntention().getIntention().intentionType == IntentionType.INTENTION_IDLE)

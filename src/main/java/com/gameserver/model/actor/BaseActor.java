@@ -6,6 +6,8 @@ import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.ActorIntention;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
 import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
+import com.gameserver.model.actor.ai.type.AbstractAI;
+import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.ResetAttackCooldown;
@@ -48,6 +50,7 @@ public abstract class BaseActor {
 
     private List<Task> _tasks;
 
+    private AbstractAI ai;
 
 
     public BaseActor()
@@ -170,6 +173,7 @@ public abstract class BaseActor {
     }
     public void attack(BaseActor target)
     {
+        target.getAi().onAttacked(this);
         setCanAttack(false);
         if(target.getCurrentHp() > 0 ) {
             float damage = calculateAttackDamageToTarget(target);
@@ -221,6 +225,19 @@ public abstract class BaseActor {
         }
     }
 
+    public void broadcastPacket(AbstractSendablePacket packet)
+    {
+        for(PlayableCharacter pc : nearbyPlayers())
+        {
+            pc.sendPacket(packet);
+        }
+    }
+
+    public List<PlayableCharacter> nearbyPlayers()
+    {
+        return World.getInstance().getPlayableCharactersInRadius(this,100000);
+    }
+
     public boolean isCanAttack() {
         return canAttack;
     }
@@ -243,5 +260,13 @@ public abstract class BaseActor {
 
     public void setMaxHp(double maxHp) {
         this.maxHp = maxHp;
+    }
+
+    public AbstractAI getAi() {
+        return ai;
+    }
+
+    public void setAi(AbstractAI ai) {
+        this.ai = ai;
     }
 }
