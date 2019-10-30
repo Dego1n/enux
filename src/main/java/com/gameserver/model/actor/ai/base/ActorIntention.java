@@ -98,17 +98,19 @@ public class ActorIntention {
     }
 
     private void onIntentionAttack() {
-        int weaponAttackDistance = 150; //TODO: change this const to var
-        IntentionAttack _int = (IntentionAttack) _intention;
-        if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) < weaponAttackDistance)
-        {
-            //TODO: зачем здесь проверка на PlayableCharacter
-            if(_actor instanceof PlayableCharacter)
-            {
-                if(_actor.isCanAttack()) {
+        if (_actor instanceof PlayableCharacter) {
+            int weaponAttackDistance = 150; //TODO: change this const to var
+            IntentionAttack _int = (IntentionAttack) _intention;
+            if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) < weaponAttackDistance) {
+
+                if (_actor.isCanAttack()) {
                     _actor.attack(_int.Target);
                 }
             }
+        }
+        else if(_actor instanceof NPCActor)
+        {
+            _actor.getAi().intentionAttackThink();
         }
     }
 }

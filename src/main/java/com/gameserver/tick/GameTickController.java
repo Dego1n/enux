@@ -1,5 +1,6 @@
 package com.gameserver.tick;
 
+import com.gameserver.model.actor.BaseActor;
 import com.gameserver.tick.job.AbstractTickJob;
 import com.gameserver.tick.job.IntentionThinkJob;
 import org.slf4j.Logger;
@@ -7,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameTickController extends Thread {
 
@@ -14,11 +17,15 @@ public class GameTickController extends Thread {
 
     private static GameTickController _instance;
 
-    private static final int TICKS_PER_SECOND = 10;
+    public static final int TICKS_PER_SECOND = 10;
     private static final int MILLIS_IN_TICK = 1000 / TICKS_PER_SECOND;
 
     private IntentionThinkJob _intentionThinkJob;
     private List<AbstractTickJob> _jobs;
+
+    private final Set<BaseActor> _movingObjects = ConcurrentHashMap.newKeySet();
+
+    private final long _startTime;
 
     private GameTickController() {
         super("GameTickController");
@@ -26,11 +33,21 @@ public class GameTickController extends Thread {
         super.setPriority(MAX_PRIORITY);
         super.start();
         log.info("Initializing GameTickController");
+        _startTime = System.currentTimeMillis();
     }
 
     public static void init() {
         _instance = new GameTickController();
         _instance._jobs = new ArrayList<AbstractTickJob>();
+    }
+
+    private void moveObjects()
+    {
+        _movingObjects.removeIf(BaseActor::updatePosition);
+    }
+    public void registerMovingObject(BaseActor actor)
+    {
+        _movingObjects.add(actor);
     }
 
     @Override
@@ -43,6 +60,7 @@ public class GameTickController extends Thread {
 
         while (true) {
             try{
+                moveObjects();
                 for(AbstractTickJob job : _jobs)
                 {
                     job.runJob();
@@ -79,5 +97,9 @@ public class GameTickController extends Thread {
     public void addJob(AbstractTickJob job)
     {
         _jobs.add(job);
+    }
+
+    public final int getGameTicks() {
+        return (int) ((System.currentTimeMillis() - _startTime) / MILLIS_IN_TICK);
     }
 }

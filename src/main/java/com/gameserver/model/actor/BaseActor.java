@@ -12,6 +12,7 @@ import com.gameserver.packet.game2client.*;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
+import com.gameserver.tick.GameTickController;
 import com.gameserver.tick.job.IntentionThinkJob;
 
 import java.util.*;
@@ -51,6 +52,8 @@ public abstract class BaseActor {
     private List<Task> _tasks;
 
     private AbstractAI ai;
+
+    private MoveData _moveData;
 
 
     public BaseActor()
@@ -268,5 +271,79 @@ public abstract class BaseActor {
 
     public void setAi(AbstractAI ai) {
         this.ai = ai;
+    }
+
+    public boolean updatePosition() {
+        System.out.println("updatingPosition");
+        MoveData moveData = getMoveData();
+        if(moveData == null)
+        {
+            return true;
+        }
+
+        if(moveData.lastUpdate == 0) //Первый раз обновляем позицию
+        {
+            moveData.lastUpdate = moveData.startTime;
+        }
+
+        int gameTicks = GameTickController.getInstance().getGameTicks();
+
+        int prevX = getLocationX();
+        int prevY = getLocationY();
+        int prevZ = getLocationZ();
+
+
+        int dx = moveData.x_destination - prevX;
+        int dy = moveData.y_destination - prevY;
+        int dz = moveData.z_destination - prevZ;
+        System.out.println("dx: "+dx);
+        System.out.println("dy: "+dy);
+        double delta = (dx * dx) + (dy*dy);
+        delta = Math.sqrt(delta);
+        double distFraction = Double.MAX_VALUE;
+        System.out.println("Delta: "+delta);
+        if(delta > 1)
+        {
+            final double distPassed = (300 * (gameTicks - moveData.lastUpdate)) / GameTickController.TICKS_PER_SECOND;
+            distFraction = distPassed / delta;
+        }
+        System.out.println("distFraction: "+distFraction);
+        if (distFraction > 1) {
+            // Set the position of the BaseActor to the destination
+            this.setLocationX(moveData.x_destination);
+            this.setLocationY(moveData.y_destination);
+            this.setLocationZ(moveData.z_destination);
+            return true;
+        } else {
+            System.out.println("PREV {"+prevX+":"+prevY+":"+prevZ+"} NEW {"+(prevX + (int) (dx * distFraction))+":"+(prevY + (int) (dy * distFraction))+":"+(prevZ + (int) (dz * distFraction))+"}");
+            setLocationX(prevX + (int) (dx * distFraction));
+            setLocationY(prevY + (int) (dy * distFraction));
+            setLocationZ(prevZ + (int) (dz * distFraction));
+        }
+        this.broadcastPacket(new DebugDrawSphere(getLocationX(),getLocationY(),getLocationZ()));
+        moveData.lastUpdate = gameTicks;
+        return false;
+    }
+
+    public static class MoveData {
+        public int x_destination;
+        public int y_destination;
+        public int z_destination;
+
+        public int startTime;
+        public int lastUpdate;
+        public MoveData()
+        {
+            startTime = GameTickController.getInstance().getGameTicks();
+            lastUpdate = 0;
+        }
+    }
+
+    public MoveData getMoveData() {
+        return _moveData;
+    }
+
+    public void setMoveData(MoveData _moveData) {
+        this._moveData = _moveData;
     }
 }
