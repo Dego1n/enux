@@ -29,6 +29,8 @@ public abstract class BaseActor {
     private boolean canAttack = true;
     private boolean isFriendly = true;
 
+    private boolean isDead = false;
+
     private String name;
 
     private Race race;
@@ -176,7 +178,9 @@ public abstract class BaseActor {
     }
     public void attack(BaseActor target)
     {
-        target.getAi().onAttacked(this);
+        if(target instanceof NPCActor) {
+            target.getAi().onAttacked(this);
+        }
         setCanAttack(false);
         if(target.getCurrentHp() > 0 ) {
             float damage = calculateAttackDamageToTarget(target);
@@ -193,7 +197,8 @@ public abstract class BaseActor {
                     ((PlayableCharacter) this).sendPacket(new SystemMessage("You current EXP:  "+((PlayableCharacter) this).getCurrentExperience()));
 
                     new Task(new SpawnActorTask(((NPCActor) target)), (int) ((((NPCActor) target).getRespawnTime()) * 1000));
-
+                    target.setDead(true);
+                    target.getActorIntention().setIntention(new IntentionIdle());
                     World.getInstance().removeActorFromWorld(target);
                 }
             }
@@ -201,7 +206,14 @@ public abstract class BaseActor {
                 ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
             }
         }
-        ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new Attack(this, target));
+        if(this instanceof PlayableCharacter)
+        {
+            ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new Attack(this, target));
+        }
+        else
+        {
+            this.broadcastPacket(new Attack(this,target));
+        }
         new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
     }
 
@@ -302,11 +314,16 @@ public abstract class BaseActor {
         delta = Math.sqrt(delta);
         double distFraction = Double.MAX_VALUE;
         System.out.println("Delta: "+delta);
+        if(moveData.offset >= delta)
+        {
+            return true;
+        }
         if(delta > 1)
         {
             final double distPassed = (300 * (gameTicks - moveData.lastUpdate)) / GameTickController.TICKS_PER_SECOND;
             distFraction = distPassed / delta;
         }
+        else
         System.out.println("distFraction: "+distFraction);
         if (distFraction > 1) {
             // Set the position of the BaseActor to the destination
@@ -332,10 +349,12 @@ public abstract class BaseActor {
 
         public int startTime;
         public int lastUpdate;
+        public int offset;
         public MoveData()
         {
             startTime = GameTickController.getInstance().getGameTicks();
             lastUpdate = 0;
+            offset = 0;
         }
     }
 
@@ -345,5 +364,13 @@ public abstract class BaseActor {
 
     public void setMoveData(MoveData _moveData) {
         this._moveData = _moveData;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 }

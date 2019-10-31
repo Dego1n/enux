@@ -98,8 +98,8 @@ public class ActorIntention {
     }
 
     private void onIntentionAttack() {
+        int weaponAttackDistance = 150; //TODO: change this const to var
         if (_actor instanceof PlayableCharacter) {
-            int weaponAttackDistance = 150; //TODO: change this const to var
             IntentionAttack _int = (IntentionAttack) _intention;
             if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) < weaponAttackDistance) {
 

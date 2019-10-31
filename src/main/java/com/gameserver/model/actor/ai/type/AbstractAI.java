@@ -18,6 +18,7 @@ public abstract class AbstractAI {
         moveData.x_destination = actor.getLocationX();
         moveData.y_destination = actor.getLocationY();
         moveData.z_destination = actor.getLocationZ();
+        moveData.offset = offset;
         this.actor.setMoveData(moveData);
         GameTickController.getInstance().registerMovingObject(this.actor);
         this.actor.broadcastPacket(new MoveToPawn(this.actor, actor, offset));
