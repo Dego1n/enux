@@ -1,6 +1,7 @@
 package com.gameserver.tick;
 
 import com.gameserver.model.actor.BaseActor;
+import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.tick.job.AbstractTickJob;
 import com.gameserver.tick.job.IntentionThinkJob;
 import org.slf4j.Logger;
@@ -101,5 +102,10 @@ public class GameTickController extends Thread {
 
     public final int getGameTicks() {
         return (int) ((System.currentTimeMillis() - _startTime) / MILLIS_IN_TICK);
+    }
+
+    public void onPlayerDisconnect(PlayableCharacter character)
+    {
+        _movingObjects.remove(character);
     }
 }

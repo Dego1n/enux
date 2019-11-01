@@ -6,6 +6,7 @@ import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.DestroyActor;
+import com.gameserver.tick.GameTickController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -85,6 +86,7 @@ public class World {
 
     public void spawnNpcAndBroadcast(NPCActor npc)
     {
+        npc.onRespawn();
         actors.add(npc);
         for(PlayableCharacter pc : getPlayableCharactersInRadius(npc,100000))
         {
@@ -104,6 +106,8 @@ public class World {
 
     public void removePlayerFromWorld(PlayableCharacter player)
     {
+        player.getActorIntention().setIntention(null);
+        GameTickController.getInstance().onPlayerDisconnect(player);
         for(BaseActor pc : getActorsInRadius(player,100000))
         {
             if(pc instanceof PlayableCharacter)

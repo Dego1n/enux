@@ -19,5 +19,6 @@ public class ActorDied extends AbstractSendablePacket implements IServerPacket {
     private void build() {
         writeH(ServerPackets.ACTOR_DIED);
         writeD(actor.getObjectId());
+        writeD(10); //Монтаж смерти -> через сколько вызвать Destroy актора
     }
 }

@@ -49,7 +49,7 @@ Gorbolg:
   template_id: 101
   is_friendly: false
   hp: 75.0
-  respawn_time: 10
+  respawn_time: 30
   base_experience: 24
   collision:
     height: 105

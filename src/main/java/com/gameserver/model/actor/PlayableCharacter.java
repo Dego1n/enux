@@ -201,4 +201,8 @@ public class PlayableCharacter extends BaseActor {
             this.sendPacket(new SystemMessage("Level up! Your level is now:" +getLevel()));
         }
     }
+
+    public boolean isConnected() {
+        return clientListenerThread != null;
+    }
 }

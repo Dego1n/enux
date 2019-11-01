@@ -190,6 +190,7 @@ public abstract class BaseActor {
             {
                 this.getActorIntention().setIntention(new IntentionIdle());
                 ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " died!"));
+                this.setTarget(null);
                 ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
                 if(target instanceof NPCActor) {
                     ((PlayableCharacter) this).addExperience(((NPCActor) target).getBaseExperience());
@@ -340,6 +341,16 @@ public abstract class BaseActor {
         this.broadcastPacket(new DebugDrawSphere(getLocationX(),getLocationY(),getLocationZ()));
         moveData.lastUpdate = gameTicks;
         return false;
+    }
+
+    public void onRespawn()
+    {
+        if(this instanceof NPCActor) {
+            setCurrentHp(getMaxHp());
+            getAi().resetAi();
+            setDead(false);
+        }
+
     }
 
     public static class MoveData {

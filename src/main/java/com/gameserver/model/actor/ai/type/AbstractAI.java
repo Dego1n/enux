@@ -27,4 +27,6 @@ public abstract class AbstractAI {
     public abstract void onAttacked(BaseActor source);
 
     public abstract void intentionAttackThink();
+
+    public abstract void resetAi();
 }

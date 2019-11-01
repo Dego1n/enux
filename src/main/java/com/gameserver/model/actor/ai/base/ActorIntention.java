@@ -57,7 +57,11 @@ public class ActorIntention {
     }
 
     public void setIntention(AbstractIntention intention) {
-
+        if(intention == null)
+        {
+            GameTickController.getInstance().getIntentionThinkJob().deleteFromThink(_actor);
+            return;
+        }
         if(_intention.intentionType == IntentionType.INTENTION_ATTACK && intention.intentionType != IntentionType.INTENTION_ATTACK)
         {
             GameTickController.getInstance().getIntentionThinkJob().deleteFromThink(_actor);
