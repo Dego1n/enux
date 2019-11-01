@@ -4,10 +4,6 @@ import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.model.actor.ai.base.intention.*;
-import com.gameserver.packet.game2client.Attack;
-import com.gameserver.task.Task;
-import com.gameserver.task.actortask.AttackTask;
-import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.tick.GameTickController;
 import com.gameserver.util.math.xy.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
@@ -34,9 +30,6 @@ public class ActorIntention {
 
         switch(_intention.intentionType)
         {
-            case INTENTION_IDLE:
-                onIntentionIdle();
-                break;
             case INTENTION_ACTION:
                 onIntentionAction();
                 break;

@@ -15,7 +15,7 @@ public class SpawnCommand  extends AbstractAdminCommand{
             character.sendPacket(new SystemMessage("Invalid command usage. Use: //spawn <npc_id>"));
             return;
         }
-        int npc_id = Integer.valueOf(command.substring(command.indexOf(" ") + 1));
+        int npc_id = Integer.parseInt(command.substring(command.indexOf(" ") + 1));
         NPC npc = DataEngine.getInstance().getNPCById(npc_id);
         if (npc == null) {
             character.sendPacket(new SystemMessage("Npc " + npc_id + " not found!"));

@@ -38,7 +38,7 @@ public class ClientListenerThread {
     public ClientListenerThread(AsynchronousSocketChannel socketChannel)
     {
         _socketChannel = socketChannel;
-        packetBuffer = new ArrayList();
+        packetBuffer = new ArrayList<>();
     }
 
     public void sendPacket(AbstractSendablePacket packet)

@@ -39,7 +39,7 @@ public class GameTickController extends Thread {
 
     public static void init() {
         _instance = new GameTickController();
-        _instance._jobs = new ArrayList<AbstractTickJob>();
+        _instance._jobs = new ArrayList<>();
     }
 
     private void moveObjects()

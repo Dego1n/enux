@@ -12,8 +12,6 @@ import com.gameserver.model.item.Item;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
-import com.gameserver.template.item.BaseItem;
-import com.gameserver.template.item.WeaponItem;
 import com.gameserver.template.stats.BaseStats;
 import com.gameserver.util.math.xy.Math2d;
 

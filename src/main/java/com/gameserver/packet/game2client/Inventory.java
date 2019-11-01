@@ -5,7 +5,6 @@ import com.gameserver.model.item.Item;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 import com.gameserver.packet.ServerPackets;
-import com.gameserver.template.item.BaseItem;
 
 import java.util.List;
 

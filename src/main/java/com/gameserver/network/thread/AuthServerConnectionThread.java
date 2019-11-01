@@ -29,7 +29,7 @@ public class AuthServerConnectionThread {
     public AuthServerConnectionThread(AsynchronousSocketChannel socketChanel)
     {
         _socketChannel = socketChanel;
-        packetBuffer = new ArrayList();
+        packetBuffer = new ArrayList<>();
         sendPacket(new RequestRegisterGameServer());
     }
 
