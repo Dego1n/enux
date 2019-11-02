@@ -4,6 +4,9 @@ import com.gameserver.config.Config;
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.instance.loader.ExperienceLoader;
 import com.gameserver.instance.loader.WeaponsLoader;
+import com.gameserver.model.actor.npc.LootGroupData;
+import com.gameserver.model.actor.npc.LootItemData;
+import com.gameserver.model.actor.npc.LootTableData;
 import com.gameserver.template.NPC;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.stats.BaseStats;
@@ -84,6 +87,29 @@ public class DataEngine {
             Map<String, Object> collision = (Map<String,Object>)npc.get("collision");
             int collisionHeight = (int)collision.get("height");
             int collisionRadius = (int)collision.get("radius");
+            LootTableData lootTableData = new LootTableData();
+            Map<Object, Object> lootData = (Map<Object, Object>)npc.get("loot");
+            if(lootData != null)
+            {
+                List<Map<String, Object>> groups = (List<Map<String, Object>>) lootData.get("groups");
+                List<LootGroupData> lootGroupDataList = new ArrayList<>();
+                for(Map<String, Object> group : groups)
+                {
+                    double group_chance = (double)group.get("chance");
+                    List<LootItemData> lootItemData = new ArrayList<>();
+                    for(Map<String, Object> item : (List<Map<String, Object>>)group.get("items"))
+                    {
+                        LootItemData lootItem = new LootItemData();
+                        lootItem.item_id = (int) item.get("id");
+                        lootItem.chance = (double)item.get("chance");
+                        lootItem.min_count = (int)item.get("min_count");
+                        lootItem.max_count = (int)item.get("max_count");
+                        lootItemData.add(lootItem);
+                    }
+                    lootGroupDataList.add(new LootGroupData(lootItemData, group_chance));
+                }
+                lootTableData = new LootTableData(lootGroupDataList);
+            }
             npcList.add(
                     new NPC(
                             id,
@@ -94,12 +120,12 @@ public class DataEngine {
                             collisionRadius,
                             hp,
                             respawnTime,
-                            baseExperience
+                            baseExperience,
+                            lootTableData
                     )
             );
             count++;
         }
-
         return count;
     }
 

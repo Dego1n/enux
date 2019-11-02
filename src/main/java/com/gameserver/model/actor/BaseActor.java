@@ -57,7 +57,6 @@ public abstract class BaseActor {
 
     private MoveData _moveData;
 
-
     public BaseActor()
     {
         objectId = ActorIdFactory.getInstance().getFreeId();
@@ -191,6 +190,9 @@ public abstract class BaseActor {
                 this.getActorIntention().setIntention(new IntentionIdle());
                 ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " died!"));
                 this.setTarget(null);
+                if(target instanceof NPCActor) {
+                    ((NPCActor) target).generateLootData();
+                }
                 ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
                 if(target instanceof NPCActor) {
                     ((PlayableCharacter) this).addExperience(((NPCActor) target).getBaseExperience());
@@ -384,4 +386,5 @@ public abstract class BaseActor {
     public void setDead(boolean dead) {
         isDead = dead;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.gameserver.template;
 
+import com.gameserver.model.actor.npc.LootTableData;
+
 public class NPC {
     private int id;
     private int templateId;
@@ -15,7 +17,9 @@ public class NPC {
 
     private int baseExperience;
 
-    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime, int baseExperience) {
+    private LootTableData lootTableData;
+
+    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime, int baseExperience, LootTableData lootTableData) {
         this.id = id;
         this.templateId = templateId;
         this.name = name;
@@ -25,6 +29,7 @@ public class NPC {
         this.hp = hp;
         this.respawnTime = respawnTime;
         this.baseExperience = baseExperience;
+        this.lootTableData = lootTableData;
     }
 
     public int getId() {
@@ -93,5 +98,9 @@ public class NPC {
 
     public void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
+    }
+
+    public LootTableData getLootTableData() {
+        return lootTableData;
     }
 }

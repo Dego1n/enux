@@ -3,12 +3,14 @@ package com.gameserver.model.actor;
 import com.gameserver.config.Config;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.actor.ai.type.AttackableAI;
+import com.gameserver.model.item.Item;
 import com.gameserver.scripting.ai.npc.NpcAi;
 import com.gameserver.template.NPC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.List;
 
 public class NPCActor extends BaseActor {
 
@@ -27,6 +29,8 @@ public class NPCActor extends BaseActor {
     private int orig_y;
 
     private int orig_z;
+
+    private List<Item> lootData;
 
     public NPCActor(int npc_id, int loc_x, int loc_y, int loc_z)
     {
@@ -83,5 +87,14 @@ public class NPCActor extends BaseActor {
 
     public void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
+    }
+
+    public void generateLootData()
+    {
+        lootData = DataEngine.getInstance().getNPCById(npc_id).getLootTableData().generateLoot();
+    }
+
+    public List<Item> getLootData() {
+        return lootData;
     }
 }
