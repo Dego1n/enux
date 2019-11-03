@@ -5,9 +5,9 @@ import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 import com.gameserver.packet.ServerPackets;
 
-public class StateInfo extends AbstractSendablePacket implements IServerPacket {
+class StateInfo extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor _actor;
+    private final BaseActor _actor;
 
     public StateInfo(BaseActor actor)
     {

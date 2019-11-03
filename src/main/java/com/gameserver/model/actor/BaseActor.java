@@ -20,8 +20,8 @@ import java.util.*;
 
 public abstract class BaseActor {
 
-    private int objectId;
-    protected int id;
+    private final int objectId;
+    int id;
     private int locationX;
     private int locationY;
     private int locationZ;
@@ -46,22 +46,17 @@ public abstract class BaseActor {
 
     BaseActor target;
 
-    ActorIntention _actorIntention;
-
-    IntentionThinkJob _intentionThinkJob;
+    final ActorIntention _actorIntention;
 
     private int _level;
-
-    private List<Task> _tasks;
 
     private AbstractAI ai;
 
     private MoveData _moveData;
 
-    public BaseActor()
+    BaseActor()
     {
         objectId = ActorIdFactory.getInstance().getFreeId();
-        _tasks = new ArrayList<>();
         _actorIntention = new ActorIntention(this);
     }
 
@@ -145,12 +140,8 @@ public abstract class BaseActor {
         return target;
     }
 
-    public void setTarget(BaseActor target) {
+    private void setTarget(BaseActor target) {
         this.target = target;
-    }
-
-    public boolean isMoving() {
-        return isMoving;
     }
 
     public void setIsMoving(boolean moving) {
@@ -161,7 +152,7 @@ public abstract class BaseActor {
         return _level;
     }
 
-    public void setLevel(int level) {
+    void setLevel(int level) {
         this._level = level;
     }
 
@@ -174,7 +165,7 @@ public abstract class BaseActor {
         if(target == null)
             return;
 
-        _actorIntention.setIntention(new IntentionAttack(target,true));
+        _actorIntention.setIntention(new IntentionAttack(target));
     }
     public void attack(BaseActor target)
     {
@@ -221,7 +212,7 @@ public abstract class BaseActor {
         new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
     }
 
-    public float calculateAttackDamageToTarget(BaseActor target)
+    private float calculateAttackDamageToTarget(BaseActor target)
     {
         Random rnd = new Random();
         return 10 + rnd.nextFloat() * (20 - 10);
@@ -252,7 +243,7 @@ public abstract class BaseActor {
         }
     }
 
-    public List<PlayableCharacter> nearbyPlayers()
+    List<PlayableCharacter> nearbyPlayers()
     {
         return World.getInstance().getPlayableCharactersInRadius(this,100000);
     }
@@ -269,7 +260,7 @@ public abstract class BaseActor {
         return currentHp;
     }
 
-    public void setCurrentHp(double currentHp) {
+    void setCurrentHp(double currentHp) {
         this.currentHp = currentHp;
     }
 
@@ -277,7 +268,7 @@ public abstract class BaseActor {
         return maxHp;
     }
 
-    public void setMaxHp(double maxHp) {
+    void setMaxHp(double maxHp) {
         this.maxHp = maxHp;
     }
 
@@ -285,7 +276,7 @@ public abstract class BaseActor {
         return ai;
     }
 
-    public void setAi(AbstractAI ai) {
+    void setAi(AbstractAI ai) {
         this.ai = ai;
     }
 
@@ -324,7 +315,7 @@ public abstract class BaseActor {
         }
         if(delta > 1)
         {
-            final double distPassed = (300 * (gameTicks - moveData.lastUpdate)) / GameTickController.TICKS_PER_SECOND;
+            final double distPassed = (300 * (gameTicks - moveData.lastUpdate)) / (double) GameTickController.TICKS_PER_SECOND;
             distFraction = distPassed / delta;
         }
         else
@@ -350,7 +341,9 @@ public abstract class BaseActor {
     {
         if(this instanceof NPCActor) {
             setCurrentHp(getMaxHp());
-            getAi().resetAi();
+            if(getAi() != null) {
+                getAi().resetAi();
+            }
             setDead(false);
         }
 
@@ -361,8 +354,8 @@ public abstract class BaseActor {
         public int y_destination;
         public int z_destination;
 
-        public int startTime;
-        public int lastUpdate;
+        final int startTime;
+        int lastUpdate;
         public int offset;
         public MoveData()
         {
@@ -372,7 +365,7 @@ public abstract class BaseActor {
         }
     }
 
-    public MoveData getMoveData() {
+    private MoveData getMoveData() {
         return _moveData;
     }
 
@@ -384,7 +377,7 @@ public abstract class BaseActor {
         return isDead;
     }
 
-    public void setDead(boolean dead) {
+    private void setDead(boolean dead) {
         isDead = dead;
     }
 

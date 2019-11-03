@@ -2,10 +2,10 @@ package com.gameserver.template.item;
 
 public abstract class BaseItem {
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
-    public BaseItem(int id, String name) {
+    BaseItem(int id, String name) {
         this.id = id;
         this.name = name;
     }

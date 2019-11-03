@@ -6,7 +6,7 @@ import com.gameserver.packet.AbstractReceivablePacket;
 
 public class ValidatePosition extends AbstractReceivablePacket {
 
-    private ClientListenerThread _clientListenerThread;
+    private final ClientListenerThread _clientListenerThread;
 
     public ValidatePosition(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

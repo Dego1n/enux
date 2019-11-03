@@ -11,17 +11,15 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class NpcAi {
 
-    private NPCActor npcActor;
-    private LuaValue script;
-    private String scriptRootDirectory;
+    private final LuaValue script;
+    private final String scriptRootDirectory;
 
     public NpcAi(NPCActor actor, String scriptPath)
     {
-        npcActor = actor;
         scriptRootDirectory = scriptPath;
         script = JsePlatform.standardGlobals();
         script.get("dofile").call(LuaValue.valueOf(scriptPath) + "/npc_ai.lua");
-        script.set("npc", CoerceJavaToLua.coerce(npcActor));
+        script.set("npc", CoerceJavaToLua.coerce(actor));
         registerGlobals();
     }
 

@@ -9,7 +9,7 @@ import com.gameserver.database.staticdata.Race;
 
 public class BaseStats {
 
-    private Race race;
+    private final Race race;
 
     private int collisionHeight;
     private int collisionRadius;

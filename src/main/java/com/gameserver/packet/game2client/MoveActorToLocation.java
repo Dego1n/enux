@@ -6,10 +6,10 @@ import com.gameserver.packet.ServerPackets;
 
 public class MoveActorToLocation extends AbstractSendablePacket implements IServerPacket {
 
-    private int objectId;
-    private int x;
-    private int y;
-    private int z;
+    private final int objectId;
+    private final int x;
+    private final int y;
+    private final int z;
 
     public MoveActorToLocation(int objectId, int x, int y, int z)
     {

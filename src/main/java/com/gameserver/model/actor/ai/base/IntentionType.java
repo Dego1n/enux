@@ -5,6 +5,5 @@ public enum IntentionType {
     INTENTION_ACTION,
     INTENTION_ATTACK,
     INTENTION_CAST,
-    INTENTION_PICK_UP,
     INTENTION_MOVE_TO
 }

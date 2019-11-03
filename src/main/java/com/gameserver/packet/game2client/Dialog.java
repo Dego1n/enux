@@ -6,7 +6,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class Dialog extends AbstractSendablePacket implements IServerPacket {
 
-    private String _dialog;
+    private final String _dialog;
 
     public Dialog(String dialog)
     {

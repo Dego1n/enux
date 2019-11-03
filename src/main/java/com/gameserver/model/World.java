@@ -36,7 +36,7 @@ public class World {
         return _instance;
     }
 
-    private List<BaseActor> actors;
+    private final List<BaseActor> actors;
 
     private World()
     {

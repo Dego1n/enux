@@ -6,13 +6,13 @@ import com.gameserver.tick.GameTickController;
 
 public abstract class AbstractAI {
 
-    protected BaseActor actor;
+    final BaseActor actor;
 
-    public AbstractAI(BaseActor actor) {
+    AbstractAI(BaseActor actor) {
         this.actor = actor;
     }
 
-    public void moveToActor(BaseActor actor, int offset)
+    void moveToActor(BaseActor actor, int offset)
     {
         BaseActor.MoveData moveData = new BaseActor.MoveData();
         moveData.x_destination = actor.getLocationX();

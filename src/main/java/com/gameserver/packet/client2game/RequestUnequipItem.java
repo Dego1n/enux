@@ -9,7 +9,7 @@ public class RequestUnequipItem extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestUnequipItem.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestUnequipItem(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 public class SpawnActorTask extends TimerTask {
 
-    private NPCActor actor;
+    private final NPCActor actor;
 
     public SpawnActorTask(NPCActor actor)
     {

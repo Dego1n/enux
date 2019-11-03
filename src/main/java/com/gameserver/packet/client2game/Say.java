@@ -9,7 +9,7 @@ public class Say extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(Say.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public Say(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

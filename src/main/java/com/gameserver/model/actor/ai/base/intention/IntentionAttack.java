@@ -5,12 +5,10 @@ import com.gameserver.model.actor.ai.base.IntentionType;
 
 public class IntentionAttack extends AbstractIntention {
 
-    public BaseActor Target;
-    public boolean ForceMoveToPawn;
+    public final BaseActor Target;
 
-    public IntentionAttack(BaseActor target, boolean forceMoveToPawn) {
+    public IntentionAttack(BaseActor target) {
         super(IntentionType.INTENTION_ATTACK);
         Target = target;
-        ForceMoveToPawn = forceMoveToPawn;
     }
 }

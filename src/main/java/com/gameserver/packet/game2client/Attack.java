@@ -7,8 +7,8 @@ import com.gameserver.packet.ServerPackets;
 
 public class Attack extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor _actor;
-    private BaseActor _target;
+    private final BaseActor _actor;
+    private final BaseActor _target;
 
     public Attack(BaseActor actor,BaseActor target)
     {

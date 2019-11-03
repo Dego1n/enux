@@ -6,13 +6,13 @@ import com.gameserver.packet.ServerPackets;
 
 public class DebugDrawSphere extends AbstractSendablePacket implements IServerPacket {
 
-    private int loc_x;
-    private int loc_y;
-    private int loc_z;
-    private int radius;
-    private int segments;
-    private int duration;
-    private int thickness;
+    private final int loc_x;
+    private final int loc_y;
+    private final int loc_z;
+    private final int radius;
+    private final int segments;
+    private final int duration;
+    private final int thickness;
 
     public DebugDrawSphere(int loc_x, int loc_y, int loc_z)
     {
@@ -27,18 +27,6 @@ public class DebugDrawSphere extends AbstractSendablePacket implements IServerPa
         build();
     }
 
-    public DebugDrawSphere(int loc_x, int loc_y, int loc_z, int radius, int segments, int duration, int thickness)
-    {
-        super();
-        this.loc_x = loc_x;
-        this.loc_y = loc_y;
-        this.loc_z = loc_z;
-        this.radius = radius;
-        this.segments = segments;
-        this.duration = duration;
-        this.thickness = thickness;
-        build();
-    }
     private void build()
     {
         writeH(ServerPackets.DEBUG_DRAW_SPHERE);

@@ -9,7 +9,7 @@ public class Appearing extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(Appearing.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public Appearing(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

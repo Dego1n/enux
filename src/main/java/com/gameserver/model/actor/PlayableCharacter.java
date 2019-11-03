@@ -23,11 +23,11 @@ public class PlayableCharacter extends BaseActor {
     private ClientListenerThread clientListenerThread;
 
     private CharacterClass characterClass;
-    private BaseStats baseStats;
+    private final BaseStats baseStats;
 
-    private List<Item> _inventory;
+    private final List<Item> _inventory;
 
-    private EquipInfo _equipInfo;
+    private final EquipInfo _equipInfo;
 
     private int currentExperience;
 
@@ -88,7 +88,7 @@ public class PlayableCharacter extends BaseActor {
         return currentExperience;
     }
 
-    public void setCurrentExperience(int currentExperience) {
+    private void setCurrentExperience(int currentExperience) {
         this.currentExperience = currentExperience;
     }
 
@@ -151,7 +151,7 @@ public class PlayableCharacter extends BaseActor {
                 {
                     if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400)
                     {
-                        _actorIntention.setIntention(new IntentionAction(actor, true));
+                        _actorIntention.setIntention(new IntentionAction(actor));
                         _actorIntention.intentionThink();
                     }
                 }

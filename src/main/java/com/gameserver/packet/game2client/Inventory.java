@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Inventory extends AbstractSendablePacket implements IServerPacket {
 
-    private List<Item> _items;
-    private EquipInfo _equipInfo;
+    private final List<Item> _items;
+    private final EquipInfo _equipInfo;
 
     public Inventory(List<Item> items, EquipInfo equipInfo)
     {

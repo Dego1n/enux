@@ -10,7 +10,7 @@ public class RequestCommand extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestCommand.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestCommand(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

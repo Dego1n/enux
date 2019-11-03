@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class UseItem extends AbstractReceivablePacket {
 
-    private static final Logger log = LoggerFactory.getLogger(UseItem.class);
-
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public UseItem(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

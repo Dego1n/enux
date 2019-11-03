@@ -10,7 +10,7 @@ import com.gameserver.util.math.xyz.Math3d;
 
 public class ActorIntention {
 
-    private BaseActor _actor;
+    private final BaseActor _actor;
 
     private AbstractIntention _intention;
 
@@ -44,6 +44,7 @@ public class ActorIntention {
         }
     }
 
+    @SuppressWarnings("EmptyMethod")
     private void onIntentionIdle()
     {
         //Do nothing

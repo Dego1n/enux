@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CharacterList  extends AbstractSendablePacket implements IServerPacket {
 
-    private List<Character> _characters;
+    private final List<Character> _characters;
 
     public CharacterList(List<Character> characters)
     {

@@ -13,7 +13,7 @@ public class Math3d {
         );
     }
 
-    public static double calculateDistanceBetween2dPoints(float x1, float y1, float x2, float y2)
+    private static double calculateDistanceBetween2dPoints(float x1, float y1, float x2, float y2)
     {
         return Math.sqrt(
                 Math.pow((x2 - x1), 2) +
@@ -21,7 +21,7 @@ public class Math3d {
         );
     }
 
-    public static double calculateBetweenTwoActors(BaseActor actor, BaseActor actorTarget)
+    private static double calculateBetweenTwoActors(BaseActor actor, BaseActor actorTarget)
     {
         //TODO: считаем в 2D пространстве вместо 3D пока не решили проблему с падением акторов. позже поменять на 3D
 //        return calculateDistanceBetween3dPoints(
@@ -42,10 +42,10 @@ public class Math3d {
 
     /**
      * Возможно не правильно считается с коллизиями в 3d пространстве! Скорее всего нужно учитывать collisionHeight
-     * @param actor
-     * @param actorTarget
-     * @param useCollision
-     * @return
+     * @param actor - Текущий Actor
+     * @param actorTarget - Цель
+     * @param useCollision - Считать расстояние между капсулами
+     * @return - Возвращает дистацнию
      */
     public static double calculateBetweenTwoActors(BaseActor actor, BaseActor actorTarget, boolean useCollision)
     {

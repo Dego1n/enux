@@ -11,7 +11,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class DestroyActor extends AbstractSendablePacket implements IServerPacket {
 
-    private int _objectId;
+    private final int _objectId;
 
     public DestroyActor(int objectId)
     {

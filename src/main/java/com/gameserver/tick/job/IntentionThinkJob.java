@@ -7,7 +7,7 @@ import java.util.List;
 
 public class IntentionThinkJob extends AbstractTickJob implements ITickJob{
 
-    private List<BaseActor> _actorList;
+    private final List<BaseActor> _actorList;
 
     public IntentionThinkJob()
     {

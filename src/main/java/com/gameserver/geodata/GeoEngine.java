@@ -35,17 +35,15 @@ public class GeoEngine {
 
     //Потрачено 2 дня на вычисления :(
     private final float world_map_z_min = -256*world_map_z_scale + world_map_z_position;
-    private final float world_map_z_max = 256*world_map_z_scale + world_map_z_position;
 
     //Будет автоматически заполнено при загрузке изображения heightmap.
     //Файл доставать так. В Modes выбрать Landscape -> Sculpt -> Нажать правой кнопкой на Heightmap в Layers и Export to file (выбрать .png)
-    private int heightmap_image_width;
-    private int heightmap_image_height;
+    private final int heightmap_image_width;
 
     //Здесь будет хранится данные с картинки (ЗДЕСЬ НЕТ ГОТОВЫХ Z КООРДИНАТ)
-    private short[] _heightMap;
+    private final short[] _heightMap;
 
-    public GeoEngine()
+    private GeoEngine()
     {
         log.info("Building GeoData");
         BufferedImage image = null;
@@ -60,7 +58,6 @@ public class GeoEngine {
 
         //Вытаскиваем размеры
         heightmap_image_width = image.getWidth();
-        heightmap_image_height = image.getHeight();
 
         //Вытаскиваем данные из картинки в массив
         DataBufferUShort buffer = (DataBufferUShort) image.getRaster().getDataBuffer();

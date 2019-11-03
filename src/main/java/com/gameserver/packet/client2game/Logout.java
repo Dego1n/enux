@@ -9,7 +9,7 @@ public class Logout extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(Logout.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public Logout(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

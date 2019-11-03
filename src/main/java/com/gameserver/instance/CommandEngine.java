@@ -24,7 +24,7 @@ public class CommandEngine {
         return _instance;
     }
 
-    private Map<String, AbstractAdminCommand> _adminCommands = new HashMap<>();
+    private final Map<String, AbstractAdminCommand> _adminCommands = new HashMap<>();
 
     private CommandEngine()
     {

@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class ResetAttackCooldown extends TimerTask {
 
-    private BaseActor _actor;
+    private final BaseActor _actor;
     public ResetAttackCooldown(BaseActor actor) {
         _actor = actor;
     }

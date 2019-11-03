@@ -79,7 +79,7 @@ public class GameTickController extends Thread {
             if (sleepTime > 0) {
                 try {
                     Thread.sleep(sleepTime);
-                } catch (final InterruptedException e) {
+                } catch (final InterruptedException ignored) {
 
                 }
             }
@@ -93,11 +93,6 @@ public class GameTickController extends Thread {
     public IntentionThinkJob getIntentionThinkJob()
     {
         return _intentionThinkJob;
-    }
-
-    public void addJob(AbstractTickJob job)
-    {
-        _jobs.add(job);
     }
 
     public final int getGameTicks() {

@@ -9,7 +9,7 @@ public class RequestDropItem extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestDropItem.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestDropItem(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

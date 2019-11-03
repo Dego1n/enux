@@ -7,7 +7,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class StopMoving extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor _actor;
+    private final BaseActor _actor;
     public StopMoving(BaseActor actor)
     {
         super();

@@ -7,9 +7,9 @@ import com.gameserver.packet.ServerPackets;
 
 public class ActorSay extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor _actor;
-    private String _actorName;
-    private String _message;
+    private final BaseActor _actor;
+    private final String _actorName;
+    private final String _message;
 
     public ActorSay(BaseActor actor, String actorName, String message)
     {

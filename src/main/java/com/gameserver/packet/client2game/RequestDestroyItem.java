@@ -9,7 +9,7 @@ public class RequestDestroyItem extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestDestroyItem.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestDestroyItem(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

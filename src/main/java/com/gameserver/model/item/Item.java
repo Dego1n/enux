@@ -5,9 +5,9 @@ import com.gameserver.template.item.BaseItem;
 
 public class Item {
 
-    private int objectId;
+    private final int objectId;
 
-    private BaseItem baseItem;
+    private final BaseItem baseItem;
 
     public Item(BaseItem baseItem) {
         objectId = ItemIdFactory.getInstance().getFreeId();

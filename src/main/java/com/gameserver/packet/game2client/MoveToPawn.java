@@ -7,9 +7,9 @@ import com.gameserver.packet.ServerPackets;
 
 public class MoveToPawn extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor _actor;
-    private BaseActor _actorTarget;
-    private float _radius;
+    private final BaseActor _actor;
+    private final BaseActor _actorTarget;
+    private final float _radius;
 
     public MoveToPawn(BaseActor actor, BaseActor actorTarget, float radius)
     {

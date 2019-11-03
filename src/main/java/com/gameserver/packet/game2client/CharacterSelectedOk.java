@@ -7,7 +7,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class CharacterSelectedOk  extends AbstractSendablePacket implements IServerPacket {
 
-    private Character character;
+    private final Character character;
     public CharacterSelectedOk(Character character)
     {
         super();

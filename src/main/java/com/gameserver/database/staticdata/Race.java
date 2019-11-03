@@ -8,7 +8,7 @@ public enum Race {
     Elf(1);
 
     private final int value;
-    private static Map map = new HashMap<>();
+    private static final Map map = new HashMap<>();
 
     Race(int value) {
         this.value = value;

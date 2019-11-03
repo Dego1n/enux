@@ -11,7 +11,7 @@ import java.util.List;
 
 public class LootDataUpdated extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor _actor;
+    private final BaseActor _actor;
 
     public LootDataUpdated(BaseActor actor)
     {

@@ -9,7 +9,7 @@ public class RequestBuyItem extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestBuyItem.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestBuyItem(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

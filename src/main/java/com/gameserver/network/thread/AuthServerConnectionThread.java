@@ -20,9 +20,9 @@ public class AuthServerConnectionThread {
 
     private static final Logger log = LoggerFactory.getLogger(AuthServerConnectionThread.class);
 
-    private AsynchronousSocketChannel _socketChannel;
+    private final AsynchronousSocketChannel _socketChannel;
 
-    private List<AbstractSendablePacket> packetBuffer;
+    private final List<AbstractSendablePacket> packetBuffer;
 
     private boolean writeIsPending = false;
 

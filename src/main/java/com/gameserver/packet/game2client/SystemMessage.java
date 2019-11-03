@@ -6,7 +6,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class SystemMessage extends AbstractSendablePacket implements IServerPacket {
 
-    private String _message;
+    private final String _message;
 
     public SystemMessage(String message)
     {

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 public class LootTableData {
-    List<LootGroupData> groupData;
+    private final List<LootGroupData> groupData;
 
     public LootTableData(List<LootGroupData> groupData) {
         this.groupData = groupData;
@@ -17,10 +17,6 @@ public class LootTableData {
     public LootTableData()
     {
         groupData = new ArrayList<>();
-    }
-
-    public List<LootGroupData> getGroupData() {
-        return groupData;
     }
 
     public List<Item> generateLoot()

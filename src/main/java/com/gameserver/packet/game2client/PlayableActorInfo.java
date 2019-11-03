@@ -7,7 +7,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class PlayableActorInfo extends AbstractSendablePacket implements IServerPacket {
 
-    private PlayableCharacter _character;
+    private final PlayableCharacter _character;
     public PlayableActorInfo(PlayableCharacter character)
     {
         super();

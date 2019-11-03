@@ -37,10 +37,10 @@ public class DataEngine {
         return _instance;
     }
 
-    private List<NPC> npcList;
-    private List<BaseStats> baseStats;
-    private List<BaseItem> items;
-    private Map<Integer, Integer> experienceTable;
+    private final List<NPC> npcList;
+    private final List<BaseStats> baseStats;
+    private final List<BaseItem> items;
+    private final Map<Integer, Integer> experienceTable;
 
     private DataEngine()
     {

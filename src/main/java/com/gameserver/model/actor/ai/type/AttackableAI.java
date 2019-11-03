@@ -28,7 +28,7 @@ public class AttackableAI extends AbstractAI {
             targetPreviousY = target.getLocationY();
             targetPreviousZ = target.getLocationZ();
             moveToActor(target, 100);
-            actor.getActorIntention().setIntention(new IntentionAttack(target, true));
+            actor.getActorIntention().setIntention(new IntentionAttack(target));
         }
     }
 
@@ -74,7 +74,7 @@ public class AttackableAI extends AbstractAI {
         targetPreviousZ = 0;
     }
 
-    public boolean targetLocationChanged()
+    private boolean targetLocationChanged()
     {
         return targetPreviousX != target.getLocationX() || targetPreviousY != target.getLocationY() || targetPreviousZ != target.getLocationZ();
     }

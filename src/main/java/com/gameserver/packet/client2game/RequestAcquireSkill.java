@@ -9,7 +9,7 @@ public class RequestAcquireSkill extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestAcquireSkill.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestAcquireSkill(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

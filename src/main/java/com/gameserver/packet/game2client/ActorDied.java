@@ -8,11 +8,10 @@ import com.gameserver.packet.IServerPacket;
 import com.gameserver.packet.ServerPackets;
 
 import java.util.List;
-import java.util.Random;
 
 public class ActorDied extends AbstractSendablePacket implements IServerPacket {
 
-    private BaseActor actor;
+    private final BaseActor actor;
 
     public ActorDied(BaseActor actor)
     {

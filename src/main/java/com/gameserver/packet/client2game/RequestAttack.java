@@ -6,7 +6,7 @@ import com.gameserver.packet.AbstractReceivablePacket;
 
 public class RequestAttack extends AbstractReceivablePacket {
 
-    private ClientListenerThread _clientListenerThread;
+    private final ClientListenerThread _clientListenerThread;
     public RequestAttack(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);
         _clientListenerThread = listenerThread;

@@ -31,7 +31,7 @@ public class ClientListenerThread {
 
     private boolean writeIsPending = false;
 
-    private List<AbstractSendablePacket> packetBuffer;
+    private final List<AbstractSendablePacket> packetBuffer;
 
     public PlayableCharacter playableCharacter;
 

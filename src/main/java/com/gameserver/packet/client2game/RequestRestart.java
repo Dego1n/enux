@@ -9,7 +9,7 @@ public class RequestRestart extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestRestart.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestRestart(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

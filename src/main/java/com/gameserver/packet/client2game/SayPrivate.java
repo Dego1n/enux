@@ -9,7 +9,7 @@ public class SayPrivate extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(SayPrivate.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public SayPrivate(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

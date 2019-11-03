@@ -3,9 +3,9 @@ package com.gameserver.model.actor.npc;
 import java.util.List;
 
 public class LootGroupData {
-    public double chance;
+    public final double chance;
 
-    private List<LootItemData> itemData;
+    private final List<LootItemData> itemData;
 
     public LootGroupData(List<LootItemData> itemData, double chance) {
         this.itemData = itemData;
@@ -16,7 +16,4 @@ public class LootGroupData {
         return itemData;
     }
 
-    public void setItemData(List<LootItemData> itemData) {
-        this.itemData = itemData;
-    }
 }

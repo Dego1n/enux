@@ -19,17 +19,11 @@ public class NPCActor extends BaseActor {
 
     private NpcAi npcAi;
 
-    private int respawnTime;
+    private final int respawnTime;
 
     private int baseExperience;
 
-    private int npc_id;
-
-    private int orig_x;
-
-    private int orig_y;
-
-    private int orig_z;
+    private final int npc_id;
 
     private List<Item> lootData;
 
@@ -37,9 +31,6 @@ public class NPCActor extends BaseActor {
     {
         super();
         this.npc_id = npc_id;
-        this.orig_x = loc_x;
-        this.orig_y = loc_y;
-        this.orig_z = loc_z;
         NPC npc = DataEngine.getInstance().getNPCById(npc_id);
         setLocationX(loc_x);
         setLocationY(loc_y);
@@ -74,19 +65,15 @@ public class NPCActor extends BaseActor {
         return npcAi;
     }
 
-    public int getRespawnTime() {
+    int getRespawnTime() {
         return respawnTime;
     }
 
-    public void setRespawnTime(int respawnTime) {
-        this.respawnTime = respawnTime;
-    }
-
-    public int getBaseExperience() {
+    int getBaseExperience() {
         return baseExperience;
     }
 
-    public void setBaseExperience(int baseExperience) {
+    private void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
     }
 

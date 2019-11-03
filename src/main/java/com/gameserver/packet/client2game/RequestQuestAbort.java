@@ -9,7 +9,7 @@ public class RequestQuestAbort extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestQuestAbort.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestQuestAbort(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

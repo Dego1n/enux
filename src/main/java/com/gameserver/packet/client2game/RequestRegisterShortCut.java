@@ -9,7 +9,7 @@ public class RequestRegisterShortCut extends AbstractReceivablePacket {
 
     private static final Logger log = LoggerFactory.getLogger(RequestRegisterShortCut.class);
 
-    private ClientListenerThread clientListenerThread;
+    private final ClientListenerThread clientListenerThread;
 
     public RequestRegisterShortCut(ClientListenerThread listenerThread, byte[] packet) {
         super(packet);

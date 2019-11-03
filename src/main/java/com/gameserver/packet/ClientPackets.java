@@ -18,7 +18,6 @@ public class ClientPackets {
     private final static short VALIDATE_POSITION = 0x0a;
 
     private final static short APPEARING = 0x0b;
-    private final static short BYPASS_USER_CMD = 0x0c;
     private final static short LOGOUT = 0x0d;
     private final static short REQUEST_ACQUIRE_SKILL = 0x0e;
     private final static short REQUEST_BUY_ITEM = 0x0f;
@@ -33,7 +32,6 @@ public class ClientPackets {
     private final static short REQUEST_UNEQUIP_ITEM = 0x18;
     private final static short SAY = 0x19;
     private final static short SAY_PRIVATE = 0x1a;
-    private final static short BYPASS_BUILD_CMD = 0x1b;
     private final static short USE_ITEM = 0x1c;
     private final static short REQUEST_INVENTORY = 0x1d;
     private final static short REQUEST_COMMAND = 0x1e;
@@ -73,9 +71,6 @@ public class ClientPackets {
                 break;
             case APPEARING:
                 new Appearing(clientListenerThread,packet);
-                break;
-            case BYPASS_USER_CMD:
-                new BypassUserCmd(clientListenerThread,packet);
                 break;
             case LOGOUT:
                 new Logout(clientListenerThread,packet);
@@ -118,9 +113,6 @@ public class ClientPackets {
                 break;
             case SAY_PRIVATE:
                 new SayPrivate(clientListenerThread,packet);
-                break;
-            case BYPASS_BUILD_CMD:
-                new BypassBuildCmd(clientListenerThread,packet);
                 break;
             case USE_ITEM:
                 new UseItem(clientListenerThread,packet);

@@ -1,5 +1,5 @@
 package com.gameserver.tick.job;
 
-public interface ITickJob {
+interface ITickJob {
     void runJob();
 }

@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 public class RemoveActorTask extends TimerTask {
 
-    private NPCActor actor;
+    private final NPCActor actor;
 
     public RemoveActorTask(NPCActor actor)
     {

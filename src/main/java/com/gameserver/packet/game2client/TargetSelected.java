@@ -6,7 +6,7 @@ import com.gameserver.packet.ServerPackets;
 
 public class TargetSelected extends AbstractSendablePacket implements IServerPacket {
 
-    private int objectId;
+    private final int objectId;
 
     public TargetSelected(int objectId)
     {
