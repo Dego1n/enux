@@ -7,9 +7,11 @@ import com.gameserver.model.actor.ai.base.intention.*;
 import com.gameserver.tick.GameTickController;
 import com.gameserver.util.math.xy.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ActorIntention {
-
+    private static final Logger log = LoggerFactory.getLogger(ActorIntention.class);
     private final BaseActor _actor;
 
     private AbstractIntention _intention;
@@ -24,8 +26,11 @@ public class ActorIntention {
     {
         if(_actor instanceof PlayableCharacter)
         {
-            if(((PlayableCharacter) _actor).getClientListenerThread() == null)
+            if(!((PlayableCharacter) _actor).isConnected())
+            {
+                log.warn("Trying to do intentionThink on disconnected character: "+_actor.getName());
                 return;
+            }
         }
 
         switch(_intention.intentionType)

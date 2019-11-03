@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,15 +21,19 @@ public class WeaponsLoader {
     public static List<BaseItem> LoadWeapons()
     {
         List<BaseItem> list = new ArrayList<>();
-        String weaponsYaml;
+        String weaponsYaml = null;
         try {
-            weaponsYaml = new String(Files.readAllBytes(Paths.get(Config.DATAPACK_PATH + "items/weapons/weapons.yaml")), StandardCharsets.UTF_8);
+            weaponsYaml = Files.readString(Paths.get(Config.DATAPACK_PATH + "items/weapons/weapons.yaml"));
         } catch (IOException e) {
             log.error("Can't read weapons yaml file");
             log.error(e.getMessage());
-            return null;
+            System.exit(1);
         }
-
+        if(weaponsYaml == null)
+        {
+            log.error("Weapons yaml is null");
+            System.exit(1);
+        }
         Yaml yaml = new Yaml();
         Map<String, Object> object = yaml.load(weaponsYaml);
         for(Map.Entry<String, Object> entry : object.entrySet())

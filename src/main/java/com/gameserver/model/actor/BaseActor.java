@@ -5,16 +5,10 @@ import com.gameserver.factory.idfactory.ActorIdFactory;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.ai.base.ActorIntention;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
-import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
 import com.gameserver.model.actor.ai.type.AbstractAI;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
-import com.gameserver.task.Task;
-import com.gameserver.task.actortask.RemoveActorTask;
-import com.gameserver.task.actortask.ResetAttackCooldown;
-import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.tick.GameTickController;
-import com.gameserver.tick.job.IntentionThinkJob;
 
 import java.util.*;
 
@@ -54,8 +48,7 @@ public abstract class BaseActor {
 
     private MoveData _moveData;
 
-    BaseActor()
-    {
+    BaseActor() {
         objectId = ActorIdFactory.getInstance().getFreeId();
         _actorIntention = new ActorIntention(this);
     }
@@ -140,7 +133,7 @@ public abstract class BaseActor {
         return target;
     }
 
-    private void setTarget(BaseActor target) {
+    void setTarget(BaseActor target) {
         this.target = target;
     }
 
@@ -160,92 +153,30 @@ public abstract class BaseActor {
         return _actorIntention;
     }
 
-    public void requestAttack()
-    {
-        if(target == null)
+    public void requestAttack() {
+        if (target == null)
             return;
 
         _actorIntention.setIntention(new IntentionAttack(target));
     }
-    public void attack(BaseActor target)
-    {
-        if(target instanceof NPCActor) {
-            target.getAi().onAttacked(this);
-        }
-        setCanAttack(false);
-        if(target.getCurrentHp() > 0 ) {
-            float damage = calculateAttackDamageToTarget(target);
-            target.setCurrentHp(target.getCurrentHp() - damage);
-            ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " received " + damage + " damage!"));
-            if(target.getCurrentHp() < 0)
-            {
-                this.getActorIntention().setIntention(new IntentionIdle());
-                ((PlayableCharacter) this).sendPacket(new SystemMessage(target.name + " died!"));
-                this.setTarget(null);
-                if(target instanceof NPCActor) {
-                    ((NPCActor) target).generateLootData();
-                }
 
-                ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
-                if(target instanceof NPCActor) {
-                    ((PlayableCharacter) this).addExperience(((NPCActor) target).getBaseExperience());
-                    ((PlayableCharacter) this).sendPacket(new SystemMessage("You received "+((NPCActor) target).getBaseExperience()+" experience"));
-                    ((PlayableCharacter) this).sendPacket(new SystemMessage("You current EXP:  "+((PlayableCharacter) this).getCurrentExperience()));
-                    new Task(new RemoveActorTask((NPCActor) target),10 *1000);
-                    new Task(new SpawnActorTask(((NPCActor) target)), (((NPCActor) target).getRespawnTime()) * 1000);
-                    target.setDead(true);
-                    target.getActorIntention().setIntention(new IntentionIdle());
-                }
-            }
-            else {
-                ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
-            }
-        }
-        if(this instanceof PlayableCharacter)
-        {
-            ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new Attack(this, target));
-        }
-        else
-        {
-            this.broadcastPacket(new Attack(this,target));
-        }
-        new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
-    }
+    public abstract void attack(BaseActor target);
 
-    private float calculateAttackDamageToTarget(BaseActor target)
-    {
+    float calculateAttackDamageToTarget(BaseActor target) {
         Random rnd = new Random();
         return 10 + rnd.nextFloat() * (20 - 10);
     }
 
-    public void say(String message)
-    {
-        System.out.println("client "+getName()+" trying to say: "+message);
-        ActorSay actorSayPacket = new ActorSay(this,this.getName(),message);
-        if(this instanceof PlayableCharacter)
-        {
-            ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(actorSayPacket);
-        }
-        else
-        {
-            for(PlayableCharacter pc : World.getInstance().getPlayableCharactersInRadius(this,10000))
-            {
-                pc.sendPacket(actorSayPacket);
-            }
-        }
-    }
+    public abstract void say(String message);
 
-    public void broadcastPacket(AbstractSendablePacket packet)
-    {
-        for(PlayableCharacter pc : nearbyPlayers())
-        {
+    public void broadcastPacket(AbstractSendablePacket packet) {
+        for (PlayableCharacter pc : nearbyPlayers()) {
             pc.sendPacket(packet);
         }
     }
 
-    List<PlayableCharacter> nearbyPlayers()
-    {
-        return World.getInstance().getPlayableCharactersInRadius(this,100000);
+    List<PlayableCharacter> nearbyPlayers() {
+        return World.getInstance().getPlayableCharactersInRadius(this, 100000);
     }
 
     public boolean isCanAttack() {
@@ -283,12 +214,11 @@ public abstract class BaseActor {
     public boolean updatePosition() {
         System.out.println("updatingPosition");
         MoveData moveData = getMoveData();
-        if(moveData == null)
-        {
+        if (moveData == null) {
             return true;
         }
 
-        if(moveData.lastUpdate == 0) //Первый раз обновляем позицию
+        if (moveData.lastUpdate == 0) //Первый раз обновляем позицию
         {
             moveData.lastUpdate = moveData.startTime;
         }
@@ -303,51 +233,38 @@ public abstract class BaseActor {
         int dx = moveData.x_destination - prevX;
         int dy = moveData.y_destination - prevY;
         int dz = moveData.z_destination - prevZ;
-        System.out.println("dx: "+dx);
-        System.out.println("dy: "+dy);
-        double delta = (dx * dx) + (dy*dy);
+        System.out.println("dx: " + dx);
+        System.out.println("dy: " + dy);
+        double delta = (dx * dx) + (dy * dy);
         delta = Math.sqrt(delta);
         double distFraction = Double.MAX_VALUE;
-        System.out.println("Delta: "+delta);
-        if(moveData.offset >= delta)
-        {
+        System.out.println("Delta: " + delta);
+        if (moveData.offset >= delta) {
             return true;
         }
-        if(delta > 1)
-        {
+        if (delta > 1) {
             final double distPassed = (300 * (gameTicks - moveData.lastUpdate)) / (double) GameTickController.TICKS_PER_SECOND;
             distFraction = distPassed / delta;
-        }
-        else
-        System.out.println("distFraction: "+distFraction);
+        } else
+            System.out.println("distFraction: " + distFraction);
         if (distFraction > 1) {
             // Set the position of the BaseActor to the destination
-            this.setLocationX(moveData.x_destination);
-            this.setLocationY(moveData.y_destination);
-            this.setLocationZ(moveData.z_destination);
+            setLocationX(moveData.x_destination);
+            setLocationY(moveData.y_destination);
+            setLocationZ(moveData.z_destination);
             return true;
         } else {
-            System.out.println("PREV {"+prevX+":"+prevY+":"+prevZ+"} NEW {"+(prevX + (int) (dx * distFraction))+":"+(prevY + (int) (dy * distFraction))+":"+(prevZ + (int) (dz * distFraction))+"}");
+            System.out.println("PREV {" + prevX + ":" + prevY + ":" + prevZ + "} NEW {" + (prevX + (int) (dx * distFraction)) + ":" + (prevY + (int) (dy * distFraction)) + ":" + (prevZ + (int) (dz * distFraction)) + "}");
             setLocationX(prevX + (int) (dx * distFraction));
             setLocationY(prevY + (int) (dy * distFraction));
             setLocationZ(prevZ + (int) (dz * distFraction));
         }
-        this.broadcastPacket(new DebugDrawSphere(getLocationX(),getLocationY(),getLocationZ()));
+        broadcastPacket(new DebugDrawSphere(getLocationX(), getLocationY(), getLocationZ()));
         moveData.lastUpdate = gameTicks;
         return false;
     }
 
-    public void onRespawn()
-    {
-        if(this instanceof NPCActor) {
-            setCurrentHp(getMaxHp());
-            if(getAi() != null) {
-                getAi().resetAi();
-            }
-            setDead(false);
-        }
-
-    }
+    public abstract void onRespawn();
 
     public static class MoveData {
         public int x_destination;
@@ -357,8 +274,8 @@ public abstract class BaseActor {
         final int startTime;
         int lastUpdate;
         public int offset;
-        public MoveData()
-        {
+
+        public MoveData() {
             startTime = GameTickController.getInstance().getGameTicks();
             lastUpdate = 0;
             offset = 0;
@@ -377,7 +294,7 @@ public abstract class BaseActor {
         return isDead;
     }
 
-    private void setDead(boolean dead) {
+    void setDead(boolean dead) {
         isDead = dead;
     }
 

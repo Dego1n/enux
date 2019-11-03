@@ -53,7 +53,7 @@ public class World {
             List<File> spawnFiles = Files.walk(Paths.get(Config.DATAPACK_PATH + "npc/spawn")).filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
             for(File f : spawnFiles)
             {
-                String npcYaml = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())), StandardCharsets.UTF_8);
+                String npcYaml = Files.readString(Paths.get(f.getAbsolutePath()));
                 Yaml yaml = new Yaml();
                 ArrayList<Map<String, Object>> spawns = yaml.load(npcYaml);
 

@@ -15,7 +15,7 @@ public class ReadFileApi extends OneArgFunction {
     @Override
     public LuaValue call(LuaValue luaString) {
         try {
-            return CoerceJavaToLua.coerce(new String(Files.readAllBytes(Paths.get((String)CoerceLuaToJava.coerce(luaString, String.class))), StandardCharsets.UTF_8));
+            return CoerceJavaToLua.coerce(Files.readString(Paths.get((String)CoerceLuaToJava.coerce(luaString, String.class))));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -63,18 +63,6 @@ public class GeoEngine {
         DataBufferUShort buffer = (DataBufferUShort) image.getRaster().getDataBuffer();
         _heightMap = buffer.getData();
         log.info("Geodata builded! Loaded {} points", _heightMap.length);
-
-        //Тесты
-//        System.out.println("[TEST] VALUE: " +getNearestZ(51090, 220600) + " EXPECTED: "+-5870);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(94660, 246010) + " EXPECTED: "+1258);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(-197920, 62280) + " EXPECTED: "+1441);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(25000, -120000) + " EXPECTED: "+-3046);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(-300000,300000) + " EXPECTED: "+949);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(300000,300000) + " EXPECTED: "+3613);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(300000,-300000) + " EXPECTED: "+2067);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(-300010,-299990) + " EXPECTED: "+629);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(-285810,-300000) + " EXPECTED: "+-605);
-//        System.out.println("[TEST] VALUE: " +getNearestZ(-202580,-52680) + " EXPECTED: "+-2823);
     }
 
     public float getNearestZ(float x, float y)

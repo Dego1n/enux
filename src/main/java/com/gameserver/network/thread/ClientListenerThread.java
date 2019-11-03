@@ -47,12 +47,11 @@ public class ClientListenerThread {
             packetBuffer.add(packet);
         else {
             writeIsPending = true;
-            _socketChannel.write(ByteBuffer.wrap(packet.prepareAndGetData()), this, new CompletionHandler<Integer, ClientListenerThread>() {
+            _socketChannel.write(ByteBuffer.wrap(packet.prepareAndGetData()), this, new CompletionHandler<>() {
                 @Override
                 public void completed(Integer result, ClientListenerThread thread) {
                     thread.writeIsPending = false;
-                    if(packetBuffer.size() > 0)
-                    {
+                    if (packetBuffer.size() > 0) {
                         //TODO: пофиксил здесь важный баг, сделать тоже самое в треде с сервером авторизации
                         //TODO: и в самом сервере авторизации
                         AbstractSendablePacket packet = packetBuffer.get(0);

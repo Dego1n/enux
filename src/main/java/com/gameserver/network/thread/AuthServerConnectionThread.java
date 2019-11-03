@@ -39,7 +39,7 @@ public class AuthServerConnectionThread {
             packetBuffer.add(packet);
         else {
             writeIsPending = true;
-            _socketChannel.write(ByteBuffer.wrap(packet.prepareAndGetData()), this, new CompletionHandler<Integer, AuthServerConnectionThread>() {
+            _socketChannel.write(ByteBuffer.wrap(packet.prepareAndGetData()), this, new CompletionHandler<>() {
                 @Override
                 public void completed(Integer result, AuthServerConnectionThread thread) {
                     thread.writeIsPending = false;

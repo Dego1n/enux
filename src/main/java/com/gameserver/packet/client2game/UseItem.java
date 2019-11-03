@@ -2,8 +2,6 @@ package com.gameserver.packet.client2game;
 
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UseItem extends AbstractReceivablePacket {
 
