@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 public class NPCActor extends BaseActor {
@@ -96,5 +97,20 @@ public class NPCActor extends BaseActor {
 
     public List<Item> getLootData() {
         return lootData;
+    }
+
+    public void lootItem(PlayableCharacter character, int item_object_id)
+    {
+        Iterator<Item> items = lootData.iterator();
+
+        while(items.hasNext())
+        {
+            Item item = items.next();
+            if(item.getObjectId() == item_object_id)
+            {
+                character.addItemToInventory(item);
+                items.remove();
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ import com.gameserver.model.actor.ai.type.AbstractAI;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
 import com.gameserver.task.Task;
+import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.tick.GameTickController;
@@ -193,16 +194,16 @@ public abstract class BaseActor {
                 if(target instanceof NPCActor) {
                     ((NPCActor) target).generateLootData();
                 }
+
                 ((PlayableCharacter) this).sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
                 if(target instanceof NPCActor) {
                     ((PlayableCharacter) this).addExperience(((NPCActor) target).getBaseExperience());
                     ((PlayableCharacter) this).sendPacket(new SystemMessage("You received "+((NPCActor) target).getBaseExperience()+" experience"));
                     ((PlayableCharacter) this).sendPacket(new SystemMessage("You current EXP:  "+((PlayableCharacter) this).getCurrentExperience()));
-
+                    new Task(new RemoveActorTask((NPCActor) target),10 *1000);
                     new Task(new SpawnActorTask(((NPCActor) target)), (((NPCActor) target).getRespawnTime()) * 1000);
                     target.setDead(true);
                     target.getActorIntention().setIntention(new IntentionIdle());
-                    World.getInstance().removeActorFromWorld(target);
                 }
             }
             else {

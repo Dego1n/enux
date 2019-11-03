@@ -22,5 +22,6 @@ public class ServerPackets {
     public final static short STATE_INFO = 0x22;
     public final static short PC_ACTOR_INFO = 0x23;
     public final static short DEBUG_DRAW_SPHERE = 0x24;
+    public final static short LOOT_DATA_UPDATED = 0x25;
 
 }

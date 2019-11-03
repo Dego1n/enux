@@ -203,4 +203,9 @@ public class PlayableCharacter extends BaseActor {
     public boolean isConnected() {
         return clientListenerThread != null;
     }
+
+    public void addItemToInventory(Item item)
+    {
+        _inventory.add(item);
+    }
 }
