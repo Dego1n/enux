@@ -1,10 +1,8 @@
 package com.gameserver.instance;
 
 import com.gameserver.database.staticdata.Race;
-import com.gameserver.instance.loader.ExperienceLoader;
-import com.gameserver.instance.loader.NPCLoader;
-import com.gameserver.instance.loader.PCBaseStatsLoader;
-import com.gameserver.instance.loader.WeaponsLoader;
+import com.gameserver.instance.loader.*;
+import com.gameserver.model.ability.Ability;
 import com.gameserver.template.NPC;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.stats.BaseStats;
@@ -31,6 +29,7 @@ public class DataEngine {
     private final List<BaseStats> baseStats;
     private final List<BaseItem> items;
     private final Map<Integer, Integer> experienceTable;
+    private final List<Ability> abilities;
 
     private DataEngine()
     {
@@ -42,6 +41,8 @@ public class DataEngine {
         log.info("Loaded {} Weapons", items.size());
         experienceTable = ExperienceLoader.loadExperienceTable();
         log.info("Loaded {} levels", experienceTable.size());
+        abilities = AbilitiesLoader.loadAbilities();
+        log.info("Loaded {} abilities", abilities.size());
     }
 
 
@@ -90,5 +91,15 @@ public class DataEngine {
         }
 
         return resultLevel;
+    }
+
+    public Ability getAbilityById(int id)
+    {
+        for(Ability ability : abilities)
+        {
+            if(ability.getId() == id)
+                return ability;
+        }
+        return null;
     }
 }

@@ -32,7 +32,6 @@ public class ActorIntention {
                 return;
             }
         }
-
         switch(_intention.intentionType)
         {
             case INTENTION_ACTION:
@@ -43,6 +42,9 @@ public class ActorIntention {
                 break;
             case INTENTION_ATTACK:
                 onIntentionAttack();
+                break;
+            case INTENTION_CAST:
+                onIntentionCast();
                 break;
             default:
                 onIntentionIdle();
@@ -65,10 +67,14 @@ public class ActorIntention {
         {
             GameTickController.getInstance().getIntentionThinkJob().deleteFromThink(_actor);
         }
-        else if(intention.intentionType == IntentionType.INTENTION_ATTACK)
+        else if(intention.intentionType == IntentionType.INTENTION_ATTACK || intention.intentionType == IntentionType.INTENTION_CAST)
         {
             GameTickController.getInstance().getIntentionThinkJob().deleteFromThink(_actor);
             GameTickController.getInstance().getIntentionThinkJob().addToThink(_actor);
+        }
+        else if(intention.intentionType == IntentionType.INTENTION_IDLE)
+        {
+            GameTickController.getInstance().getIntentionThinkJob().deleteFromThink(_actor);
         }
         _intention = intention;
     }
@@ -101,9 +107,14 @@ public class ActorIntention {
     }
 
     private void onIntentionAttack() {
+        IntentionAttack _int = (IntentionAttack) _intention;
+        if(_int.Target.isDead())
+        {
+            setIntention(new IntentionIdle());
+            return;
+        }
         int weaponAttackDistance = 150; //TODO: change this const to var
         if (_actor instanceof PlayableCharacter) {
-            IntentionAttack _int = (IntentionAttack) _intention;
             if (Math3d.calculateBetweenTwoActors(_actor, _int.Target, true) < weaponAttackDistance) {
 
                 if (_actor.isCanAttack()) {
@@ -114,6 +125,21 @@ public class ActorIntention {
         else if(_actor instanceof NPCActor)
         {
             _actor.getAi().intentionAttackThink();
+        }
+    }
+    private void onIntentionCast() {
+        IntentionCast _int = (IntentionCast) _intention;
+        if(_int.Target.isDead())
+        {
+            setIntention(new IntentionIdle());
+            return;
+        }
+        if(_actor instanceof PlayableCharacter)
+        {
+            if(_actor.isCanAttack())
+            {
+                _actor.useAbility(_int.Target,_int.ability);
+            }
         }
     }
 }

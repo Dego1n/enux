@@ -7,10 +7,7 @@ import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractReceivablePacket;
-import com.gameserver.packet.game2client.ActorInfo;
-import com.gameserver.packet.game2client.PlayableActorInfo;
-import com.gameserver.packet.game2client.SystemMessage;
-import com.gameserver.packet.game2client.UserInfo;
+import com.gameserver.packet.game2client.*;
 
 public class EnterWorld extends AbstractReceivablePacket {
 
@@ -28,6 +25,7 @@ public class EnterWorld extends AbstractReceivablePacket {
 
             PlayableCharacter character = _clientListenerThread.playableCharacter;
             character.sendPacket(new UserInfo(character));
+            character.sendPacket(new AbilitiesList(character));
             World.getInstance().addPlayerToWorld(character);
             for (BaseActor actor : character.nearbyActors())
             {

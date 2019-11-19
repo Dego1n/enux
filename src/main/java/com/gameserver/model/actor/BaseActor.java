@@ -3,11 +3,14 @@ package com.gameserver.model.actor;
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.factory.idfactory.ActorIdFactory;
 import com.gameserver.model.World;
+import com.gameserver.model.ability.Ability;
 import com.gameserver.model.actor.ai.base.ActorIntention;
 import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
 import com.gameserver.model.actor.ai.type.AbstractAI;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
+import com.gameserver.task.Task;
+import com.gameserver.task.actortask.AbilityCastEnd;
 import com.gameserver.tick.GameTickController;
 
 import java.util.*;
@@ -48,9 +51,12 @@ public abstract class BaseActor {
 
     private MoveData _moveData;
 
+    protected List<TimerTask> _tasks;
+
     BaseActor() {
         objectId = ActorIdFactory.getInstance().getFreeId();
         _actorIntention = new ActorIntention(this);
+        _tasks = new ArrayList<>();
     }
 
     public int getObjectId() {
@@ -161,6 +167,9 @@ public abstract class BaseActor {
     }
 
     public abstract void attack(BaseActor target);
+    public abstract void useAbility(BaseActor target, Ability ability);
+    public abstract void doDamage(BaseActor target, double damage);
+    public abstract void onAbilityCastEnd(AbilityCastEnd abilityCastEnd);
 
     float calculateAttackDamageToTarget(BaseActor target) {
         Random rnd = new Random();

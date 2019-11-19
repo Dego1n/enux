@@ -4,26 +4,29 @@ import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
+import com.gameserver.model.ability.Ability;
 import com.gameserver.model.actor.ai.base.IntentionType;
-import com.gameserver.model.actor.ai.base.intention.IntentionAction;
-import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
-import com.gameserver.model.actor.ai.base.intention.IntentionMoveTo;
+import com.gameserver.model.actor.ai.base.intention.*;
 import com.gameserver.model.actor.playable.equip.EquipInfo;
 import com.gameserver.model.item.Item;
 import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
 import com.gameserver.task.Task;
+import com.gameserver.task.actortask.AbilityCastEnd;
 import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.template.stats.BaseStats;
 import com.gameserver.util.math.xy.Math2d;
+import com.gameserver.util.math.xyz.Math3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayableCharacter extends BaseActor {
 
@@ -39,6 +42,8 @@ public class PlayableCharacter extends BaseActor {
     private final EquipInfo _equipInfo;
 
     private int currentExperience;
+
+    private Map<Ability, Integer> _abilities;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -59,11 +64,20 @@ public class PlayableCharacter extends BaseActor {
 
         _equipInfo = new EquipInfo();
         _inventory = new ArrayList<>();
+        _abilities = new HashMap<>();
 
         //TODO: remove after
         _inventory.add(new Item(DataEngine.getInstance().getItemById(1)));
         _inventory.add(new Item(DataEngine.getInstance().getItemById(2)));
         _equipInfo.setRightHand(_inventory.get(1));
+
+        //TODO: remove after
+        //TODO: Abilities
+        _abilities.put(DataEngine.getInstance().getAbilityById(1),1);
+        _abilities.put(DataEngine.getInstance().getAbilityById(2),1);
+        _abilities.put(DataEngine.getInstance().getAbilityById(3),1);
+        _abilities.put(DataEngine.getInstance().getAbilityById(4),1);
+        _abilities.put(DataEngine.getInstance().getAbilityById(5),1);
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -100,6 +114,10 @@ public class PlayableCharacter extends BaseActor {
 
     private void setCharacterClass(CharacterClass characterClass) {
         this.characterClass = characterClass;
+    }
+
+    public Map<Ability, Integer> getAbilities() {
+        return _abilities;
     }
 
     public void sendPacket(AbstractSendablePacket packet)
@@ -228,37 +246,80 @@ public class PlayableCharacter extends BaseActor {
 
     public void attack(BaseActor target)
     {
-        if (target instanceof NPCActor) {
-            target.getAi().onAttacked(this);
-        }
         setCanAttack(false);
         if (target.getCurrentHp() > 0) {
-            float damage = calculateAttackDamageToTarget(target);
-            target.setCurrentHp(target.getCurrentHp() - damage);
-            sendPacket(new SystemMessage(target.getName() + " received " + damage + " damage!"));
-            if (target.getCurrentHp() <= 0) {
-                getActorIntention().setIntention(new IntentionIdle());
-                sendPacket(new SystemMessage(target.getName() + " died!"));
-                setTarget(null);
-                target.getActorIntention().setIntention(new IntentionIdle());
-                target.setDead(true);
-                if (target instanceof NPCActor) {
-                    NPCActor npcTarget = (NPCActor) target;
-                    npcTarget.generateLootData();
-                    addExperience(npcTarget.getBaseExperience());
-                    sendPacket(new SystemMessage("You received " + npcTarget.getBaseExperience() + " experience"));
-                    sendPacket(new SystemMessage("You current EXP:  " + getCurrentExperience()));
-                    new Task(new RemoveActorTask(npcTarget), 10 * 1000);
-                    new Task(new SpawnActorTask(npcTarget), npcTarget.getRespawnTime() * 1000);
-                }
-                sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
-
-            } else {
-                sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
-            }
+            double damage = calculateAttackDamageToTarget(target);
+            doDamage(target, damage);
         }
         sendPacketAndBroadcastToNearbyPlayers(new Attack(this, target));
         new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+    }
+
+    public void requestUseAbility(Ability ability)
+    {
+        if (target == null)
+            return;
+        if(target.isDead())
+            return;
+
+        if(Math3d.calculateBetweenTwoActors(this,target,true) <= ability.getAbilityByLevel(_abilities.get(ability)).getRange()) {
+            _actorIntention.setIntention(new IntentionCast(target, ability));
+        }
+        else
+        {
+            sendPacket(new SystemMessage("Target is not in range!!!"));
+        }
+    }
+    @Override
+    public void useAbility(BaseActor target, Ability ability) {
+            this.setCanAttack(false);
+            float abilityCastTime = ability.getAbilityByLevel(_abilities.get(ability)).getCastTime();
+
+            sendPacketAndBroadcastToNearbyPlayers(new UseAbility(this, target, ability, abilityCastTime));
+            _tasks.add(new Task(new AbilityCastEnd(this, target, ability), (int) abilityCastTime * 1000).getTask());
+            _actorIntention.setIntention(new IntentionAttack(target));
+
+    }
+
+    @Override
+    public void doDamage(BaseActor target, double damage) {
+        if (target instanceof NPCActor) {
+            target.getAi().onAttacked(this);
+        }
+        target.setCurrentHp(target.getCurrentHp() - damage);
+        sendPacket(new SystemMessage(target.getName() + " received " + damage + " damage!"));
+        if (target.getCurrentHp() <= 0) {
+            getActorIntention().setIntention(new IntentionIdle());
+            sendPacket(new SystemMessage(target.getName() + " died!"));
+            setTarget(null);
+            target.getActorIntention().setIntention(new IntentionIdle());
+            target.setDead(true);
+            if (target instanceof NPCActor) {
+                NPCActor npcTarget = (NPCActor) target;
+                npcTarget.generateLootData();
+                addExperience(npcTarget.getBaseExperience());
+                sendPacket(new SystemMessage("You received " + npcTarget.getBaseExperience() + " experience"));
+                sendPacket(new SystemMessage("You current EXP:  " + getCurrentExperience()));
+                new Task(new RemoveActorTask(npcTarget), 10 * 1000);
+                new Task(new SpawnActorTask(npcTarget), npcTarget.getRespawnTime() * 1000);
+            }
+            sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
+
+        } else {
+            sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
+        }
+    }
+
+    @Override
+    public void onAbilityCastEnd(AbilityCastEnd abilityCastEnd) {
+        BaseActor target = abilityCastEnd.getTarget();
+        Ability ability = abilityCastEnd.getAbility();
+
+        _tasks.remove(abilityCastEnd);
+
+        sendPacket(new SystemMessage("onAbilityCastEnd target: "+target.getName()+ "; ability_id: "+ability.getId()));
+        doDamage(target, ability.getAbilityByLevel(_abilities.get(ability)).getCastTime()*20);
+        this.setCanAttack(true);
     }
 
 }

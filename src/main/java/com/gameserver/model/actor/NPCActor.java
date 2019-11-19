@@ -2,6 +2,7 @@ package com.gameserver.model.actor;
 
 import com.gameserver.config.Config;
 import com.gameserver.instance.DataEngine;
+import com.gameserver.model.ability.Ability;
 import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
 import com.gameserver.model.actor.ai.type.AttackableAI;
 import com.gameserver.model.item.Item;
@@ -10,6 +11,7 @@ import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.Attack;
 import com.gameserver.scripting.ai.npc.NpcAi;
 import com.gameserver.task.Task;
+import com.gameserver.task.actortask.AbilityCastEnd;
 import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
@@ -111,33 +113,48 @@ public class NPCActor extends BaseActor {
 
     public void attack(BaseActor target)
     {
+        setCanAttack(false);
+        if (target.getCurrentHp() > 0) {
+            double damage = calculateAttackDamageToTarget(target);
+            doDamage(target,damage);
+        }
+        broadcastPacket(new Attack(this, target));
+        new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+    }
+
+    @Override
+    public void useAbility(BaseActor target, Ability ability) {
+
+    }
+
+    @Override
+    public void doDamage(BaseActor target, double damage) {
         if (target instanceof NPCActor) {
             target.getAi().onAttacked(this);
         }
-        setCanAttack(false);
-        if (target.getCurrentHp() > 0) {
-            float damage = calculateAttackDamageToTarget(target);
-            target.setCurrentHp(target.getCurrentHp() - damage);
-            if (target.getCurrentHp() < 0) {
-                getActorIntention().setIntention(new IntentionIdle());
-                setTarget(null);
-                if (target instanceof NPCActor) {
-                    ((NPCActor) target).generateLootData();
-                }
-
-                broadcastPacket(new ActorDied(target));
-                if (target instanceof NPCActor) {
-                    new Task(new RemoveActorTask(target), 10 * 1000);
-                    new Task(new SpawnActorTask(target), (((NPCActor) target).getRespawnTime()) * 1000);
-                    target.setDead(true);
-                    target.getActorIntention().setIntention(new IntentionIdle());
-                }
-            } else {
-                broadcastPacket(new ActorInfo(target));
+        target.setCurrentHp(target.getCurrentHp() - damage);
+        if (target.getCurrentHp() < 0) {
+            getActorIntention().setIntention(new IntentionIdle());
+            setTarget(null);
+            if (target instanceof NPCActor) {
+                ((NPCActor) target).generateLootData();
             }
+
+            broadcastPacket(new ActorDied(target));
+            if (target instanceof NPCActor) {
+                new Task(new RemoveActorTask(target), 10 * 1000);
+                new Task(new SpawnActorTask(target), (((NPCActor) target).getRespawnTime()) * 1000);
+                target.setDead(true);
+                target.getActorIntention().setIntention(new IntentionIdle());
+            }
+        } else {
+            broadcastPacket(new ActorInfo(target));
         }
-           broadcastPacket(new Attack(this, target));
-        new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+    }
+
+    @Override
+    public void onAbilityCastEnd(AbilityCastEnd abilityCastEnd) {
+
     }
 
     @Override

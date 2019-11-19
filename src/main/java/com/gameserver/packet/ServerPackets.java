@@ -17,7 +17,8 @@ public class ServerPackets {
     public final static short ACTOR_SAY = 0x10;
     public final static short ACTOR_DIED = 0x11;
     public final static short INVENTORY = 0x12;
-
+    public final static short ABILITIES_LIST = 0x13;
+    public final static short USE_ABILITY = 0x14;
 
     public final static short PC_ACTOR_INFO = 0x23;
     public final static short DEBUG_DRAW_SPHERE = 0x24;

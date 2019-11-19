@@ -36,6 +36,7 @@ public class ClientPackets {
     private final static short REQUEST_INVENTORY = 0x1d;
     private final static short REQUEST_COMMAND = 0x1e;
     private final static short REQUEST_TAKE_LOOT = 0x1f;
+    private final static short REQUEST_USE_ABILITY = 0x20;
 
     public static void HandlePacket(ClientListenerThread clientListenerThread, byte [] packet)
     {
@@ -125,6 +126,9 @@ public class ClientPackets {
                 break;
             case REQUEST_TAKE_LOOT:
                 new RequestTakeLoot(clientListenerThread,packet);
+                break;
+            case REQUEST_USE_ABILITY:
+                new RequestUseAbility(clientListenerThread,packet);
                 break;
         }
     }
