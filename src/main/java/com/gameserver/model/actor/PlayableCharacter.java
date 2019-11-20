@@ -17,6 +17,9 @@ import com.gameserver.task.actortask.AbilityCastEnd;
 import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
+import com.gameserver.template.item.ArmorItem;
+import com.gameserver.template.item.JewelryItem;
+import com.gameserver.template.item.WeaponItem;
 import com.gameserver.template.stats.BaseStats;
 import com.gameserver.util.math.xy.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
@@ -67,8 +70,9 @@ public class PlayableCharacter extends BaseActor {
         _abilities = new HashMap<>();
 
         //TODO: remove after
-        _inventory.add(new Item(DataEngine.getInstance().getItemById(1)));
-        _inventory.add(new Item(DataEngine.getInstance().getItemById(2)));
+        for(int i = 1; i <= 22; i++) {
+            _inventory.add(new Item(DataEngine.getInstance().getItemById(i)));
+        }
         _equipInfo.setRightHand(_inventory.get(1));
 
         //TODO: remove after
@@ -204,8 +208,53 @@ public class PlayableCharacter extends BaseActor {
             //TODO: security audit
             return;
         }
-
-        _equipInfo.setRightHand(item);
+        if(item.getBaseItem() instanceof WeaponItem) {
+            _equipInfo.setRightHand(item);
+        }
+        else if(item.getBaseItem() instanceof ArmorItem)
+        {
+            switch (((ArmorItem) item.getBaseItem()).getSlot())
+            {
+                case UPPER_ARMOR:
+                    _equipInfo.setUpperArmor(item);
+                    break;
+                case LOWER_ARMOR:
+                    _equipInfo.setLowerArmor(item);
+                    break;
+                case HELMET:
+                    _equipInfo.setHelmet(item);
+                    break;
+                case GLOVES:
+                    _equipInfo.setGloves(item);
+                    break;
+                case BOOTS:
+                    _equipInfo.setBoots(item);
+                    break;
+                case BELT:
+                    _equipInfo.setBelt(item);
+                    break;
+            }
+        }
+        else if(item.getBaseItem() instanceof JewelryItem)
+        {
+            switch (((JewelryItem) item.getBaseItem()).getSlot())
+            {
+                case Earring:
+                    if(_equipInfo.getEarringSecond() == null)
+                        _equipInfo.setEarringSecond(item);
+                    else
+                        _equipInfo.setEarringFirst(item);
+                    break;
+                case Ring:
+                    if(_equipInfo.getRingSecond() == null)
+                        _equipInfo.setRingSecond(item);
+                    else
+                        _equipInfo.setRingFirst(item);
+                    break;
+                case Necklace:
+                    _equipInfo.setNecklace(item);
+            }
+        }
 
         if(fromInventory) {
             sendPacket(new Inventory(_inventory, _equipInfo));

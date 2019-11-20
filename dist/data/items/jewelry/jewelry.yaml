@@ -1,0 +1,39 @@
+Phoenix Earring:
+  id: 15
+  name: Blue Wolf Breastplate
+  slot: Earring
+
+Majestic Earring:
+  id: 16
+  name: Blue Wolf Gaiters
+  slot: Earring
+
+Tateossian Earring:
+  id: 17
+  name: Blue Wolf Gloves
+  slot: Earring
+
+Phoenix Ring:
+  id: 18
+  name: Blue Wolf Boots
+  slot: Ring
+
+Majestic Ring:
+  id: 19
+  name: Blue Wolf Helmet
+  slot: Ring
+
+Tateossian Ring:
+  id: 20
+  name: Blue Wolf Belt
+  slot: Ring
+
+Adamantite Necklace:
+  id: 21
+  name: Tallum Tunic
+  slot: Necklace
+
+Black Ore Necklace:
+  id: 22
+  name: Tallum Stockings
+  slot: Necklace

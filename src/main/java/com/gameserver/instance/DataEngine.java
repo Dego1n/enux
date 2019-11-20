@@ -38,7 +38,14 @@ public class DataEngine {
         npcList = NPCLoader.LoadNpcData();
         log.info("Loaded {} NPC Data", npcList.size());
         items = WeaponsLoader.LoadWeapons();
-        log.info("Loaded {} Weapons", items.size());
+        log.info("Loaded {} Weapon items", items.size());
+        List<BaseItem> armor = ArmorLoader.LoadArmor();
+        log.info("Loaded {} Armor items", armor.size());
+        items.addAll(armor);
+        List<BaseItem> jewelry = JewelryLoader.LoadJewelry();
+        log.info("Loaded {} Jewelry items", armor.size());
+        items.addAll(jewelry);
+        log.info("Loaded {} total items", items.size());
         experienceTable = ExperienceLoader.loadExperienceTable();
         log.info("Loaded {} levels", experienceTable.size());
         abilities = AbilitiesLoader.loadAbilities();

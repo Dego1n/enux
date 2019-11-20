@@ -1,0 +1,59 @@
+Blue Wolf Breastplate:
+  id: 3
+  name: Blue Wolf Breastplate
+  slot: UpperArmor
+
+Blue Wolf Gaiters:
+  id: 4
+  name: Blue Wolf Gaiters
+  slot: LowerArmor
+
+Blue Wolf Gloves:
+  id: 5
+  name: Blue Wolf Gloves
+  slot: Gloves
+
+Blue Wolf Boots:
+  id: 6
+  name: Blue Wolf Boots
+  slot: Boots
+
+Blue Wolf Helmet:
+  id: 7
+  name: Blue Wolf Helmet
+  slot: Helmet
+
+Blue Wolf Belt:
+  id: 8
+  name: Blue Wolf Belt
+  slot: Belt
+
+Tallum Tunic:
+  id: 9
+  name: Tallum Tunic
+  slot: UpperArmor
+
+Tallum Stockings:
+  id: 10
+  name: Tallum Stockings
+  slot: LowerArmor
+
+Tallum Gloves:
+  id: 11
+  name: Tallum Gloves
+  slot: Gloves
+
+Tallum Boots:
+  id: 12
+  name: Tallum Boots
+  slot: Boots
+
+Tallum Helmet:
+  id: 13
+  name: Tallum Helmet
+  slot: Helmet
+
+Tallum Belt:
+  id: 14
+  name: Tallum Belt
+  slot: Belt
