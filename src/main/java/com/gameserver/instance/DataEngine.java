@@ -45,6 +45,9 @@ public class DataEngine {
         List<BaseItem> jewelry = JewelryLoader.LoadJewelry();
         log.info("Loaded {} Jewelry items", armor.size());
         items.addAll(jewelry);
+        List<BaseItem> currency = CurrencyLoader.LoadCurrency();
+        log.info("Loaded {} Currency items", currency.size());
+        items.addAll(currency);
         log.info("Loaded {} total items", items.size());
         experienceTable = ExperienceLoader.loadExperienceTable();
         log.info("Loaded {} levels", experienceTable.size());

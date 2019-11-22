@@ -19,7 +19,7 @@ public class ServerPackets {
     public final static short INVENTORY = 0x12;
     public final static short ABILITIES_LIST = 0x13;
     public final static short USE_ABILITY = 0x14;
-
+    public final static short BUYLIST = 0x15;
     public final static short PC_ACTOR_INFO = 0x23;
     public final static short DEBUG_DRAW_SPHERE = 0x24;
     public final static short LOOT_DATA_UPDATED = 0x25;

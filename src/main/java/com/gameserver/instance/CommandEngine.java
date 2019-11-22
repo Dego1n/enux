@@ -4,6 +4,7 @@ import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.scripting.command.admin.*;
 import com.gameserver.scripting.command.admin.debug.DebugAttackTargetCommand;
 import com.gameserver.scripting.command.admin.debug.DebugNearestGeodataCommand;
+import com.gameserver.scripting.command.admin.debug.DebugShowBuyList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,7 @@ public class CommandEngine {
         this.registerCommand(new SpawnCommand());
         this.registerCommand(new DebugNearestGeodataCommand());
         this.registerCommand(new DebugAttackTargetCommand());
+        this.registerCommand(new DebugShowBuyList());
         log.info("Loaded {} admin commands", _adminCommands.size());
     }
 

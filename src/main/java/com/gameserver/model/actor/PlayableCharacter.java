@@ -73,6 +73,7 @@ public class PlayableCharacter extends BaseActor {
         for(int i = 1; i <= 22; i++) {
             _inventory.add(new Item(DataEngine.getInstance().getItemById(i)));
         }
+        _inventory.add(new Item(DataEngine.getInstance().getItemById(23),475));
         _equipInfo.setRightHand(_inventory.get(1));
 
         //TODO: remove after
