@@ -257,10 +257,8 @@ public class PlayableCharacter extends BaseActor {
             }
         }
 
-        if(fromInventory) {
-            sendPacket(new Inventory(_inventory, _equipInfo));
-        }
-        sendPacket(new PCActorInfo(this)); //TODO: also broadcast
+        sendPacket(new Inventory(_inventory, _equipInfo));
+        //sendPacket(new PCActorInfo(this)); //TODO: also broadcast
     }
 
     private void addExperience(int baseExperience) {
