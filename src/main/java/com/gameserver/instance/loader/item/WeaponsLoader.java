@@ -1,4 +1,4 @@
-package com.gameserver.instance.loader;
+package com.gameserver.instance.loader.item;
 
 import com.gameserver.config.Config;
 import com.gameserver.template.item.BaseItem;
@@ -43,8 +43,21 @@ public class WeaponsLoader {
 
             int id = (int)weapon.get("id");
             String name = (String)weapon.get("name");
+            int sell_price = (int)weapon.get("sell_price");
+            Object o = weapon.get("sellable");
+            boolean is_sellable = true;
+            if(o != null)
+            {
+                is_sellable = (boolean) weapon.get("sellable");
+            }
+            o = weapon.get("stackable");
+            boolean is_stackable = false;
+            if(o != null)
+            {
+                is_stackable = (boolean) weapon.get("stackable");
+            }
 
-            list.add(new WeaponItem(id,name));
+            list.add(new WeaponItem(id,name,sell_price, is_sellable, is_stackable));
         }
 
         return list;

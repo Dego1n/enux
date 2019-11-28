@@ -5,16 +5,16 @@ import com.gameserver.model.item.Item;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.IServerPacket;
 import com.gameserver.packet.ServerPackets;
-import com.gameserver.template.item.BaseItem;
 
 import java.util.List;
-import java.util.Random;
+import java.util.stream.Collectors;
 
 public class BuyList extends AbstractSendablePacket implements IServerPacket {
 
-    private List<Item> _items;
-    //TODO: model buylist
-    public BuyList(List<Item> items) {
+    private final com.gameserver.template.buylist.BuyList _buyList;
+    private final List<Item> _items;
+    public BuyList(com.gameserver.template.buylist.BuyList buyList,  List<Item> items) {
+        this._buyList = buyList;
         this._items = items;
         build();
     }
@@ -22,20 +22,27 @@ public class BuyList extends AbstractSendablePacket implements IServerPacket {
     private void build()
     {
         writeH(ServerPackets.BUYLIST);
-        writeH(10);
-        Random rnd = new Random();
-        for(int i = 0; i < 10; i++)
+
+        writeD(_buyList.getBuyListId());
+        writeD(_buyList.getCurrencyId()); //Currency ID
+        writeH(_buyList.getItems().size());
+        for(com.gameserver.template.buylist.BuyList.BuyListItem buyListItem : _buyList.getItems())
         {
-            writeD(rnd.nextInt(20) + 1);
-            writeD(rnd.nextInt());
+            writeD(buyListItem.getItemId());
+            writeD(buyListItem.getPrice());
+            writeH(DataEngine.getInstance().getItemById(buyListItem.getItemId()).isStackable() ? 1 : 0);
         }
-        writeH(_items.size());
-        for(Item item : _items)
+        List<Item> itemsToSend = _items.stream().filter(item -> item.getBaseItem().isSellable()).collect(Collectors.toList());
+        System.out.println(_items);
+        System.out.println(itemsToSend);
+        writeH(itemsToSend.size());
+        for(Item item : itemsToSend)
         {
             writeD(item.getBaseItem().getId());
             writeD(item.getObjectId());
             writeD(item.getCount());
-            writeD(rnd.nextInt());
+            writeD(item.getBaseItem().getSellPrice());
+            writeH(item.getBaseItem().isStackable() ? 1 : 0);
         }
     }
 }

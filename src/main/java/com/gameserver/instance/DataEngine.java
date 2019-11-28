@@ -2,8 +2,14 @@ package com.gameserver.instance;
 
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.instance.loader.*;
+import com.gameserver.instance.loader.buylist.BuyListLoader;
+import com.gameserver.instance.loader.item.ArmorLoader;
+import com.gameserver.instance.loader.item.CurrencyLoader;
+import com.gameserver.instance.loader.item.JewelryLoader;
+import com.gameserver.instance.loader.item.WeaponsLoader;
 import com.gameserver.model.ability.Ability;
 import com.gameserver.template.NPC;
+import com.gameserver.template.buylist.BuyList;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.stats.BaseStats;
 import org.slf4j.Logger;
@@ -30,6 +36,7 @@ public class DataEngine {
     private final List<BaseItem> items;
     private final Map<Integer, Integer> experienceTable;
     private final List<Ability> abilities;
+    private final List<BuyList> buyLists;
 
     private DataEngine()
     {
@@ -49,6 +56,8 @@ public class DataEngine {
         log.info("Loaded {} Currency items", currency.size());
         items.addAll(currency);
         log.info("Loaded {} total items", items.size());
+        buyLists = BuyListLoader.LoadBuyListData();
+        log.info("Loaded {} BuyLists", buyLists.size());
         experienceTable = ExperienceLoader.loadExperienceTable();
         log.info("Loaded {} levels", experienceTable.size());
         abilities = AbilitiesLoader.loadAbilities();
@@ -109,6 +118,18 @@ public class DataEngine {
         {
             if(ability.getId() == id)
                 return ability;
+        }
+        return null;
+    }
+
+    public BuyList getBuyListById(int id)
+    {
+        for(BuyList buyList : buyLists)
+        {
+            if(buyList.getBuyListId() == id)
+            {
+                return buyList;
+            }
         }
         return null;
     }

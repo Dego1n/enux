@@ -2,38 +2,46 @@ Phoenix Earring:
   id: 15
   name: Blue Wolf Breastplate
   slot: Earring
+  sell_price: 14
 
 Majestic Earring:
   id: 16
   name: Blue Wolf Gaiters
   slot: Earring
+  sell_price: 15
 
 Tateossian Earring:
   id: 17
   name: Blue Wolf Gloves
   slot: Earring
+  sell_price: 16
 
 Phoenix Ring:
   id: 18
   name: Blue Wolf Boots
   slot: Ring
+  sell_price: 17
 
 Majestic Ring:
   id: 19
   name: Blue Wolf Helmet
   slot: Ring
+  sell_price: 18
 
 Tateossian Ring:
   id: 20
   name: Blue Wolf Belt
   slot: Ring
+  sell_price: 19
 
 Adamantite Necklace:
   id: 21
   name: Tallum Tunic
   slot: Necklace
+  sell_price: 20
 
 Black Ore Necklace:
   id: 22
   name: Tallum Stockings
   slot: Necklace
+  sell_price: 21

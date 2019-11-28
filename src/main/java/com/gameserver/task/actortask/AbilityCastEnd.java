@@ -1,6 +1,5 @@
 package com.gameserver.task.actortask;
 
-import com.gameserver.model.World;
 import com.gameserver.model.ability.Ability;
 import com.gameserver.model.actor.BaseActor;
 

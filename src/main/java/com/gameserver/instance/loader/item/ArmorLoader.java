@@ -1,10 +1,9 @@
-package com.gameserver.instance.loader;
+package com.gameserver.instance.loader.item;
 
 import com.gameserver.config.Config;
 import com.gameserver.template.item.ArmorItem;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.ItemSlot;
-import com.gameserver.template.item.WeaponItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -45,6 +44,19 @@ public class ArmorLoader {
 
             int id = (int)armor.get("id");
             String name = (String)armor.get("name");
+            int sell_price = (int)armor.get("sell_price");
+            Object o = armor.get("sellable");
+            boolean is_sellable = true;
+            if(o != null)
+            {
+                is_sellable = (boolean) armor.get("sellable");
+            }
+            o = armor.get("stackable");
+            boolean is_stackable = false;
+            if(o != null)
+            {
+                is_stackable = (boolean) armor.get("stackable");
+            }
             ItemSlot slot = null;
             switch ((String)armor.get("slot"))
             {
@@ -71,7 +83,7 @@ public class ArmorLoader {
                     System.exit(1);
             }
 
-            list.add(new ArmorItem(id,name, slot));
+            list.add(new ArmorItem(id,name, slot,sell_price, is_sellable, is_stackable));
         }
 
         return list;

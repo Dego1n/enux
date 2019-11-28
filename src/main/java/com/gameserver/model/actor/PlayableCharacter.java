@@ -18,6 +18,7 @@ import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.template.item.ArmorItem;
+import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.JewelryItem;
 import com.gameserver.template.item.WeaponItem;
 import com.gameserver.template.stats.BaseStats;
@@ -71,6 +72,9 @@ public class PlayableCharacter extends BaseActor {
 
         //TODO: remove after
         for(int i = 1; i <= 22; i++) {
+            if(i == 10 || i == 4)
+                _inventory.add(new Item(DataEngine.getInstance().getItemById(i),10));
+            else
             _inventory.add(new Item(DataEngine.getInstance().getItemById(i)));
         }
         _inventory.add(new Item(DataEngine.getInstance().getItemById(23),475));
@@ -103,6 +107,15 @@ public class PlayableCharacter extends BaseActor {
 
     public List<Item> getInventory() {
         return _inventory;
+    }
+    public Item getItemFromInventoryById(int item_id)
+    {
+        for(Item item : getInventory())
+        {
+            if(item.getItemId() == item_id)
+                return item;
+        }
+        return null;
     }
 
     public EquipInfo getEquipInfo() {
@@ -317,6 +330,30 @@ public class PlayableCharacter extends BaseActor {
         {
             sendPacket(new SystemMessage("Target is not in range!!!"));
         }
+    }
+    public void giveItem(BaseItem item, int count)
+    {
+        if(item.isStackable())
+        {
+            Item inventoryItem = getInventory().stream().filter(i -> i.getItemId() == item.getId()).findFirst().orElse(null);
+            if(inventoryItem == null)
+            {
+                _inventory.add(new Item(item, count));
+            }
+            else
+            {
+                inventoryItem.setCount(inventoryItem.getCount() + count);
+            }
+        }
+        else
+        {
+            _inventory.add(new Item(item, count));
+        }
+        sendPacket(new Inventory(getInventory(),getEquipInfo()));
+    }
+    public void showBuyList(int buylistId)
+    {
+        sendPacket(new BuyList(DataEngine.getInstance().getBuyListById(buylistId),getInventory()));
     }
     @Override
     public void useAbility(BaseActor target, Ability ability) {

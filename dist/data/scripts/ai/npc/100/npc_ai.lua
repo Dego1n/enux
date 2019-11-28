@@ -9,6 +9,8 @@ end
 function Dialog(PlayableCharacter, dialog)
     if dialog == "platform_info" then
         prepareDialogAndSend(PlayableCharacter, renderPlatformDialog())
+    elseif dialog == "buy_list" then
+        sendBuyList(PlayableCharacter, 1)
     else
         prepareDialogAndSend(PlayableCharacter, renderDefaultDialog())
     end
@@ -32,4 +34,9 @@ end
 function prepareDialogAndSend(PlayableCharacter, dialog)
     dialog = string.gsub(dialog, "$npc_id", npc:getObjectId())
     PlayableCharacter:sendDialog(dialog)
+end
+
+
+function sendBuyList(pc, buyListId)
+    pc:showBuyList(buyListId)
 end

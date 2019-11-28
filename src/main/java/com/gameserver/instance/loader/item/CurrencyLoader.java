@@ -1,10 +1,8 @@
-package com.gameserver.instance.loader;
+package com.gameserver.instance.loader.item;
 
 import com.gameserver.config.Config;
-import com.gameserver.template.item.ArmorItem;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.CurrencyItem;
-import com.gameserver.template.item.ItemSlot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -41,12 +39,24 @@ public class CurrencyLoader {
         for(Map.Entry<String, Object> entry : object.entrySet())
         {
             @SuppressWarnings("unchecked")
-            Map<String, Object> armor =  (Map<String, Object>)entry.getValue();
+            Map<String, Object> currency =  (Map<String, Object>)entry.getValue();
 
-            int id = (int)armor.get("id");
-            String name = (String)armor.get("name");
-
-            list.add(new CurrencyItem(id,name));
+            int id = (int)currency.get("id");
+            String name = (String)currency.get("name");
+            int sell_price = (int)currency.get("sell_price");
+            Object o = currency.get("sellable");
+            boolean is_sellable = true;
+            if(o != null)
+            {
+                is_sellable = (boolean) currency.get("sellable");
+            }
+            o = currency.get("stackable");
+            boolean is_stackable = false;
+            if(o != null)
+            {
+                is_stackable = (boolean) currency.get("stackable");
+            }
+            list.add(new CurrencyItem(id,name,sell_price,is_sellable, is_stackable));
         }
 
         return list;

@@ -21,7 +21,7 @@ public class NPCLoader {
     public static List<NPC> LoadNpcData()
     {
         List<NPC> npcs = new ArrayList<>();
-        String npcYaml = null;
+        String npcYaml;
         try {
             npcYaml = Files.readString(Paths.get(Config.DATAPACK_PATH + "npc/npc.yaml"));
         } catch (IOException e) {

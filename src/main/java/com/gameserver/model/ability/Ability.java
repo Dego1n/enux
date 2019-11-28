@@ -3,9 +3,9 @@ package com.gameserver.model.ability;
 import java.util.List;
 
 public class Ability {
-    private int _id;
+    private final int _id;
 
-    private List<AbilityLevel> _levels;
+    private final List<AbilityLevel> _levels;
 
     public Ability(int id, List<AbilityLevel> levels) {
         this._id = id;
@@ -23,10 +23,10 @@ public class Ability {
 
     public static class AbilityLevel {
 
-        private int _level;
-        private int _manaCost;
-        private float _castTime;
-        private float _range;
+        private final int _level;
+        private final int _manaCost;
+        private final float _castTime;
+        private final float _range;
 
         public AbilityLevel(int level, int manaCost, float castTime, float range) {
             this._level = level;

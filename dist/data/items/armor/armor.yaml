@@ -2,58 +2,72 @@ Blue Wolf Breastplate:
   id: 3
   name: Blue Wolf Breastplate
   slot: UpperArmor
+  sell_price: 1
 
 Blue Wolf Gaiters:
   id: 4
   name: Blue Wolf Gaiters
   slot: LowerArmor
+  sell_price: 2
+  stackable: true
 
 Blue Wolf Gloves:
   id: 5
   name: Blue Wolf Gloves
   slot: Gloves
+  sell_price: 3
 
 Blue Wolf Boots:
   id: 6
   name: Blue Wolf Boots
   slot: Boots
+  sell_price: 4
 
 Blue Wolf Helmet:
   id: 7
   name: Blue Wolf Helmet
   slot: Helmet
+  sell_price: 5
 
 Blue Wolf Belt:
   id: 8
   name: Blue Wolf Belt
   slot: Belt
+  sell_price: 6
 
 Tallum Tunic:
   id: 9
   name: Tallum Tunic
   slot: UpperArmor
+  sell_price: 7
 
 Tallum Stockings:
   id: 10
   name: Tallum Stockings
   slot: LowerArmor
+  sell_price: 8
+  stackable: true
 
 Tallum Gloves:
   id: 11
   name: Tallum Gloves
   slot: Gloves
+  sell_price: 9
 
 Tallum Boots:
   id: 12
   name: Tallum Boots
   slot: Boots
+  sell_price: 10
 
 Tallum Helmet:
   id: 13
   name: Tallum Helmet
   slot: Helmet
+  sell_price: 11
 
 Tallum Belt:
   id: 14
   name: Tallum Belt
   slot: Belt
+  sell_price: 12

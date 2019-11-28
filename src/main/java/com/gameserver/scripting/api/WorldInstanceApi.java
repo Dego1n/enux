@@ -9,6 +9,6 @@ public class WorldInstanceApi extends ZeroArgFunction {
 
     @Override
     public LuaValue call() {
-        return CoerceJavaToLua.coerce(World.getInstance());
+            return CoerceJavaToLua.coerce(World.getInstance());
     }
 }

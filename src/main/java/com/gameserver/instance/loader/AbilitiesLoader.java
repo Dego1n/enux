@@ -20,7 +20,7 @@ public class AbilitiesLoader {
     {
         List<Ability> abilities = new ArrayList<>();
 
-        String abilitiesYaml = null;
+        String abilitiesYaml;
         try {
             abilitiesYaml = Files.readString(Paths.get(Config.DATAPACK_PATH + "abilities/abilities.yaml"));
         } catch (IOException e) {
@@ -43,6 +43,8 @@ public class AbilitiesLoader {
             Map<String, Object> ability =  (Map<String, Object>)entry.getValue();
 
             int id = (int)ability.get("id");
+
+            @SuppressWarnings("unchecked")
             List<Map<String, Object>> levelsAbility = (List<Map<String, Object>>) ability.get("levels");
 
             List<Ability.AbilityLevel> levels = new ArrayList<>();

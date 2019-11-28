@@ -1,7 +1,9 @@
 Sword:
   id: 1
   name: Sword
+  sell_price: 22
 
 Another Sword:
   id: 2
   name: Another Sword
+  sell_price: 23

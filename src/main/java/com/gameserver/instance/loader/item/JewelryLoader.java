@@ -1,7 +1,6 @@
-package com.gameserver.instance.loader;
+package com.gameserver.instance.loader.item;
 
 import com.gameserver.config.Config;
-import com.gameserver.template.item.ArmorItem;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.ItemSlot;
 import com.gameserver.template.item.JewelryItem;
@@ -45,6 +44,19 @@ public class JewelryLoader {
 
             int id = (int)jewelry.get("id");
             String name = (String)jewelry.get("name");
+            int sell_price = (int)jewelry.get("sell_price");
+            Object o = jewelry.get("sellable");
+            boolean is_sellable = true;
+            if(o != null)
+            {
+                is_sellable = (boolean) jewelry.get("sellable");
+            }
+            o = jewelry.get("stackable");
+            boolean is_stackable = false;
+            if(o != null)
+            {
+                is_stackable = (boolean) jewelry.get("stackable");
+            }
             ItemSlot slot = null;
             switch ((String)jewelry.get("slot"))
             {
@@ -62,7 +74,7 @@ public class JewelryLoader {
                     System.exit(1);
             }
 
-            list.add(new JewelryItem(id,name, slot));
+            list.add(new JewelryItem(id,name, slot,sell_price,is_sellable, is_stackable));
         }
 
         return list;

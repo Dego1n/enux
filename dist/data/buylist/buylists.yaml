@@ -1,0 +1,17 @@
+-   buylist_id: 1
+    currency_id: 23
+    allowed_npc:
+      - 103
+    items:
+      - id: 3
+        price: 100
+      - id: 4
+        price: 90
+      - id: 5
+        price: 80
+      - id: 6
+        price: 70
+      - id: 7
+        price: 60
+      - id: 8
+        price: 50

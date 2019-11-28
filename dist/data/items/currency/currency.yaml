@@ -2,3 +2,5 @@ Kinori:
   id: 23
   name: Kinori
   sellable: false
+  sell_price: 13
+  stackable: true

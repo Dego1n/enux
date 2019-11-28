@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class Task {
 
-    private TimerTask task;
+    private final TimerTask task;
 
     public Task(TimerTask task, int delay)
     {

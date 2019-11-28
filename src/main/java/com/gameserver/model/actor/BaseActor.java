@@ -9,7 +9,6 @@ import com.gameserver.model.actor.ai.base.intention.IntentionAttack;
 import com.gameserver.model.actor.ai.type.AbstractAI;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
-import com.gameserver.task.Task;
 import com.gameserver.task.actortask.AbilityCastEnd;
 import com.gameserver.tick.GameTickController;
 
