@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DataEngine {
 
@@ -94,6 +95,19 @@ public class DataEngine {
         return null;
     }
 
+    public int getStartExperienceForLevel(int level)
+    {
+        return this.experienceTable.get(level);
+    }
+
+    public int getExperienceValueForNextLevel(int level)
+    {
+        if(level == 60) //TODO: change to constant?
+        {
+            return this.experienceTable.get(60);
+        }
+        return this.experienceTable.get(level +1);
+    }
     public int getLevelByExperience(int experience)
     {
         if( experience <= 0)

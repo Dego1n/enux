@@ -283,6 +283,7 @@ public class PlayableCharacter extends BaseActor {
             this.setLevel(level);
             this.sendPacket(new SystemMessage("Level up! Your level is now:" +getLevel()));
         }
+        this.sendPacket(new StatusInfo(this));
     }
 
     public boolean isConnected() {
