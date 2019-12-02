@@ -22,8 +22,8 @@ public class StatusInfo extends AbstractSendablePacket implements IServerPacket 
         writeD(_character.getLevel());
         writeD((int)_character.getCurrentHp()); //TODO: float when client support it
         writeD((int)_character.getMaxHp()); //TODO: float when client support it
-        writeD(0); //TODO: currentMp
-        writeD(0); //TODO: maxMp
+        writeD((int)_character.getCurrentMp()); //TODO: float when client support it
+        writeD((int)_character.getMaxMp()); //TODO: float when client support it
         writeD(DataEngine.getInstance().getStartExperienceForLevel(_character.getLevel()));
         writeD(_character.getCurrentExperience());
         writeD(DataEngine.getInstance().getExperienceValueForNextLevel(_character.getLevel()));

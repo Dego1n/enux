@@ -36,6 +36,7 @@ public class NPCActor extends BaseActor {
     private final int npc_id;
 
     private List<Item> lootData;
+    private double maxHp;
 
     public NPCActor(int npc_id, int loc_x, int loc_y, int loc_z)
     {
@@ -55,7 +56,7 @@ public class NPCActor extends BaseActor {
         setCollisionHeight(npc.getCollisionHeight());
         setCollisionRadius(npc.getCollisionRadius());
         setCurrentHp(npc.getHp());
-        setMaxHp(npc.getHp());
+        maxHp = npc.getHp();
         setBaseExperience(npc.getBaseExperience());
         respawnTime = npc.getRespawnTime();
 
@@ -154,6 +155,32 @@ public class NPCActor extends BaseActor {
 
     @Override
     public void onAbilityCastEnd(AbilityCastEnd abilityCastEnd) {
+
+    }
+
+    @Override
+    public double getMaxHp() {
+        return maxHp;
+    }
+
+    @Override
+    public double getMaxMp() {
+        return 0;
+    }
+
+    @Override
+    public double getHpRegenRate() {
+        return 1;
+    }
+
+    @Override
+    public double getMpRegenRate() {
+        return 1;
+    }
+
+    @Override
+    public void recalculateStats(boolean sendToClient) {
+        log.warn("RecalculateStats is not implemented in NPCActor");
 
     }
 

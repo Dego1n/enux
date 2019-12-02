@@ -2,7 +2,314 @@ Human_Fighter:
   race_id: 0
   collisionHeight: 80
   collisionRadius: 22
-Female_Elf:
-  race_id: 1
-  collisionHeight: 80
-  collisionRadius: 22
+  int: 21
+  str: 40
+  con: 43
+  men: 25
+  dex: 30
+  wit: 11
+  level_stats:
+    - level: 1
+      base_hp: 80.0
+      base_mp: 30.0
+      base_hp_regen: 2.0
+      base_mp_regen: 0.9
+    - level: 2
+      base_hp: 91.83
+      base_mp: 35.46
+      base_hp_regen: 2.05
+      base_mp_regen: 0.9
+    - level: 3
+      base_hp: 103.79
+      base_mp: 40.98
+      base_hp_regen: 2.1
+      base_mp_regen: 0.9
+    - level: 4
+      base_hp: 115.88
+      base_mp: 46.56
+      base_hp_regen: 2.15
+      base_mp_regen: 0.9
+    - level: 5
+      base_hp: 128.1
+      base_mp: 52.2
+      base_hp_regen: 2.2
+      base_mp_regen: 0.9
+    - level: 6
+      base_hp: 140.45
+      base_mp: 57.9
+      base_hp_regen: 2.25
+      base_mp_regen: 0.9
+    - level: 7
+      base_hp: 152.93
+      base_mp: 63.66
+      base_hp_regen: 2.3
+      base_mp_regen: 0.9
+    - level: 8
+      base_hp: 165.54
+      base_mp: 69.48
+      base_hp_regen: 2.35
+      base_mp_regen: 0.9
+    - level: 9
+      base_hp: 178.28
+      base_mp: 75.36
+      base_hp_regen: 2.4
+      base_mp_regen: 0.9
+    - level: 10
+      base_hp: 191.15
+      base_mp: 81.3
+      base_hp_regen: 2.45
+      base_mp_regen: 0.9
+    - level: 11
+      base_hp: 204.15
+      base_mp: 87.3
+      base_hp_regen: 2.5
+      base_mp_regen: 1.2
+    - level: 12
+      base_hp: 217.28
+      base_mp: 93.36
+      base_hp_regen: 2.6
+      base_mp_regen: 1.2
+    - level: 13
+      base_hp: 230.54
+      base_mp: 99.48
+      base_hp_regen: 2.7
+      base_mp_regen: 1.2
+    - level: 14
+      base_hp: 243.93
+      base_mp: 105.66
+      base_hp_regen: 2.8
+      base_mp_regen: 1.2
+    - level: 15
+      base_hp: 257.45
+      base_mp: 111.9
+      base_hp_regen: 2.9
+      base_mp_regen: 1.2
+    - level: 16
+      base_hp: 271.1
+      base_mp: 118.2
+      base_hp_regen: 3.0
+      base_mp_regen: 1.2
+    - level: 17
+      base_hp: 284.88
+      base_mp: 124.56
+      base_hp_regen: 3.1
+      base_mp_regen: 1.2
+    - level: 18
+      base_hp: 298.79
+      base_mp: 130.98
+      base_hp_regen: 3.2
+      base_mp_regen: 1.2
+    - level: 19
+      base_hp: 312.83
+      base_mp: 137.46
+      base_hp_regen: 3.3
+      base_mp_regen: 1.2
+    - level: 20
+      base_hp: 327.0
+      base_mp: 144.0
+      base_hp_regen: 3.4
+      base_mp_regen: 1.2
+    - level: 21
+      base_hp: 360.0
+      base_mp: 153.9
+      base_hp_regen: 3.5
+      base_mp_regen: 1.5
+    - level: 22
+      base_hp: 393.3
+      base_mp: 163.89
+      base_hp_regen: 3.6
+      base_mp_regen: 1.5
+    - level: 23
+      base_hp: 426.9
+      base_mp: 173.97
+      base_hp_regen: 3.7
+      base_mp_regen: 1.5
+    - level: 24
+      base_hp: 460.8
+      base_mp: 184.14
+      base_hp_regen: 3.8
+      base_mp_regen: 1.5
+    - level: 25
+      base_hp: 495.0
+      base_mp: 194.4
+      base_hp_regen: 3.9
+      base_mp_regen: 1.5
+    - level: 26
+      base_hp: 529.5
+      base_mp: 204.75
+      base_hp_regen: 4.0
+      base_mp_regen: 1.5
+    - level: 27
+      base_hp: 564.3
+      base_mp: 215.19
+      base_hp_regen: 4.1
+      base_mp_regen: 1.5
+    - level: 28
+      base_hp: 599.4
+      base_mp: 225.72
+      base_hp_regen: 4.2
+      base_mp_regen: 1.5
+    - level: 29
+      base_hp: 634.8
+      base_mp: 236.34
+      base_hp_regen: 4.3
+      base_mp_regen: 1.5
+    - level: 30
+      base_hp: 670.5
+      base_mp: 247.05
+      base_hp_regen: 4.4
+      base_mp_regen: 1.5
+    - level: 31
+      base_hp: 706.5
+      base_mp: 257.85
+      base_hp_regen: 4.5
+      base_mp_regen: 1.8
+    - level: 32
+      base_hp: 742.8
+      base_mp: 268.74
+      base_hp_regen: 4.6
+      base_mp_regen: 1.8
+    - level: 33
+      base_hp: 779.4
+      base_mp: 279.72
+      base_hp_regen: 4.7
+      base_mp_regen: 1.8
+    - level: 34
+      base_hp: 816.3
+      base_mp: 290.79
+      base_hp_regen: 4.8
+      base_mp_regen: 1.8
+    - level: 35
+      base_hp: 853.5
+      base_mp: 301.95
+      base_hp_regen: 4.9
+      base_mp_regen: 1.8
+    - level: 36
+      base_hp: 891.0
+      base_mp: 313.2
+      base_hp_regen: 5.0
+      base_mp_regen: 1.8
+    - level: 37
+      base_hp: 928.8
+      base_mp: 324.54
+      base_hp_regen: 5.1
+      base_mp_regen: 1.8
+    - level: 38
+      base_hp: 966.9
+      base_mp: 335.97
+      base_hp_regen: 5.2
+      base_mp_regen: 1.8
+    - level: 39
+      base_hp: 1005.3
+      base_mp: 347.49
+      base_hp_regen: 5.3
+      base_mp_regen: 1.8
+    - level: 40
+      base_hp: 1044.0
+      base_mp: 359.1
+      base_hp_regen: 5.4
+      base_mp_regen: 1.8
+    - level: 41
+      base_hp: 1093.4
+      base_mp: 378.6
+      base_hp_regen: 5.5
+      base_mp_regen: 2.1
+    - level: 42
+      base_hp: 1143.18
+      base_mp: 398.25
+      base_hp_regen: 5.6
+      base_mp_regen: 2.1
+    - level: 43
+      base_hp: 1193.34
+      base_mp: 418.05
+      base_hp_regen: 5.7
+      base_mp_regen: 2.1
+    - level: 44
+      base_hp: 1243.88
+      base_mp: 438.0
+      base_hp_regen: 5.8
+      base_mp_regen: 2.1
+    - level: 45
+      base_hp: 1294.8
+      base_mp: 458.1
+      base_hp_regen: 5.9
+      base_mp_regen: 2.1
+    - level: 46
+      base_hp: 1346.1
+      base_mp: 478.35
+      base_hp_regen: 6.0
+      base_mp_regen: 2.1
+    - level: 47
+      base_hp: 1397.78
+      base_mp: 498.75
+      base_hp_regen: 6.1
+      base_mp_regen: 2.1
+    - level: 48
+      base_hp: 1449.84
+      base_mp: 519.3
+      base_hp_regen: 6.2
+      base_mp_regen: 2.1
+    - level: 49
+      base_hp: 1502.28
+      base_mp: 540.0
+      base_hp_regen: 6.3
+      base_mp_regen: 2.1
+    - level: 50
+      base_hp: 1555.1
+      base_mp: 560.85
+      base_hp_regen: 6.4
+      base_mp_regen: 2.1
+    - level: 51
+      base_hp: 1608.3
+      base_mp: 581.85
+      base_hp_regen: 6.5
+      base_mp_regen: 2.4
+    - level: 52
+      base_hp: 1661.88
+      base_mp: 603.0
+      base_hp_regen: 6.6
+      base_mp_regen: 2.4
+    - level: 53
+      base_hp: 1715.84
+      base_mp: 624.3
+      base_hp_regen: 6.7
+      base_mp_regen: 2.4
+    - level: 54
+      base_hp: 1770.18
+      base_mp: 645.75
+      base_hp_regen: 6.8
+      base_mp_regen: 2.4
+    - level: 55
+      base_hp: 1824.9
+      base_mp: 667.35
+      base_hp_regen: 6.9
+      base_mp_regen: 2.4
+    - level: 56
+      base_hp: 1880.0
+      base_mp: 689.1
+      base_hp_regen: 7.0
+      base_mp_regen: 2.4
+    - level: 57
+      base_hp: 1935.48
+      base_mp: 711.0
+      base_hp_regen: 7.1
+      base_mp_regen: 2.4
+    - level: 58
+      base_hp: 1991.34
+      base_mp: 733.05
+      base_hp_regen: 7.2
+      base_mp_regen: 2.4
+    - level: 59
+      base_hp: 2047.58
+      base_mp: 755.25
+      base_hp_regen: 7.3
+      base_mp_regen: 2.4
+    - level: 60
+      base_hp: 2104.2
+      base_mp: 777.6
+      base_hp_regen: 7.4
+      base_mp_regen: 2.4
+#Female_Elf:
+#  race_id: 1
+#  collisionHeight: 80
+#  collisionRadius: 22

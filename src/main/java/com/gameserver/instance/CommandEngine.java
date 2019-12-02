@@ -35,6 +35,7 @@ public class CommandEngine {
         this.registerCommand(new DebugNearestGeodataCommand());
         this.registerCommand(new DebugAttackTargetCommand());
         this.registerCommand(new DebugShowBuyList());
+        this.registerCommand(new AddExperienceCommand());
         log.info("Loaded {} admin commands", _adminCommands.size());
     }
 

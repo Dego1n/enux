@@ -15,6 +15,7 @@ import com.gameserver.tick.GameTickController;
 import java.util.*;
 
 public abstract class BaseActor {
+    public static final int REGEN_TASK_EVERY_SECONDS = 5;
 
     private final int objectId;
     int id;
@@ -33,7 +34,7 @@ public abstract class BaseActor {
     private Race race;
 
     private double currentHp;
-    private double maxHp;
+    private double currentMp;
 
     private int templateId;
 
@@ -51,6 +52,8 @@ public abstract class BaseActor {
     private MoveData _moveData;
 
     protected List<TimerTask> _tasks;
+
+    private boolean hasRegenTask = false;
 
     BaseActor() {
         objectId = ActorIdFactory.getInstance().getFreeId();
@@ -169,6 +172,16 @@ public abstract class BaseActor {
     public abstract void useAbility(BaseActor target, Ability ability);
     public abstract void doDamage(BaseActor target, double damage);
     public abstract void onAbilityCastEnd(AbilityCastEnd abilityCastEnd);
+    public abstract double getMaxHp();
+    public abstract double getMaxMp();
+    public abstract double getHpRegenRate();
+    public abstract double getMpRegenRate();
+
+    void recalculateStats() {
+        recalculateStats(false);
+    };
+
+    public abstract void recalculateStats(boolean sendToClient);
 
     float calculateAttackDamageToTarget(BaseActor target) {
         Random rnd = new Random();
@@ -199,16 +212,17 @@ public abstract class BaseActor {
         return currentHp;
     }
 
-    void setCurrentHp(double currentHp) {
+    public void setCurrentHp(double currentHp) {
         this.currentHp = currentHp;
     }
 
-    public double getMaxHp() {
-        return maxHp;
+    public double getCurrentMp() {
+        return currentMp;
     }
 
-    void setMaxHp(double maxHp) {
-        this.maxHp = maxHp;
+    public void setCurrentMp(double currentMp)
+    {
+        this.currentMp = currentMp;
     }
 
     public AbstractAI getAi() {
@@ -274,6 +288,14 @@ public abstract class BaseActor {
 
     public abstract void onRespawn();
 
+    public boolean hasRegenTask() {
+        return hasRegenTask;
+    }
+
+    public void setHasRegenTask(boolean hasRegenTask) {
+        this.hasRegenTask = hasRegenTask;
+    }
+
     public static class MoveData {
         public int x_destination;
         public int y_destination;
@@ -306,4 +328,8 @@ public abstract class BaseActor {
         isDead = dead;
     }
 
+    public void removeTask(TimerTask task)
+    {
+        _tasks.remove(task);
+    }
 }

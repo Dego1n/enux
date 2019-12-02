@@ -13,24 +13,19 @@ import com.gameserver.network.thread.ClientListenerThread;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
 import com.gameserver.task.Task;
-import com.gameserver.task.actortask.AbilityCastEnd;
-import com.gameserver.task.actortask.RemoveActorTask;
-import com.gameserver.task.actortask.ResetAttackCooldown;
-import com.gameserver.task.actortask.SpawnActorTask;
+import com.gameserver.task.actortask.*;
 import com.gameserver.template.item.ArmorItem;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.JewelryItem;
 import com.gameserver.template.item.WeaponItem;
 import com.gameserver.template.stats.BaseStats;
+import com.gameserver.template.stats.Stats;
 import com.gameserver.util.math.xy.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayableCharacter extends BaseActor {
 
@@ -48,6 +43,8 @@ public class PlayableCharacter extends BaseActor {
     private int currentExperience;
 
     private Map<Ability, Integer> _abilities;
+
+    private Stats stats;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -87,6 +84,12 @@ public class PlayableCharacter extends BaseActor {
         _abilities.put(DataEngine.getInstance().getAbilityById(3),1);
         _abilities.put(DataEngine.getInstance().getAbilityById(4),1);
         _abilities.put(DataEngine.getInstance().getAbilityById(5),1);
+        stats = new Stats(baseStats);
+        recalculateStats(false);
+
+        //TODO: grab from database?
+        setCurrentHp(getMaxHp());
+        setCurrentMp(getMaxMp());
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -274,7 +277,7 @@ public class PlayableCharacter extends BaseActor {
         //sendPacket(new PCActorInfo(this)); //TODO: also broadcast
     }
 
-    private void addExperience(int baseExperience) {
+    public void addExperience(int baseExperience) {
         this.setCurrentExperience(this.getCurrentExperience() + baseExperience);
         int level = DataEngine.getInstance().getLevelByExperience(this.getCurrentExperience());
         this.sendPacket(new SystemMessage("Level by Exp: "+level+". Your current level: "+this.getLevel()));
@@ -282,6 +285,7 @@ public class PlayableCharacter extends BaseActor {
         {
             this.setLevel(level);
             this.sendPacket(new SystemMessage("Level up! Your level is now:" +getLevel()));
+            this.recalculateStats(true);
         }
         this.sendPacket(new StatusInfo(this));
     }
@@ -406,6 +410,68 @@ public class PlayableCharacter extends BaseActor {
         sendPacket(new SystemMessage("onAbilityCastEnd target: "+target.getName()+ "; ability_id: "+ability.getId()));
         doDamage(target, ability.getAbilityByLevel(_abilities.get(ability)).getCastTime()*20);
         this.setCanAttack(true);
+    }
+
+    @Override
+    public double getMaxHp() {
+        return stats.getMaxHp();
+    }
+
+    @Override
+    public void recalculateStats(boolean sendToClient) {
+        //Считаем HP
+        double _hp = baseStats.getLevelStats().get(this.getLevel()).getBaseHp() * stats.getConMod();
+        stats.setMaxHp(_hp);
+        if(getCurrentHp() > _hp)
+        {
+            setCurrentHp(_hp);
+        }
+
+        //Считаем MP
+        double _mp = baseStats.getLevelStats().get(this.getLevel()).getBaseMp() * stats.getMenMod();
+        stats.setMaxMp(_mp);
+        if(getCurrentMp() > _mp)
+        {
+            setCurrentMp(_mp);
+        }
+
+        //Считаем HP regen
+        double _hpReg = baseStats.getLevelStats().get(this.getLevel()).getBaseHpRegen() * ((getLevel()+89)/100.0)*stats.getConMod();
+        if(_hpReg < 1) _hpReg = 1;
+        stats.setHpRegen(_hpReg);
+        //Считаем MP regen
+        double _mpReg = baseStats.getLevelStats().get(this.getLevel()).getBaseMpRegen() * ((getLevel()+89)/100.0)*stats.getMenMod();
+        if(_mpReg < 1) _mpReg = 1;
+        stats.setMpRegen(_mpReg);
+
+        if(sendToClient) {
+            sendPacket(new StatusInfo(this));
+        }
+
+        if(getCurrentHp() < getMaxHp() || getCurrentMp() < getMaxMp())
+        {
+            if(!hasRegenTask())
+            {
+                Timer timer = new Timer();
+                timer.scheduleAtFixedRate(new RegenTask(this, timer), REGEN_TASK_EVERY_SECONDS * 1000, REGEN_TASK_EVERY_SECONDS * 1000);
+                setHasRegenTask(true);
+            }
+        }
+    }
+
+    @Override
+    public double getMaxMp() {
+        return stats.getMaxMp();
+    }
+
+    @Override
+    public double getHpRegenRate() {
+        return stats.getHpRegen();
+    }
+
+    @Override
+    public double getMpRegenRate() {
+        return stats.getMpRegen();
     }
 
 }
