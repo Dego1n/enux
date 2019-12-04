@@ -33,6 +33,7 @@ public class ActorInfo extends AbstractSendablePacket implements IServerPacket {
         writeD((int)actor.getMaxHp());
 
         writeS(actor.getName());
-
+        writeD((int)actor.getStats().getAttackSpeed());
+        writeD((int)actor.getStats().getMoveSpeed());
     }
 }

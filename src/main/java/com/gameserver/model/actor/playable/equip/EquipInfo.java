@@ -1,6 +1,10 @@
 package com.gameserver.model.actor.playable.equip;
 
 import com.gameserver.model.item.Item;
+import com.gameserver.template.stats.StatModifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EquipInfo {
     private Item rightHand;
@@ -131,5 +135,23 @@ public class EquipInfo {
 
     public void setNecklace(Item necklace) {
         this.necklace = necklace;
+    }
+
+    public List<StatModifier> getAllEquipedStatsModifiers() {
+        List<StatModifier> statModifiers = new ArrayList<>();
+        if(rightHand != null) statModifiers.addAll(rightHand.getBaseItem().getStatModifiers());
+        if(leftHand != null) statModifiers.addAll(leftHand.getBaseItem().getStatModifiers());
+        if(helmet != null) statModifiers.addAll(helmet.getBaseItem().getStatModifiers());
+        if(upperArmor != null) statModifiers.addAll(upperArmor.getBaseItem().getStatModifiers());
+        if(lowerArmor != null) statModifiers.addAll(lowerArmor.getBaseItem().getStatModifiers());
+        if(boots != null) statModifiers.addAll(boots.getBaseItem().getStatModifiers());
+        if(belt != null) statModifiers.addAll(belt.getBaseItem().getStatModifiers());
+        if(earringFirst != null) statModifiers.addAll(earringFirst.getBaseItem().getStatModifiers());
+        if(earringSecond != null) statModifiers.addAll(earringSecond.getBaseItem().getStatModifiers());
+        if(ringFirst != null) statModifiers.addAll(ringFirst.getBaseItem().getStatModifiers());
+        if(ringSecond != null) statModifiers.addAll(ringSecond.getBaseItem().getStatModifiers());
+        if(necklace != null) statModifiers.addAll(necklace.getBaseItem().getStatModifiers());
+
+        return statModifiers;
     }
 }

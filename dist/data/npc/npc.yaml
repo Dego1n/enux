@@ -45,6 +45,7 @@ Berter:
 
 Gorbolg:
   id: 104
+  level: 1
   name: Gorbolg
   template_id: 101
   is_friendly: false
@@ -54,6 +55,14 @@ Gorbolg:
   collision:
     height: 105
     radius: 30
+  stats:
+    phys_attack: 12.0
+    phys_defence: 60.0
+    critical: 100.0
+    evasion: 40.0
+    accuracy: 40.0
+    attackSpeed: 300.0
+    speed: 260.0
   loot:
     groups:
       - chance: 10.0

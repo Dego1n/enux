@@ -19,7 +19,10 @@ import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.JewelryItem;
 import com.gameserver.template.item.WeaponItem;
 import com.gameserver.template.stats.BaseStats;
+import com.gameserver.template.stats.StatModifier;
 import com.gameserver.template.stats.Stats;
+import com.gameserver.template.stats.enums.StatModifierOperation;
+import com.gameserver.template.stats.enums.StatModifierType;
 import com.gameserver.util.math.xy.Math2d;
 import com.gameserver.util.math.xyz.Math3d;
 import org.slf4j.Logger;
@@ -43,8 +46,6 @@ public class PlayableCharacter extends BaseActor {
     private int currentExperience;
 
     private Map<Ability, Integer> _abilities;
-
-    private Stats stats;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -186,7 +187,7 @@ public class PlayableCharacter extends BaseActor {
         sendPacketAndBroadcastToNearbyPlayers(new StopMoving(this));
     }
 
-    public void action(int objectId) {
+    public void action(int objectId, boolean isShiftPressed) {
         BaseActor actor = World.getInstance().getActorByObjectId(objectId);
         if(actor != null) {
 
@@ -194,6 +195,11 @@ public class PlayableCharacter extends BaseActor {
             {
                 if(actor instanceof NPCActor)
                 {
+                    if(isShiftPressed) //TODO: Проверять если админ
+                    {
+                        sendPacket(new SpecialActorInfo(target));
+                        return;
+                    }
                     if(Math2d.calculateBetweenTwoActorsIn2d(this,actor) <= 400)
                     {
                         _actorIntention.setIntention(new IntentionAction(actor));
@@ -272,7 +278,7 @@ public class PlayableCharacter extends BaseActor {
                     _equipInfo.setNecklace(item);
             }
         }
-
+        recalculateStats(true); //TODO: do not recalculate if not needed...
         sendPacket(new Inventory(_inventory, _equipInfo));
         //sendPacket(new PCActorInfo(this)); //TODO: also broadcast
     }
@@ -314,11 +320,20 @@ public class PlayableCharacter extends BaseActor {
     {
         setCanAttack(false);
         if (target.getCurrentHp() > 0) {
-            double damage = calculateAttackDamageToTarget(target);
-            doDamage(target, damage);
+            if(target.actorHitTarget(target)) {
+                boolean critical = actorHitCritical();
+                double damage = calculateAttackDamageToTarget(target, critical);
+                if(critical)
+                    sendPacket(new SystemMessage("Critical hit!"));
+                doDamage(target, damage);
+            }
+            else
+            {
+                sendPacket(new SystemMessage("Your attack was missed!"));
+            }
         }
         sendPacketAndBroadcastToNearbyPlayers(new Attack(this, target));
-        new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+        new Task(new ResetAttackCooldown(this), (int) ((1 / (stats.getAttackSpeed() /1000)) * 1000));
     }
 
     public void requestUseAbility(Ability ability)
@@ -419,6 +434,8 @@ public class PlayableCharacter extends BaseActor {
 
     @Override
     public void recalculateStats(boolean sendToClient) {
+        List<StatModifier> statModifiers = getEquipInfo().getAllEquipedStatsModifiers();
+
         //Считаем HP
         double _hp = baseStats.getLevelStats().get(this.getLevel()).getBaseHp() * stats.getConMod();
         stats.setMaxHp(_hp);
@@ -437,26 +454,68 @@ public class PlayableCharacter extends BaseActor {
 
         //Считаем HP regen
         double _hpReg = baseStats.getLevelStats().get(this.getLevel()).getBaseHpRegen() * ((getLevel()+89)/100.0)*stats.getConMod();
-        if(_hpReg < 1) _hpReg = 1;
-        stats.setHpRegen(_hpReg);
+        stats.setHpRegen(Math.max(_hpReg,0));
+
         //Считаем MP regen
         double _mpReg = baseStats.getLevelStats().get(this.getLevel()).getBaseMpRegen() * ((getLevel()+89)/100.0)*stats.getMenMod();
-        if(_mpReg < 1) _mpReg = 1;
-        stats.setMpRegen(_mpReg);
+        stats.setMpRegen(Math.max(_mpReg,0));
+
+        //Считаем phys attack
+        double itemsPAtk = 1;
+        for(StatModifier modifier : statModifiers)
+        {
+            if(modifier.getType() == StatModifierType.PHYSICAL_ATTACK && modifier.getOperation() == StatModifierOperation.ADD)
+                itemsPAtk += modifier.getValue();
+        }
+        double physAttack = itemsPAtk * ((getLevel()+89)/100.0) * stats.getStrMod() + baseStats.getPhysicalAttack();
+        stats.setPhysicalAttack(Math.max(physAttack,0));
+
+        //Считаем phys defence
+        /* TODO for mystic null slots should be lower*/
+
+        double itemsPdef = 0;
+        for(StatModifier modifier : statModifiers)
+        {
+            if(modifier.getType() == StatModifierType.PHYSICAL_DEFENCE && modifier.getOperation() == StatModifierOperation.ADD)
+                itemsPdef += modifier.getValue();
+        }
+        if(getEquipInfo().getHelmet() == null) itemsPdef += 12;
+        if(getEquipInfo().getUpperArmor() == null) itemsPdef += 31;
+        if(getEquipInfo().getLowerArmor() == null) itemsPdef += 18;
+        if(getEquipInfo().getGloves() == null) itemsPdef += 8;
+        if(getEquipInfo().getBoots() == null) itemsPdef += 7;
+        if(getEquipInfo().getBelt() == null) itemsPdef += 5;
+        double physDefence = (baseStats.getPhysicalDefence()+itemsPdef)*((getLevel()+89)/100.0);
+        stats.setPhysicalDefence(Math.max(physDefence,0));
+
+        //Считаем Evasion и accuracy
+        double val = Math.sqrt(baseStats.getDex()) * 6 + getLevel();
+        stats.setEvasion(val);
+        stats.setAccuracy(val);
+
+        //Считаем Attack Speed
+        double attackSpeed = stats.getDexMod() * baseStats.getAttackSpeed();
+        stats.setAttackSpeed(attackSpeed);
+
+        //Считаем Move Speed
+        double moveSpeed = stats.getDexMod() * baseStats.getSpeed();
+        stats.setMoveSpeed(moveSpeed);
+
+        //Считаем Critical
+        double critical = stats.getDexMod() * 10;
+        for(StatModifier modifier : statModifiers)
+        {
+            if(modifier.getType() == StatModifierType.CRIT_RATE && modifier.getOperation() == StatModifierOperation.MULTIPLY)
+                critical *= modifier.getValue();
+        }
+        stats.setCritical(critical);
 
         if(sendToClient) {
             sendPacket(new StatusInfo(this));
+            sendPacket(new PCActorInfo(this));
         }
 
-        if(getCurrentHp() < getMaxHp() || getCurrentMp() < getMaxMp())
-        {
-            if(!hasRegenTask())
-            {
-                Timer timer = new Timer();
-                timer.scheduleAtFixedRate(new RegenTask(this, timer), REGEN_TASK_EVERY_SECONDS * 1000, REGEN_TASK_EVERY_SECONDS * 1000);
-                setHasRegenTask(true);
-            }
-        }
+        doRegenTaskIfNeeded();
     }
 
     @Override
@@ -473,5 +532,4 @@ public class PlayableCharacter extends BaseActor {
     public double getMpRegenRate() {
         return stats.getMpRegen();
     }
-
 }

@@ -1,6 +1,7 @@
 package com.gameserver.template;
 
 import com.gameserver.model.actor.npc.LootTableData;
+import com.gameserver.template.stats.Stats;
 
 public class NPC {
     private final int id;
@@ -19,7 +20,9 @@ public class NPC {
 
     private final LootTableData lootTableData;
 
-    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime, int baseExperience, LootTableData lootTableData) {
+    private final Stats stats;
+
+    public NPC(int id, int templateId, String name, boolean isFriendly, int collisionHeight, int collisionRadius, double hp, int respawnTime, int baseExperience, LootTableData lootTableData, Stats stats) {
         this.id = id;
         this.templateId = templateId;
         this.name = name;
@@ -30,6 +33,7 @@ public class NPC {
         this.respawnTime = respawnTime;
         this.baseExperience = baseExperience;
         this.lootTableData = lootTableData;
+        this.stats = stats;
     }
 
     public int getId() {
@@ -70,5 +74,9 @@ public class NPC {
 
     public LootTableData getLootTableData() {
         return lootTableData;
+    }
+
+    public Stats getStats() {
+        return stats;
     }
 }

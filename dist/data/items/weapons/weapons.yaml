@@ -1,9 +1,23 @@
 Sword:
   id: 1
   name: Sword
+  stats:
+    - type: pAtk
+      modifier_type: add
+      modifier: 12.0
+    - type: critRate
+      modifier_type: multiply
+      modifier: 8.0
   sell_price: 22
 
 Another Sword:
   id: 2
   name: Another Sword
+  stats:
+    - type: pAtk
+      modifier_type: add
+      modifier: 16.0
+    - type: critRate
+      modifier_type: multiply
+      modifier: 8.0
   sell_price: 23

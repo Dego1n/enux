@@ -5,6 +5,7 @@ import com.gameserver.model.actor.npc.LootGroupData;
 import com.gameserver.model.actor.npc.LootItemData;
 import com.gameserver.model.actor.npc.LootTableData;
 import com.gameserver.template.NPC;
+import com.gameserver.template.stats.Stats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -80,6 +81,38 @@ public class NPCLoader {
                 }
                 lootTableData = new LootTableData(lootGroupDataList);
             }
+            Stats stats = new Stats();
+            Map<String, Object> npcStats = (Map<String, Object>) npc.get("stats");
+            if(npcStats != null)
+            {
+                for(Map.Entry<String, Object> statEntry : npcStats.entrySet())
+                {
+                    switch (statEntry.getKey())
+                    {
+                        case "phys_attack":
+                            stats.setPhysicalAttack((Double) statEntry.getValue());
+                            break;
+                        case "phys_defence":
+                            stats.setPhysicalDefence((Double) statEntry.getValue());
+                            break;
+                        case "critical":
+                            stats.setCritical((Double) statEntry.getValue());
+                            break;
+                        case "evasion":
+                            stats.setEvasion((Double) statEntry.getValue());
+                            break;
+                        case "accuracy":
+                            stats.setAccuracy((Double) statEntry.getValue());
+                            break;
+                        case "attackSpeed":
+                            stats.setAttackSpeed((Double) statEntry.getValue());
+                            break;
+                        case "speed":
+                            stats.setMoveSpeed((Double) statEntry.getValue());
+                            break;
+                    }
+                }
+            }
             npcs.add(
                     new NPC(
                             id,
@@ -91,7 +124,8 @@ public class NPCLoader {
                             hp,
                             respawnTime,
                             baseExperience,
-                            lootTableData
+                            lootTableData,
+                            stats
                     )
             );
         }

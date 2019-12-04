@@ -30,12 +30,12 @@ public class RegenTask extends TimerTask {
         if(actor.getCurrentHp() <= actor.getMaxHp())
         {
             ;
-            double hp_regen = actor.getHpRegenRate() * actor.REGEN_TASK_EVERY_SECONDS;
+            double hp_regen = actor.getHpRegenRate() * BaseActor.REGEN_TASK_EVERY_SECONDS;
             actor.setCurrentHp(Math.min(actor.getCurrentHp() + hp_regen, actor.getMaxHp()));
         }
         if(actor.getCurrentMp() <= actor.getCurrentMp())
         {
-            double mp_regen = actor.getMpRegenRate() * actor.REGEN_TASK_EVERY_SECONDS;
+            double mp_regen = actor.getMpRegenRate() * BaseActor.REGEN_TASK_EVERY_SECONDS;
             actor.setCurrentMp(Math.min(actor.getCurrentMp() + mp_regen, actor.getMaxMp()));
         }
         if(actor instanceof NPCActor)

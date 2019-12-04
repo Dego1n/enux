@@ -3,6 +3,7 @@ package com.gameserver.instance.loader.item;
 import com.gameserver.config.Config;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.WeaponItem;
+import com.gameserver.template.stats.StatModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WeaponsLoader {
+public class WeaponsLoader extends AbstractItemLoader{
 
     private static final Logger log = LoggerFactory.getLogger(WeaponsLoader.class);
 
@@ -57,7 +58,13 @@ public class WeaponsLoader {
                 is_stackable = (boolean) weapon.get("stackable");
             }
 
-            list.add(new WeaponItem(id,name,sell_price, is_sellable, is_stackable));
+            WeaponItem item =new WeaponItem(id,name,sell_price, is_sellable, is_stackable);
+
+            List<StatModifier> statModifiers = loadStatModifiers(weapon);
+            if(statModifiers.size() > 0)
+                item.setStatModifiers(statModifiers);
+            list.add(item);
+
         }
 
         return list;

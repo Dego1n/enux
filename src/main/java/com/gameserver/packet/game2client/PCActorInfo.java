@@ -21,22 +21,38 @@ public class PCActorInfo extends AbstractSendablePacket implements IServerPacket
 
     private void build() {
         writeH(ServerPackets.PC_ACTOR_INFO);
-        writeD(actor.getObjectId());
-        writeD(actor.getTemplateId());
+//        writeD(actor.getTemplateId());
 
         writeD(actor.getLocationX());
         writeD(actor.getLocationY());
         writeD(actor.getLocationZ());
 
-        writeD(actor.getCollisionHeight());
-        writeD(actor.getCollisionRadius());
+        writeD(actor.getBaseStats().getCollisionHeight());
+        writeD(actor.getBaseStats().getCollisionRadius());
 
         writeH(actor.isFriendly() ? 1 : 0);
 
-        writeD((int)actor.getCurrentHp());
-        writeD((int)actor.getMaxHp());
+//        writeD((int)actor.getCurrentHp());
+//        writeD((int)actor.getMaxHp());
 
         writeS(actor.getName());
+
+        //Stats
+        writeD(actor.getBaseStats().getCon());
+        writeD(actor.getBaseStats().getStr());
+        writeD(actor.getBaseStats().getDex());
+        writeD(actor.getBaseStats().getInt());
+        writeD(actor.getBaseStats().getWit());
+        writeD(actor.getBaseStats().getMen());
+
+        writeD((int) actor.getStats().getPhysicalAttack());
+        writeD((int) actor.getStats().getPhysicalDefence());
+        writeD((int) actor.getStats().getEvasion());
+        writeD((int) actor.getStats().getAccuracy());
+        writeD((int) actor.getStats().getAttackSpeed());
+        writeD((int) actor.getStats().getMoveSpeed());
+        writeD((int) actor.getStats().getCritical());
+
 
         /* EquipInfo start */
 

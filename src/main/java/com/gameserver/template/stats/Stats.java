@@ -22,6 +22,19 @@ public class Stats {
     private double hpRegen;
     private double mpRegen;
 
+    private double physicalAttack;
+    private double physicalDefence;
+    private double evasion;
+    private double accuracy;
+    private double attackSpeed;
+    private double moveSpeed;
+    private double critical;
+
+    public Stats()
+    {
+
+    }
+
     public Stats(BaseStats baseStats) {
         this._int = baseStats.getInt();
         this.str = baseStats.getStr();
@@ -140,5 +153,61 @@ public class Stats {
 
     public void setMpRegen(double mpRegen) {
         this.mpRegen = mpRegen;
+    }
+
+    public double getPhysicalAttack() {
+        return physicalAttack;
+    }
+
+    public void setPhysicalAttack(double physicalAttack) {
+        this.physicalAttack = physicalAttack;
+    }
+
+    public double getPhysicalDefence() {
+        return physicalDefence;
+    }
+
+    public void setPhysicalDefence(double physicalDefence) {
+        this.physicalDefence = physicalDefence;
+    }
+
+    public double getEvasion() {
+        return evasion;
+    }
+
+    public void setEvasion(double evasion) {
+        this.evasion = evasion;
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public double getAttackSpeed() {
+        return attackSpeed;
+    }
+
+    public void setAttackSpeed(double attackSpeed) {
+        this.attackSpeed = attackSpeed;
+    }
+
+    public double getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public void setMoveSpeed(double moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    public double getCritical() {
+        return critical;
+    }
+
+    public void setCritical(double critical) {
+        this.critical = critical;
     }
 }

@@ -1,5 +1,10 @@
 package com.gameserver.template.item;
 
+import com.gameserver.template.stats.StatModifier;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BaseItem {
 
     private final int id;
@@ -7,6 +12,8 @@ public abstract class BaseItem {
     private final int sell_price;
     private final boolean is_sellable;
     private final boolean is_stackable;
+
+    private List<StatModifier> statModifiers;
 
     BaseItem(int id, String name, int sell_price) {
         this(id,name,sell_price,true, false);
@@ -24,6 +31,7 @@ public abstract class BaseItem {
         this.sell_price = sell_price;
         this.is_sellable = is_sellable;
         this.is_stackable = is_stackable;
+        statModifiers = new ArrayList<>();
     }
 
     public int getId() {
@@ -44,5 +52,14 @@ public abstract class BaseItem {
 
     public boolean isStackable() {
         return is_stackable;
+    }
+
+    public List<StatModifier> getStatModifiers() {
+        return statModifiers;
+    }
+
+    public void setStatModifiers(List<StatModifier> modifiers)
+    {
+        statModifiers = modifiers;
     }
 }

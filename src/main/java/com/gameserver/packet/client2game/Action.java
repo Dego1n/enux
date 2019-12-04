@@ -15,6 +15,8 @@ public class Action extends AbstractReceivablePacket {
 
     private void handle() {
         int objectId = readD();
-        _clientListenerThread.playableCharacter.action(objectId);
+        boolean isShiftPressed = readH() == 1;
+        _clientListenerThread.playableCharacter.action(objectId, isShiftPressed);
+
     }
 }

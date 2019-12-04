@@ -23,6 +23,14 @@ public class BaseStats {
     private int _wit;
     private int _str;
 
+    private double physicalAttack;
+    private double physicalDefence;
+    private double critical;
+    private double attackSpeed;
+    private double magicAttack;
+    private double speed;
+    private double castSpeed;
+
     private Map<Integer, LevelStats> levelStats;
 
     public BaseStats(Race race)
@@ -104,5 +112,61 @@ public class BaseStats {
 
     public void setLevelStats(Map<Integer, LevelStats> levelStats) {
         this.levelStats = levelStats;
+    }
+
+    public double getPhysicalAttack() {
+        return physicalAttack;
+    }
+
+    public void setPhysicalAttack(double physicalAttack) {
+        this.physicalAttack = physicalAttack;
+    }
+
+    public double getCritical() {
+        return critical;
+    }
+
+    public void setCritical(double critical) {
+        this.critical = critical;
+    }
+
+    public double getAttackSpeed() {
+        return attackSpeed;
+    }
+
+    public void setAttackSpeed(double attackSpeed) {
+        this.attackSpeed = attackSpeed;
+    }
+
+    public double getMagicAttack() {
+        return magicAttack;
+    }
+
+    public void setMagicAttack(double magicAttack) {
+        this.magicAttack = magicAttack;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getCastSpeed() {
+        return castSpeed;
+    }
+
+    public void setCastSpeed(double castSpeed) {
+        this.castSpeed = castSpeed;
+    }
+
+    public double getPhysicalDefence() {
+        return physicalDefence;
+    }
+
+    public void setPhysicalDefence(double physicalDefence) {
+        this.physicalDefence = physicalDefence;
     }
 }

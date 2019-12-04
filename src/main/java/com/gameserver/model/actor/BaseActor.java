@@ -10,6 +10,8 @@ import com.gameserver.model.actor.ai.type.AbstractAI;
 import com.gameserver.packet.AbstractSendablePacket;
 import com.gameserver.packet.game2client.*;
 import com.gameserver.task.actortask.AbilityCastEnd;
+import com.gameserver.task.actortask.RegenTask;
+import com.gameserver.template.stats.Stats;
 import com.gameserver.tick.GameTickController;
 
 import java.util.*;
@@ -54,6 +56,8 @@ public abstract class BaseActor {
     protected List<TimerTask> _tasks;
 
     private boolean hasRegenTask = false;
+
+    protected Stats stats;
 
     BaseActor() {
         objectId = ActorIdFactory.getInstance().getFreeId();
@@ -183,9 +187,13 @@ public abstract class BaseActor {
 
     public abstract void recalculateStats(boolean sendToClient);
 
-    float calculateAttackDamageToTarget(BaseActor target) {
+    double calculateAttackDamageToTarget(BaseActor target, boolean isCritical) {
         Random rnd = new Random();
-        return 10 + rnd.nextFloat() * (20 - 10);
+        double physDefence = target.getStats().getPhysicalDefence();
+        //Чтобы не было деления на 0
+        physDefence = physDefence <= 0 ? 1 : physDefence;
+        double damage = ((76 * stats.getPhysicalAttack()) / physDefence) * (rnd.nextFloat() * (1.1 - 0.9) + 0.9);
+        return isCritical ? damage * 2 : damage;
     }
 
     public abstract void say(String message);
@@ -265,7 +273,7 @@ public abstract class BaseActor {
             return true;
         }
         if (delta > 1) {
-            final double distPassed = (300 * (gameTicks - moveData.lastUpdate)) / (double) GameTickController.TICKS_PER_SECOND;
+            final double distPassed = (getStats().getMoveSpeed() * (gameTicks - moveData.lastUpdate)) / (double) GameTickController.TICKS_PER_SECOND;
             distFraction = distPassed / delta;
         } else
             System.out.println("distFraction: " + distFraction);
@@ -331,5 +339,49 @@ public abstract class BaseActor {
     public void removeTask(TimerTask task)
     {
         _tasks.remove(task);
+    }
+
+    public void doRegenTaskIfNeeded()
+    {
+        if(getCurrentHp() < getMaxHp() || getCurrentMp() < getMaxMp())
+        {
+            if(!hasRegenTask())
+            {
+                Timer timer = new Timer();
+                timer.scheduleAtFixedRate(new RegenTask(this, timer), REGEN_TASK_EVERY_SECONDS * 1000, REGEN_TASK_EVERY_SECONDS * 1000);
+                setHasRegenTask(true);
+            }
+        }
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    /**
+     * Минимальный шанс попасть - 20%
+     * Максимальный шанс попасть - 98%
+     * @param target
+     * @return
+     */
+    public boolean actorHitTarget(BaseActor target)
+    {
+        double chance =
+                Math.min(
+                        980,
+                        Math.max(
+                                (
+                                        80+(2*(getStats().getAccuracy()-getStats().getEvasion())))*10,
+                                200
+                        )
+                );
+        Random rnd = new Random();
+        return rnd.nextInt(1000) <= chance;
+    }
+
+    public boolean actorHitCritical()
+    {
+        Random rnd = new Random();
+        return rnd.nextInt(1000) <= stats.getCritical();
     }
 }

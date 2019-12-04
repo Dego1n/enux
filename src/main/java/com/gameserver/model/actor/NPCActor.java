@@ -6,9 +6,7 @@ import com.gameserver.model.ability.Ability;
 import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
 import com.gameserver.model.actor.ai.type.AttackableAI;
 import com.gameserver.model.item.Item;
-import com.gameserver.packet.game2client.ActorDied;
-import com.gameserver.packet.game2client.ActorInfo;
-import com.gameserver.packet.game2client.Attack;
+import com.gameserver.packet.game2client.*;
 import com.gameserver.scripting.ai.npc.NpcAi;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.AbilityCastEnd;
@@ -70,6 +68,7 @@ public class NPCActor extends BaseActor {
         {
             log.warn("Not found AI script for npc id: {}",npc_id);
         }
+        stats = npc.getStats();
     }
 
     public NpcAi getNpcAi() {
@@ -116,11 +115,19 @@ public class NPCActor extends BaseActor {
     {
         setCanAttack(false);
         if (target.getCurrentHp() > 0) {
-            double damage = calculateAttackDamageToTarget(target);
-            doDamage(target,damage);
+            if(target.actorHitTarget(target)) {
+                boolean critical = actorHitCritical();
+                double damage = calculateAttackDamageToTarget(target, critical);
+                doDamage(target, damage);
+            }
+            else
+            {
+                if(target instanceof PlayableCharacter)
+                    ((PlayableCharacter) target).sendPacket(new SystemMessage(this.getName()+" attack missed"));
+            }
         }
         broadcastPacket(new Attack(this, target));
-        new Task(new ResetAttackCooldown(this), (int) ((1 / 0.8f) * 1000)); //TODO: 0.8f - attack speed, get from stats instead of const
+        new Task(new ResetAttackCooldown(this), (int) ((1 / (stats.getAttackSpeed() /1000)) * 1000));
     }
 
     @Override
@@ -150,6 +157,11 @@ public class NPCActor extends BaseActor {
             }
         } else {
             broadcastPacket(new ActorInfo(target));
+            if (target instanceof PlayableCharacter)
+            {
+                ((PlayableCharacter) target).sendPacket(new StatusInfo((PlayableCharacter) target));
+            }
+            target.doRegenTaskIfNeeded();
         }
     }
 

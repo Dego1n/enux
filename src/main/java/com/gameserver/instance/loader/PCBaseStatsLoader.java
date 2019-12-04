@@ -53,6 +53,14 @@ public class PCBaseStatsLoader {
             int dex = (int) pc.get("dex");
             int wit = (int) pc.get("wit");
 
+            double physicalAttack = (double) pc.get("physical_attack");
+            double physicalDefence = (double) pc.get("physical_defence");
+            double critical = (double) pc.get("critical");
+            double attackSpeed = (double) pc.get("attack_speed");
+            double magicAttack = (double) pc.get("magic_attack");
+            double speed = (double) pc.get("speed");
+            double castSpeed = (double) pc.get("speed");
+
 
             BaseStats pcbs = new BaseStats(race);
             pcbs.setCollisionHeight(collisionHeight);
@@ -64,6 +72,14 @@ public class PCBaseStatsLoader {
             pcbs.setMen(men);
             pcbs.setDex(dex);
             pcbs.setWit(wit);
+
+            pcbs.setPhysicalAttack(physicalAttack);
+            pcbs.setPhysicalDefence(physicalDefence);
+            pcbs.setCritical(critical);
+            pcbs.setAttackSpeed(attackSpeed);
+            pcbs.setMagicAttack(magicAttack);
+            pcbs.setSpeed(speed);
+            pcbs.setCastSpeed(castSpeed);
 
             List<Map<String, Object>> levelStats = (ArrayList<Map<String,Object>>) pc.get("level_stats");
 

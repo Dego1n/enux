@@ -4,6 +4,7 @@ import com.gameserver.config.Config;
 import com.gameserver.template.item.ArmorItem;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.ItemSlot;
+import com.gameserver.template.stats.StatModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorLoader {
+public class ArmorLoader extends AbstractItemLoader {
 
     private static final Logger log = LoggerFactory.getLogger(ArmorLoader.class);
 
@@ -82,8 +83,11 @@ public class ArmorLoader {
                     log.error("Cant get item slot for armor_id: "+id);
                     System.exit(1);
             }
-
-            list.add(new ArmorItem(id,name, slot,sell_price, is_sellable, is_stackable));
+            ArmorItem item = new ArmorItem(id,name, slot,sell_price, is_sellable, is_stackable);
+            List<StatModifier> statModifiers = loadStatModifiers(armor);
+            if(statModifiers.size() > 0)
+                item.setStatModifiers(statModifiers);
+            list.add(item);
         }
 
         return list;
