@@ -36,6 +36,7 @@ public class PCActorInfo extends AbstractSendablePacket implements IServerPacket
 //        writeD((int)actor.getMaxHp());
 
         writeS(actor.getName());
+        writeS(actor.getTitle());
 
         //Stats
         writeD(actor.getBaseStats().getCon());

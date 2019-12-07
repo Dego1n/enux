@@ -384,4 +384,10 @@ public abstract class BaseActor {
         Random rnd = new Random();
         return rnd.nextInt(1000) <= stats.getCritical();
     }
+
+    public String getTitle()
+    {
+        //TODO: titles
+        return "todo: implement titles";
+    }
 }

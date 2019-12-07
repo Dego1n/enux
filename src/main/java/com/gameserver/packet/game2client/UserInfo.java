@@ -32,6 +32,7 @@ public class UserInfo extends AbstractSendablePacket implements IServerPacket {
         writeD(_character.getBaseStats().getCollisionRadius());
 
         writeS(_character.getName());
+        writeS(_character.getTitle());
 
         /* EquipInfo start */
         Optional.ofNullable(_character.getEquipInfo().getRightHand()).ifPresentOrElse( (rightHand) -> writeD(rightHand.getItemId()), () -> writeD(0));
