@@ -1,0 +1,11 @@
+classes:
+  -
+    class_id: 0
+    level: 1
+    abilities:
+      - {ability_id: 1, level: 1, required_sp: 10}
+      - {ability_id: 2, level: 1, required_sp: 10}
+      - {ability_id: 2, level: 2, required_sp: 10}
+      - {ability_id: 3, level: 1, required_sp: 10}
+      - {ability_id: 4, level: 1, required_sp: 10}
+      - {ability_id: 5, level: 1, required_sp: 10}

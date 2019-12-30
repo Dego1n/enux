@@ -80,11 +80,11 @@ public class PlayableCharacter extends BaseActor {
 
         //TODO: remove after
         //TODO: Abilities
-        _abilities.put(DataEngine.getInstance().getAbilityById(1),1);
-        _abilities.put(DataEngine.getInstance().getAbilityById(2),1);
-        _abilities.put(DataEngine.getInstance().getAbilityById(3),1);
-        _abilities.put(DataEngine.getInstance().getAbilityById(4),1);
-        _abilities.put(DataEngine.getInstance().getAbilityById(5),1);
+//        _abilities.put(DataEngine.getInstance().getAbilityById(1),1);
+//        _abilities.put(DataEngine.getInstance().getAbilityById(2),1);
+//        _abilities.put(DataEngine.getInstance().getAbilityById(3),1);
+//        _abilities.put(DataEngine.getInstance().getAbilityById(4),1);
+//        _abilities.put(DataEngine.getInstance().getAbilityById(5),1);
         stats = new Stats(baseStats);
         recalculateStats(false);
 
@@ -282,7 +282,42 @@ public class PlayableCharacter extends BaseActor {
         sendPacket(new Inventory(_inventory, _equipInfo));
         //sendPacket(new PCActorInfo(this)); //TODO: also broadcast
     }
+    public void acquireAbility(int ability_id)
+    {
+        //TODO: IMPORTANT
+        //TODO: SECURITY AUDIT
+        //TODO: Проверять в AbilityTree может ли персонаж выучить новую абилку!!!
 
+        Ability ability = DataEngine.getInstance().getAbilityById(ability_id);
+        Integer currentAbilityLevel = this.getAbilities().get(ability);
+        if(currentAbilityLevel == null)
+        {
+            this.getAbilities().put(ability,1);
+        }
+        else
+        {
+            if(ability.getAbilityByLevel(currentAbilityLevel + 1) != null)
+            {
+                this.getAbilities().remove(ability);
+                this.getAbilities().put(ability,currentAbilityLevel+1);
+            }
+            else
+            {
+                //TODO: Security Audit
+                log.warn("Client requested acquire ability with non existent level");
+            }
+        }
+        System.out.println("Sending new abilities list");
+        sendPacket(new AbilitiesList(this));
+    }
+    public int getAbilityLevel(int ability_id)
+    {
+        Ability ability = DataEngine.getInstance().getAbilityById(ability_id);
+        Integer currentAbilityLevel = this.getAbilities().get(ability);
+        if(currentAbilityLevel != null)
+            return currentAbilityLevel;
+        return -1;
+    }
     public void addExperience(int baseExperience) {
         this.setCurrentExperience(this.getCurrentExperience() + baseExperience);
         int level = DataEngine.getInstance().getLevelByExperience(this.getCurrentExperience());

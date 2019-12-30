@@ -8,6 +8,7 @@ import com.gameserver.instance.loader.item.CurrencyLoader;
 import com.gameserver.instance.loader.item.JewelryLoader;
 import com.gameserver.instance.loader.item.WeaponsLoader;
 import com.gameserver.model.ability.Ability;
+import com.gameserver.model.ability.AbilityTree;
 import com.gameserver.template.NPC;
 import com.gameserver.template.buylist.BuyList;
 import com.gameserver.template.item.BaseItem;
@@ -38,6 +39,7 @@ public class DataEngine {
     private final Map<Integer, Integer> experienceTable;
     private final List<Ability> abilities;
     private final List<BuyList> buyLists;
+    private final List<AbilityTree> abilityTrees;
 
     private DataEngine()
     {
@@ -63,6 +65,8 @@ public class DataEngine {
         log.info("Loaded {} levels", experienceTable.size());
         abilities = AbilitiesLoader.loadAbilities();
         log.info("Loaded {} abilities", abilities.size());
+        abilityTrees = AbilitiesTreeLoader.loadAbilitiesTree();
+        log.info("Loaded {} ability trees", abilityTrees.size());
     }
 
 
@@ -143,6 +147,18 @@ public class DataEngine {
             if(buyList.getBuyListId() == id)
             {
                 return buyList;
+            }
+        }
+        return null;
+    }
+
+    public AbilityTree getAbilityTreeByClassId(int class_id)
+    {
+        for(AbilityTree tree : abilityTrees)
+        {
+            if(tree.class_id == class_id)
+            {
+                return tree;
             }
         }
         return null;
