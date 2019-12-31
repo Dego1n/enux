@@ -10,11 +10,14 @@ import com.gameserver.instance.loader.item.WeaponsLoader;
 import com.gameserver.model.ability.Ability;
 import com.gameserver.model.ability.AbilityTree;
 import com.gameserver.template.NPC;
+import com.gameserver.template.Quest;
 import com.gameserver.template.buylist.BuyList;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.stats.BaseStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,33 +43,47 @@ public class DataEngine {
     private final List<Ability> abilities;
     private final List<BuyList> buyLists;
     private final List<AbilityTree> abilityTrees;
+    private final List<Quest> quests;
 
     private DataEngine()
     {
         baseStats = PCBaseStatsLoader.LoadPCBaseStats();
         log.info("Loaded {} PC Base Stats", baseStats.size());
+
         npcList = NPCLoader.LoadNpcData();
         log.info("Loaded {} NPC Data", npcList.size());
+
         items = WeaponsLoader.LoadWeapons();
         log.info("Loaded {} Weapon items", items.size());
+
         List<BaseItem> armor = ArmorLoader.LoadArmor();
         log.info("Loaded {} Armor items", armor.size());
         items.addAll(armor);
+
         List<BaseItem> jewelry = JewelryLoader.LoadJewelry();
         log.info("Loaded {} Jewelry items", armor.size());
         items.addAll(jewelry);
+
         List<BaseItem> currency = CurrencyLoader.LoadCurrency();
         log.info("Loaded {} Currency items", currency.size());
         items.addAll(currency);
+
         log.info("Loaded {} total items", items.size());
+
         buyLists = BuyListLoader.LoadBuyListData();
         log.info("Loaded {} BuyLists", buyLists.size());
+
         experienceTable = ExperienceLoader.loadExperienceTable();
         log.info("Loaded {} levels", experienceTable.size());
+
         abilities = AbilitiesLoader.loadAbilities();
         log.info("Loaded {} abilities", abilities.size());
+
         abilityTrees = AbilitiesTreeLoader.loadAbilitiesTree();
         log.info("Loaded {} ability trees", abilityTrees.size());
+
+        quests = QuestsLoader.LoadQuests();
+        log.info("Loaded {} quests", quests.size());
     }
 
 
@@ -162,5 +179,20 @@ public class DataEngine {
             }
         }
         return null;
+    }
+
+    public List<Quest> getQuestsWithStartNpc(int npc_id)
+    {
+        List<Quest> npcQuests = new ArrayList<>();
+
+        for(Quest quest : quests)
+        {
+            if(quest.getStartNpcId() == npc_id)
+            {
+                npcQuests.add(quest);
+            }
+        }
+
+        return npcQuests;
     }
 }

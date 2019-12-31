@@ -11,6 +11,11 @@ function Dialog(PlayableCharacter, dialog)
         prepareDialogAndSend(PlayableCharacter, renderPlatformDialog())
     elseif dialog == "buy_list" then
         sendBuyList(PlayableCharacter, 1)
+    elseif dialog == "quest" then
+        print(npc:getQuests():toArray())
+        for quest in npc:getQuests():toArray() do
+        	print(quest:getQuestId())
+        end
     else
         prepareDialogAndSend(PlayableCharacter, renderDefaultDialog())
     end
@@ -19,6 +24,11 @@ end
 function renderDefaultDialog()
     local dialog = ReadFile(self_path .. "/dialogs/index.dialog")
     dialog = string.gsub(dialog, "$PlayersOnline", World():getAllPlayers():size())
+
+    if npc:getQuests():size() > 0 then
+        dialog = dialog .. '\n<button type="npc_dialog" object_id="$npc_id" ref="quest">Quest</>'
+    end
+
     return dialog
 end
 

@@ -14,10 +14,12 @@ import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.template.NPC;
+import com.gameserver.template.Quest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class NPCActor extends BaseActor {
 
     private List<Item> lootData;
     private double maxHp;
+    private List<Quest> quests;
 
     public NPCActor(int npc_id, int loc_x, int loc_y, int loc_z)
     {
@@ -69,6 +72,9 @@ public class NPCActor extends BaseActor {
             log.warn("Not found AI script for npc id: {}",npc_id);
         }
         stats = npc.getStats();
+
+        quests = new ArrayList<>();
+        quests.addAll(DataEngine.getInstance().getQuestsWithStartNpc(npc_id));
     }
 
     public NpcAi getNpcAi() {
@@ -207,5 +213,10 @@ public class NPCActor extends BaseActor {
             getAi().resetAi();
         }
         setDead(false);
+    }
+
+    public List<Quest> getQuests()
+    {
+        return quests;
     }
 }
