@@ -18,9 +18,9 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3' //LogBack
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.25' //Log
 
-    compile group: 'org.luaj', name: 'luaj-jse', version: '3.0.1' //LuaJ, для написания скриптов на Lua
-
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.24' //YAML парсер
+
+    compile "org.mdkt.compiler:InMemoryJavaCompiler:1.3.0"
 
 }
 

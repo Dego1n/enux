@@ -8,6 +8,7 @@ import com.gameserver.model.actor.ai.type.AttackableAI;
 import com.gameserver.model.item.Item;
 import com.gameserver.packet.game2client.*;
 import com.gameserver.scripting.ai.npc.NpcAi;
+import com.gameserver.scripting.engine.JavaScriptingEngine;
 import com.gameserver.task.Task;
 import com.gameserver.task.actortask.AbilityCastEnd;
 import com.gameserver.task.actortask.RemoveActorTask;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -61,16 +63,10 @@ public class NPCActor extends BaseActor {
         setBaseExperience(npc.getBaseExperience());
         respawnTime = npc.getRespawnTime();
 
-        String path = Config.DATAPACK_PATH + "scripts/ai/npc/"+npc_id;
+        npc_id = 100;
+        npcAi = JavaScriptingEngine.getInstance().compileNpcAiScript(npc_id);
+        npcAi.setObjectId(getObjectId());
 
-        if(new File(path).exists())
-        {
-            npcAi = new NpcAi(this,path);
-        }
-        else
-        {
-            log.warn("Not found AI script for npc id: {}",npc_id);
-        }
         stats = npc.getStats();
 
         quests = new ArrayList<>();

@@ -50,18 +50,18 @@ public class Config {
     public static void Load()
     {
         log.info("Loading configuration files");
-        if(Files.isDirectory(Paths.get("./dist/config")))
+        if(Files.isDirectory(Paths.get("dist/config")))
             inIDE = true;
 
         //Если запускаем из IDE
         if(inIDE)
         {
             log.info("Seems like game server is running from IDE. Fixing config directories");
-            gameSocketProperties = "./dist/config/network/gamesocket.ini";
-            databaseProperties = "./dist/config/database/database.ini";
-            generalProperties = "./dist/config/general/general.ini";
-            datapackProperties = "./dist/config/general/datapack.ini";
-            geodataProperties = "./dist/config/geodata/geodata.ini";
+            gameSocketProperties = "dist/config/network/gamesocket.ini";
+            databaseProperties = "dist/config/database/database.ini";
+            generalProperties = "dist/config/general/general.ini";
+            datapackProperties = "dist/config/general/datapack.ini";
+            geodataProperties = "dist/config/geodata/geodata.ini";
         }
 
         PropertiesParser configParser = new PropertiesParser(gameSocketProperties);
@@ -88,7 +88,7 @@ public class Config {
         //Если из IDE - перезаписываем путь
         if(inIDE)
         {
-            DATAPACK_PATH = "./dist/data/";
+            DATAPACK_PATH = "dist/data/";
         }
 
         //GEODATA

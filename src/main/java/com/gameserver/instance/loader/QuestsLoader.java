@@ -1,9 +1,8 @@
 package com.gameserver.instance.loader;
 
 import com.gameserver.config.Config;
+import com.gameserver.scripting.engine.JavaScriptingEngine;
 import com.gameserver.template.Quest;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.JsePlatform;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,22 +31,8 @@ public class QuestsLoader {
         for(Map.Entry<String,String> questData : questFolders.entrySet())
         {
             String questName = questData.getKey();
-            LuaValue script = JsePlatform.standardGlobals();
-
-            script.get("dofile").call(LuaValue.valueOf(questData.getValue()) + "/" + questData.getKey() + ".lua");
-
-            int questId = script.get("QuestId").toint();
-            int startNpcId = script.get("StartNpcId").toint();
-            int questType = script.get("QuestType").toint();
-
-            Quest quest = new Quest();
-            quest.setQuestId(questId);
-            quest.setStartNpcId(startNpcId);
-            quest.setQuestType(questType);
-            quest.setScript(script);
-
+            Quest quest = JavaScriptingEngine.getInstance().compileQuestScript(questName);
             quests.add(quest);
-
         }
         return quests;
     }

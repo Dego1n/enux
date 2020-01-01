@@ -1,54 +1,81 @@
 package com.gameserver.scripting.ai.npc;
 
+import com.gameserver.config.Config;
+import com.gameserver.model.World;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
-import com.gameserver.scripting.api.WorldInstanceApi;
-import com.gameserver.scripting.api.io.ReadFileApi;
-import com.gameserver.scripting.api.system.SystemApi;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
+import com.gameserver.template.Quest;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class NpcAi {
 
-    private final LuaValue script;
-    private final String scriptRootDirectory;
+    private int npc_id;
+    protected int object_id;
 
-    public NpcAi(NPCActor actor, String scriptPath)
+    public NpcAi(int npc_id)
     {
-        scriptRootDirectory = scriptPath;
-        script = JsePlatform.standardGlobals();
-        script.get("dofile").call(LuaValue.valueOf(scriptPath) + "/npc_ai.lua");
-        script.set("npc", CoerceJavaToLua.coerce(actor));
-        registerGlobals();
+        this.npc_id = npc_id;
     }
 
-    private void registerGlobals()
+
+    public void onTalk(PlayableCharacter character) {
+        String dialog = getDialog("index.dialog");
+        NPCActor npcActor = (NPCActor) World.getInstance().getActorByObjectId(object_id);
+        if (npcActor.getQuests().size() > 0)
+        {
+            dialog += "\n<button type=\"npc_dialog\" object_id=\""+object_id+"\" ref=\"quest\">Quest</>";
+        }
+        prepareDialogAndSend(character, dialog);;
+    }
+    public String getDialog(String name)
     {
-        script.set("self_path",scriptRootDirectory);
-        script.set("SysProps", new SystemApi());
-        script.set("ReadFile", new ReadFileApi());
-        script.set("World", new WorldInstanceApi());
+        try {
+            return new String(Files.readAllBytes(Paths.get(System.getProperty("user.dir") + "/" + Config.DATAPACK_PATH + "scripts/ai/npc/" + npc_id + "/dialogs/"+name)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    public void onTalk(PlayableCharacter character, String dialog)
+    {
+        switch (dialog)
+        {
+            case "index":
+                onTalk(character);
+                break;
+            case "quest":
+                onQuestTalk(character);
+                break;
+        }
     }
 
-    public LuaValue getScript() {
-        return script;
-    }
-
-    public void onTalk(PlayableCharacter character)
+    public void prepareDialogAndSend(PlayableCharacter pc, String dialog)
     {
-        if(script == null)
-            return;
-        LuaValue luaPc = CoerceJavaToLua.coerce(character);
-        script.get("onTalk").call(luaPc);
+        dialog = dialog.replace("$npc_id", String.valueOf(object_id));
+        pc.sendDialog(dialog);
     }
 
     public void requestDialog(PlayableCharacter character, String dialog)
     {
-        if(script == null)
-            return;
-        LuaValue luaPc = CoerceJavaToLua.coerce(character);
-        LuaValue luaDialog = CoerceJavaToLua.coerce(dialog);
-        script.get("Dialog").call(luaPc, luaDialog);
+        System.out.println("requestedDialog");
+        onTalk(character,dialog);
+    }
+
+    public void setObjectId(int object_id) {
+        this.object_id = object_id;
+    }
+
+    public void onQuestTalk(PlayableCharacter character)
+    {
+        NPCActor npcActor = (NPCActor) World.getInstance().getActorByObjectId(object_id);
+        StringBuilder dialog = new StringBuilder();
+        for(Quest quest : npcActor.getQuests())
+        {
+            dialog.append("<button type=\"quest\" object_id=\""+object_id+"\" quest_id=\""+quest.getQuestId()+"\" ref=\"index\">"+quest.getQuestId()+"</>\n");
+        }
+        prepareDialogAndSend(character,dialog.toString());
     }
 }
