@@ -97,18 +97,13 @@ public class ClientListenerThread {
                 ClientPackets.HandlePacket(this,byteBuffer.array());
             }
         }
-        catch (InterruptedException | ExecutionException e)
-        {
-            log.error(e.getMessage());
-            closeConnection();
-            return;
-        } catch (TimeoutException e)
+        catch (InterruptedException | ExecutionException | TimeoutException e)
         {
             closeConnection();
             return;
         }
 
-       closeConnection();
+        closeConnection();
     }
 
     private void closeConnection()
@@ -116,13 +111,15 @@ public class ClientListenerThread {
         if(playableCharacter != null)
         {
             World.getInstance().removePlayerFromWorld(playableCharacter);
+            log.warn("Closed connection for character "+playableCharacter.getName());
             this.playableCharacter.setClientListenerThread(null);
             this.playableCharacter = null;
         }
         try {
+
             _socketChannel.close();
         } catch (IOException e) {
-            log.error(e.getMessage());
+            //Do nothing?
         }
     }
 

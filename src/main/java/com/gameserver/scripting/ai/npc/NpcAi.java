@@ -4,11 +4,16 @@ import com.gameserver.config.Config;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
-import com.gameserver.template.Quest;
+import com.gameserver.template.quest.Quest;
+import com.gameserver.template.quest.QuestProgression;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class NpcAi {
 
@@ -23,19 +28,23 @@ public class NpcAi {
 
     public void onTalk(PlayableCharacter character) {
         String dialog = getDialog("index.dialog");
-        NPCActor npcActor = (NPCActor) World.getInstance().getActorByObjectId(object_id);
-        if (npcActor.getQuests().size() > 0)
+        if (dialog.length() == 0)
         {
-            dialog += "\n<button type=\"npc_dialog\" object_id=\""+object_id+"\" ref=\"quest\">Quest</>";
+            dialog = "I have nothing to say to you";
         }
+        dialog += "\n<button type=\"npc_dialog\" object_id=\""+object_id+"\" ref=\"quest\">Quest</>";
         prepareDialogAndSend(character, dialog);;
     }
     public String getDialog(String name)
     {
-        try {
-            return new String(Files.readAllBytes(Paths.get(System.getProperty("user.dir") + "/" + Config.DATAPACK_PATH + "scripts/ai/npc/" + npc_id + "/dialogs/"+name)));
-        } catch (IOException e) {
-            e.printStackTrace();
+        String filePath = System.getProperty("user.dir") + "/" + Config.DATAPACK_PATH + "scripts/ai/npc/" + npc_id + "/dialogs/"+name;
+        Path path = Paths.get(filePath);
+        if(Files.exists(path)) {
+            try {
+                return new String(Files.readAllBytes(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }
@@ -60,7 +69,6 @@ public class NpcAi {
 
     public void requestDialog(PlayableCharacter character, String dialog)
     {
-        System.out.println("requestedDialog");
         onTalk(character,dialog);
     }
 
@@ -72,9 +80,15 @@ public class NpcAi {
     {
         NPCActor npcActor = (NPCActor) World.getInstance().getActorByObjectId(object_id);
         StringBuilder dialog = new StringBuilder();
-        for(Quest quest : npcActor.getQuests())
+        List<Quest> quests = new ArrayList<>(npcActor.getQuests());
+        for(QuestProgression qp : character.getQuestProgressions())
         {
-            dialog.append("<button type=\"quest\" object_id=\""+object_id+"\" quest_id=\""+quest.getQuestId()+"\" ref=\"index\">"+quest.getQuestId()+"</>\n");
+            if(!quests.contains(qp.getQuest()) && IntStream.of(qp.getNpcIds()).anyMatch(npcId -> npcId == this.npc_id))
+                quests.add(qp.getQuest());
+        }
+        for(Quest quest : quests)
+        {
+            dialog.append("<button type=\"quest\" object_id=\""+object_id+"\" quest_id=\""+quest.getQuestId()+"\" ref=\"index\">"+quest.getQuestName()+"</>\n");
         }
         prepareDialogAndSend(character,dialog.toString());
     }

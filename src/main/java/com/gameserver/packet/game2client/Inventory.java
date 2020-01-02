@@ -44,7 +44,6 @@ public class Inventory extends AbstractSendablePacket implements IServerPacket {
             writeD(item.getObjectId());
             writeD(item.getItemId()); //item id
             writeD(item.getCount());
-            System.out.println("Sending item id "+item.getItemId());
         }
     }
 }

@@ -1,6 +1,5 @@
 import com.gameserver.model.actor.PlayableCharacter;
 import com.gameserver.scripting.ai.npc.NpcAi;
-import com.gameserver.template.Quest;
 
 public class NpcAi_100 extends NpcAi{
 
@@ -10,7 +9,6 @@ public class NpcAi_100 extends NpcAi{
 
     public void onTalk(PlayableCharacter pc, String dialog)
     {
-        System.out.println("NPC_AI_100: REQUESTED_DIALOG + "+ dialog);
         switch(dialog)
         {
             case "platform_info":

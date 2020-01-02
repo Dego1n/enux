@@ -2,7 +2,7 @@ package com.gameserver.scripting.engine;
 
 import com.gameserver.config.Config;
 import com.gameserver.scripting.ai.npc.NpcAi;
-import com.gameserver.template.Quest;
+import com.gameserver.template.quest.Quest;
 import org.mdkt.compiler.InMemoryJavaCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Dego1n
- * Компиляция java файла в runtime
+ * Компиляция java скрипта в runtime
  */
 public class JavaScriptingEngine {
 
@@ -23,7 +23,6 @@ public class JavaScriptingEngine {
 
     public static JavaScriptingEngine getInstance()
     {
-        System.out.println(System.getProperty("java.class.path"));
         if(_instance == null)
             _instance = new JavaScriptingEngine();
 
@@ -38,15 +37,23 @@ public class JavaScriptingEngine {
 
     public NpcAi compileNpcAiScript(int npc_id)
     {
-        Class<?> compiledScript = compileScript("ai/npc/$npc_id/NpcAi_$npc_id.java".replace("$npc_id", String.valueOf(npc_id)));
-        if(compiledScript != null)
-        {
-            try {
-                return (NpcAi) compiledScript.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-                return new NpcAi(npc_id);
+        String path = "ai/npc/$npc_id/NpcAi_$npc_id.java".replace("$npc_id", String.valueOf(npc_id));
+        File file = new File(pathToScriptsFolder + path);
+        if(file.exists()) {
+            log.info("Compiling npc script NpcAi_{}", npc_id);
+            Class<?> compiledScript = compileScript(file);
+            if (compiledScript != null) {
+                try {
+                    return (NpcAi) compiledScript.getDeclaredConstructor().newInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                    return new NpcAi(npc_id);
+                }
             }
+        }
+        else
+        {
+            log.info("Using default NpcAi for npc_id: "+npc_id);
         }
         return new NpcAi(npc_id);
     }
@@ -54,29 +61,31 @@ public class JavaScriptingEngine {
     public Quest compileQuestScript(String questName)
     {
         String questPath = "quests/"+questName+"/"+questName+".java";
-        Class<?> compiledScript = compileScript(questPath);
-        if(compiledScript != null)
-        {
-            try {
-                return (Quest) compiledScript.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-                System.exit(1);
+        File file = new File(pathToScriptsFolder + questPath);
+        if(file.exists()) {
+            log.info("Compiling quest script {}", questName);
+            Class<?> compiledScript = compileScript(file);
+            if (compiledScript != null) {
+                try {
+                    return (Quest) compiledScript.getDeclaredConstructor().newInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                log.error("Couldn't load quest: " + questPath);
             }
         }
         else
         {
-            log.error("Couldn't load quest: "+questPath);
-            System.exit(1);
+            log.warn("Failed to load quest: "+questName);
         }
         return null;
     }
 
-    public Class<?> compileScript(String filepath) {
-        File file = new File(pathToScriptsFolder + filepath);
+    public Class<?> compileScript(File file) {
         if(!file.exists())
         {
-            log.warn("Script does not exists: "+filepath);
+            log.warn("Script does not exists: "+file.getPath());
             return null;
         }
         try (FileInputStream fis = new FileInputStream(file);
@@ -84,7 +93,6 @@ public class JavaScriptingEngine {
              BufferedReader reader = new BufferedReader(isr)) {
             return COMPILER.compile(getClassForFile(file), readerToString(reader));
         } catch (Exception ex) {
-            System.out.println("Error executing script!" + ex);
             ex.printStackTrace();
         }
         return null;

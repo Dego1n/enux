@@ -1,0 +1,4 @@
+Hello, champion. I'm glad you're here.
+Please go to the watcher not far away from here and report about your arriving.
+
+<button type="quest" object_id="$npc_id" quest_id="$quest_id" ref="A1">Ok, i will talk to him</>

@@ -34,6 +34,6 @@ public class ValidatePosition extends AbstractReceivablePacket {
 
         pc.getActorIntention().intentionThink();
 
-        System.out.println("Validated position for "+pc.getName()+" x:"+x+" y:"+y+" z:"+z);
+        //System.out.println("Validated position for "+pc.getName()+" x:"+x+" y:"+y+" z:"+z);
     }
 }

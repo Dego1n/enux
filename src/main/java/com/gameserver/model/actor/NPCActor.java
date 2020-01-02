@@ -1,6 +1,5 @@
 package com.gameserver.model.actor;
 
-import com.gameserver.config.Config;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.ability.Ability;
 import com.gameserver.model.actor.ai.base.intention.IntentionIdle;
@@ -15,12 +14,10 @@ import com.gameserver.task.actortask.RemoveActorTask;
 import com.gameserver.task.actortask.ResetAttackCooldown;
 import com.gameserver.task.actortask.SpawnActorTask;
 import com.gameserver.template.NPC;
-import com.gameserver.template.Quest;
+import com.gameserver.template.quest.Quest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +60,6 @@ public class NPCActor extends BaseActor {
         setBaseExperience(npc.getBaseExperience());
         respawnTime = npc.getRespawnTime();
 
-        npc_id = 100;
         npcAi = JavaScriptingEngine.getInstance().compileNpcAiScript(npc_id);
         npcAi.setObjectId(getObjectId());
 
@@ -214,5 +210,9 @@ public class NPCActor extends BaseActor {
     public List<Quest> getQuests()
     {
         return quests;
+    }
+
+    public int getNpcId() {
+        return npc_id;
     }
 }

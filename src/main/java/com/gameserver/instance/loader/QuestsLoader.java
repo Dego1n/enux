@@ -2,8 +2,9 @@ package com.gameserver.instance.loader;
 
 import com.gameserver.config.Config;
 import com.gameserver.scripting.engine.JavaScriptingEngine;
-import com.gameserver.template.Quest;
+import com.gameserver.template.quest.Quest;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,16 +18,12 @@ public class QuestsLoader {
 
         List<Quest> quests = new ArrayList<>();
 
+
         Map<String, String> questFolders = new HashMap<>();
-        try {
-            Files.walk(Paths.get(Config.DATAPACK_PATH + "scripts/quests/")).filter(Files::isDirectory).forEach(folder -> {
-                questFolders.put(folder.getFileName().toString(), folder.toAbsolutePath().toString());
-            });
-            //Удаляем первый элемент - это root папка
-            questFolders.remove(questFolders.keySet().stream().findFirst().get());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+        File questFolder = new File(Config.DATAPACK_PATH + "scripts/quests/");
+        for(File quest : questFolder.listFiles())
+        {
+            questFolders.put(quest.getName(), quest.getAbsolutePath().toString());
         }
         for(Map.Entry<String,String> questData : questFolders.entrySet())
         {

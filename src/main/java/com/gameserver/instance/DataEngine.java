@@ -10,7 +10,7 @@ import com.gameserver.instance.loader.item.WeaponsLoader;
 import com.gameserver.model.ability.Ability;
 import com.gameserver.model.ability.AbilityTree;
 import com.gameserver.template.NPC;
-import com.gameserver.template.Quest;
+import com.gameserver.template.quest.Quest;
 import com.gameserver.template.buylist.BuyList;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.stats.BaseStats;
@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DataEngine {
 
@@ -194,5 +193,14 @@ public class DataEngine {
         }
 
         return npcQuests;
+    }
+
+    public Quest getQuestById(int questId) {
+        for(Quest quest: quests)
+        {
+            if(quest.getQuestId() == questId)
+                return quest;
+        }
+        return null;
     }
 }

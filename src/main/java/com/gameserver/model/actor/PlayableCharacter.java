@@ -18,6 +18,7 @@ import com.gameserver.template.item.ArmorItem;
 import com.gameserver.template.item.BaseItem;
 import com.gameserver.template.item.JewelryItem;
 import com.gameserver.template.item.WeaponItem;
+import com.gameserver.template.quest.QuestProgression;
 import com.gameserver.template.stats.BaseStats;
 import com.gameserver.template.stats.StatModifier;
 import com.gameserver.template.stats.Stats;
@@ -46,6 +47,8 @@ public class PlayableCharacter extends BaseActor {
     private int currentExperience;
 
     private Map<Ability, Integer> _abilities;
+
+    private List<QuestProgression> questProgressions;
 
     public PlayableCharacter(ClientListenerThread clientListenerThread, Character character)
     {
@@ -91,6 +94,9 @@ public class PlayableCharacter extends BaseActor {
         //TODO: grab from database?
         setCurrentHp(getMaxHp());
         setCurrentMp(getMaxMp());
+
+        //TODO: grab from database
+        questProgressions = new ArrayList<>();
     }
 
     public ClientListenerThread getClientListenerThread() {
@@ -215,7 +221,7 @@ public class PlayableCharacter extends BaseActor {
         }
         else
         {
-            System.out.println("Client requested action for non existing target. Id: "+objectId);
+            log.warn("Client requested action for non existing target. Id: "+objectId);
         }
     }
 
@@ -307,7 +313,6 @@ public class PlayableCharacter extends BaseActor {
                 log.warn("Client requested acquire ability with non existent level");
             }
         }
-        System.out.println("Sending new abilities list");
         sendPacket(new AbilitiesList(this));
     }
     public int getAbilityLevel(int ability_id)
@@ -341,7 +346,6 @@ public class PlayableCharacter extends BaseActor {
     }
 
     public void say(String message) {
-        System.out.println("client " + getName() + " trying to say: " + message);
         ActorSay actorSayPacket = new ActorSay(this, this.getName(), message);
         sendPacketAndBroadcastToNearbyPlayers(actorSayPacket);
     }
@@ -566,5 +570,30 @@ public class PlayableCharacter extends BaseActor {
     @Override
     public double getMpRegenRate() {
         return stats.getMpRegen();
+    }
+
+    public QuestProgression getQuestProgression(int quest_id) {
+
+        for(QuestProgression qp : questProgressions)
+        {
+            if(qp.getQuest().getQuestId() == quest_id)
+                return qp;
+        }
+        return null;
+    }
+
+    public void addQuestProgression(QuestProgression qp)
+    {
+        questProgressions.add(qp);
+    }
+
+    public List<QuestProgression> getQuestProgressions()
+    {
+        return questProgressions;
+    }
+
+    public void questCompleted(QuestProgression qp)
+    {
+        questProgressions.remove(qp);
     }
 }

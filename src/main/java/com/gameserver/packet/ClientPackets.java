@@ -39,6 +39,7 @@ public class ClientPackets {
     private final static short REQUEST_USE_ABILITY = 0x20;
     private final static short REQUEST_BUY = 0x21;
     private final static short REQUEST_SELL = 0x22;
+    private final static short QUEST_TALK = 0x23;
 
     public static void HandlePacket(ClientListenerThread clientListenerThread, byte [] packet)
     {
@@ -137,6 +138,9 @@ public class ClientPackets {
                 break;
             case REQUEST_SELL:
                 new RequestSell(clientListenerThread, packet);
+                break;
+            case QUEST_TALK:
+                new QuestTalk(clientListenerThread,packet);
                 break;
         }
     }
