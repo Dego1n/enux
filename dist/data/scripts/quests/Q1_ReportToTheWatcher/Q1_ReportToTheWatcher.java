@@ -59,7 +59,7 @@ public class Q1_ReportToTheWatcher extends Quest {
                         }
                         break;
                     case "A1":
-                        updateProgression(pc, qp, ref, new int[] {100,103});
+                        updateProgression(pc, qp, "A1", new int[] {100,103});
                         prepareAndSendDialog(pc, getDialog("A1.dialog"), object_id);
                 }
                 break;
@@ -67,7 +67,7 @@ public class Q1_ReportToTheWatcher extends Quest {
                 if ("index".equals(ref)) {
                     if (qp.getCurrentQuestState().equals("A1")) {
                         prepareAndSendDialog(pc, getDialog("A2.dialog"), object_id);
-                        pc.questCompleted(qp);
+                        pc.questCompleted(pc, qp);
                         pc.sendPacket(new SystemMessage("You successfully completed quest " + QUEST_NAME));
                     }
                 }

@@ -29,6 +29,7 @@ public class EnterWorld extends AbstractReceivablePacket {
             character.sendPacket(new Inventory(character.getInventory(), character.getEquipInfo()));
             character.sendPacket(new StatusInfo(character));
             character.sendPacket(new PCActorInfo(character));
+            character.sendPacket(new QuestList(character.getQuestProgressions()));
             World.getInstance().addPlayerToWorld(character);
             for (BaseActor actor : character.nearbyActors())
             {

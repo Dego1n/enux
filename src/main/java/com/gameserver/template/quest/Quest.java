@@ -11,6 +11,7 @@ import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
+import com.gameserver.packet.game2client.QuestList;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,6 +42,7 @@ public abstract class Quest {
         }
         qp.setCurrentQuestState(questState);
         qp.setNpcIds(npcIds);
+        pc.sendPacket(new QuestList(pc.getQuestProgressions()));
     }
 
     public String getDialog(String name)

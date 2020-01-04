@@ -13,7 +13,7 @@ Human_Fighter:
   critical: 4.0
   attack_speed: 300.0
   magic_attack: 6.0
-  speed: 280.0
+  speed: 2800.0
   cast_speed: 330.0
   level_stats:
     - level: 1

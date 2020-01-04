@@ -592,8 +592,9 @@ public class PlayableCharacter extends BaseActor {
         return questProgressions;
     }
 
-    public void questCompleted(QuestProgression qp)
+    public void questCompleted(PlayableCharacter pc, QuestProgression qp)
     {
         questProgressions.remove(qp);
+        pc.sendPacket(new QuestList(pc.getQuestProgressions()));
     }
 }
