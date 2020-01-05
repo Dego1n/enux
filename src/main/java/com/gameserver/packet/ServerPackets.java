@@ -27,5 +27,6 @@ public class ServerPackets {
     public final static short SPECIAL_ACTOR_INFO = 0x26;
     public final static short ACQUIRE_SKILL_LIST = 0x27;
     public final static short QUEST_LIST = 0x28;
+    public final static short PLAY_SOUND = 0x29;
 
 }

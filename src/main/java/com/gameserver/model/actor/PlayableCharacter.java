@@ -446,9 +446,12 @@ public class PlayableCharacter extends BaseActor {
                 sendPacket(new SystemMessage("You current EXP:  " + getCurrentExperience()));
                 new Task(new RemoveActorTask(npcTarget), 10 * 1000);
                 new Task(new SpawnActorTask(npcTarget), npcTarget.getRespawnTime() * 1000);
+                for(QuestProgression qp : questProgressions)
+                {
+                    qp.getQuest().onQuestKill(this, npcTarget.getNpcId());
+                }
             }
             sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
-
         } else {
             sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
         }

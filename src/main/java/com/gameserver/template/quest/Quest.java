@@ -16,6 +16,7 @@ import com.gameserver.packet.game2client.QuestList;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 
 public abstract class Quest {
     public abstract int getQuestId();
@@ -26,7 +27,13 @@ public abstract class Quest {
 
     public abstract String getQuestName();
 
+    public abstract Map<QuestRewardType, Integer> getQuestRewards();
+
+    public abstract Map<Integer, Integer> getQuestItemsRewards();
+
     public abstract void onQuestTalk(PlayableCharacter pc, String ref, int object_id);
+
+    public abstract void onQuestKill(PlayableCharacter pc, int npc_id);
 
     public void updateProgression(PlayableCharacter pc, QuestProgression qp, String questState, int[] npcIds)
     {

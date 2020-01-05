@@ -1,0 +1,8 @@
+Please excuse me, traveler. I need you to intervene.
+
+Trouble is on the horizon, in a matter of days we'll be attacked and we might not be strong enough to stop it. Hero, we need your help. Go out and disrupt their activities, slow down those cruel goblins. It'll be dangerous, but I'm willing to come along if you need me to.
+They'll be no match for you, those goblins. Try to kill all those who stand in your way, we don't need their filth in our lands.
+
+I have little possessions left, but I'll reward you with what I have. I'm looking forward to your return, hero. Good luck.
+
+<button type="quest" object_id="$npc_id" quest_id="$quest_id" ref="A1">I will help you!</>
