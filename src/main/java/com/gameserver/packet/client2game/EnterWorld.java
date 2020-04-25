@@ -39,7 +39,7 @@ public class EnterWorld extends AbstractReceivablePacket {
                 }
                 else if (actor instanceof NPCActor)
                 {
-                    _clientListenerThread.sendPacket(new ActorInfo(actor));
+                    _clientListenerThread.sendPacket(new ActorInfo(actor, character));
                 }
             }
             character.sendPacket(new SystemMessage("Entered to server: "+ Config.GAME_SERVER_NAME));

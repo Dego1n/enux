@@ -33,7 +33,7 @@ class GameServer {
         }
         try
         {
-            Thread.sleep( 6000000 );
+            Thread.sleep( 2678400000L ); //month
         }
         catch( Exception e )
         {

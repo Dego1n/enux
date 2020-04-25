@@ -154,7 +154,7 @@ public class NPCActor extends BaseActor {
                 target.getActorIntention().setIntention(new IntentionIdle());
             }
         } else {
-            broadcastPacket(new ActorInfo(target));
+            broadcastActorInfo(target);
             if (target instanceof PlayableCharacter)
             {
                 ((PlayableCharacter) target).sendPacket(new StatusInfo((PlayableCharacter) target));

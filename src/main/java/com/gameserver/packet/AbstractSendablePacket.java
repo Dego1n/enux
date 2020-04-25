@@ -33,6 +33,11 @@ public abstract class AbstractSendablePacket implements IServerPacket {
         _bao.write((value >> 8) & 0xff);
     }
 
+    protected void writeH(boolean value)
+    {
+        writeH(value ? 1 : 0);
+    }
+
     protected void writeF(double org)
     {
         long value = Double.doubleToRawLongBits(org);

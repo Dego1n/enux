@@ -40,7 +40,7 @@ public class RegenTask extends TimerTask {
         }
         if(actor instanceof NPCActor)
         {
-            actor.broadcastPacket(new ActorInfo(actor));
+            actor.broadcastActorInfo(actor);
         }
         else if(actor instanceof PlayableCharacter)
         {

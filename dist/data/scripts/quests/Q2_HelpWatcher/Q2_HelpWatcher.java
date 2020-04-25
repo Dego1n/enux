@@ -74,7 +74,6 @@ public class Q2_HelpWatcher extends Quest {
                                 break;
                             case "A2":
                                 pc.sendPacket(new PlaySound(PlaySound.Sounds.QUEST_COMPLETED));
-                                prepareAndSendDialog(pc, getDialog("A2.dialog"), object_id);
                                 pc.questCompleted(pc,qp);
                                 for(Map.Entry<QuestRewardType, Integer> questReward : questRewards.entrySet())
                                 {
@@ -92,6 +91,7 @@ public class Q2_HelpWatcher extends Quest {
                                 {
                                     pc.giveItem(DataEngine.getInstance().getItemById(questItemReward.getKey()), questItemReward.getValue());
                                 }
+                                prepareAndSendDialog(pc, getDialog("A2.dialog"), object_id, true);
                                 break;
                             default:
                                 prepareAndSendDialog(pc, getDialog("index.dialog"), object_id);
@@ -103,8 +103,8 @@ public class Q2_HelpWatcher extends Quest {
                     if(qp == null || qp.getCurrentQuestState() == null) {
                         pc.sendPacket(new PlaySound(PlaySound.Sounds.QUEST_ACCEPTED));
                     }
-                    updateProgression(pc, qp, "A1", new int[] {103,104});
-                    prepareAndSendDialog(pc, getDialog("A1.dialog"), object_id);
+                    updateProgression(pc, qp, "A1", new int[] {103,104}, 104);
+                    prepareAndSendDialog(pc, getDialog("A1.dialog"), object_id, true);
                     break;
 
             }
@@ -123,12 +123,22 @@ public class Q2_HelpWatcher extends Quest {
             }
             if(value >= 4) {
                 pc.sendPacket(new PlaySound(PlaySound.Sounds.QUEST_ACCEPTED));
-                updateProgression(pc,qp, "A2", new int[103]);
+                updateProgression(pc,qp, "A2", new int[103], 103);
             }
             else{
                 pc.sendPacket(new PlaySound(PlaySound.Sounds.QUEST_NEW_STEP));
                 qp.updateQuestVariable("kill_103", value + 1);
             }
         }
+    }
+
+    @Override
+    public boolean isLastStep(PlayableCharacter pc, int npc_id)
+    {
+        QuestProgression qp = pc.getQuestProgression(QUEST_ID);
+        if(qp == null || qp.getCurrentQuestState() == null)
+            return false;
+
+        return qp.getCurrentQuestState().equals("A2") && npc_id == START_NPC_ID;
     }
 }

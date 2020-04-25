@@ -9,8 +9,10 @@ package com.gameserver.template.quest;
 import com.gameserver.config.Config;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
+import com.gameserver.model.actor.BaseActor;
 import com.gameserver.model.actor.NPCActor;
 import com.gameserver.model.actor.PlayableCharacter;
+import com.gameserver.packet.game2client.ActorInfo;
 import com.gameserver.packet.game2client.QuestList;
 
 import java.io.IOException;
@@ -35,6 +37,22 @@ public abstract class Quest {
 
     public abstract void onQuestKill(PlayableCharacter pc, int npc_id);
 
+    public abstract boolean isLastStep(PlayableCharacter pc, int npc_id);
+
+    public void updateProgression(PlayableCharacter pc, QuestProgression qp, String questState, int[] npcIds, int updateActorInfoNpcId)
+    {
+        updateProgression(pc,qp,questState,npcIds);
+        for(BaseActor actor : pc.nearbyActors())
+        {
+            if(actor instanceof NPCActor)
+            {
+                if(((NPCActor) actor).getNpcId() == updateActorInfoNpcId)
+                {
+                    pc.sendPacket(new ActorInfo(actor,pc));
+                }
+            }
+        }
+    }
     public void updateProgression(PlayableCharacter pc, QuestProgression qp, String questState, int[] npcIds)
     {
         if(qp == null)
@@ -60,6 +78,21 @@ public abstract class Quest {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public void prepareAndSendDialog(PlayableCharacter pc, String dialog, int object_id, boolean sendActorInfo)
+    {
+        prepareAndSendDialog(pc,dialog,object_id);
+        if(sendActorInfo)
+        {
+            for(BaseActor actor : pc.nearbyActors())
+            {
+                if(actor.getObjectId() == object_id)
+                {
+                    pc.sendPacket(new ActorInfo(actor, pc));
+                }
+            }
+        }
     }
 
     public void prepareAndSendDialog(PlayableCharacter pc, String dialog, int object_id)

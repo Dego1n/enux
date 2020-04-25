@@ -89,7 +89,7 @@ public class World {
         actors.add(npc);
         for(PlayableCharacter pc : getPlayableCharactersInRadius(npc,100000))
         {
-            pc.sendPacket(new ActorInfo(npc));
+            pc.sendPacket(new ActorInfo(npc, pc));
         }
     }
 

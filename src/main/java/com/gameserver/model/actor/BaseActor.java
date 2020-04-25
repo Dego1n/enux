@@ -390,4 +390,12 @@ public abstract class BaseActor {
         //TODO: titles
         return "todo: implement titles";
     }
+
+    public void broadcastActorInfo(BaseActor actor)
+    {
+        for(PlayableCharacter pc : nearbyPlayers())
+        {
+            pc.sendPacket(new ActorInfo(actor, pc));
+        }
+    }
 }

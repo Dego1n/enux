@@ -84,15 +84,14 @@ public class Q1_ReportToTheWatcher extends Quest {
                         }
                         break;
                     case "A1":
-                        updateProgression(pc, qp, "A1", new int[] {100,103});
+                        updateProgression(pc, qp, "A1", new int[] {100,103}, 103);
                         pc.sendPacket(new PlaySound(PlaySound.Sounds.QUEST_ACCEPTED));
-                        prepareAndSendDialog(pc, getDialog("A1.dialog"), object_id);
+                        prepareAndSendDialog(pc, getDialog("A1.dialog"), object_id, true);
                 }
                 break;
             case 103:
                 if ("index".equals(ref)) {
                     if (qp.getCurrentQuestState().equals("A1")) {
-                        prepareAndSendDialog(pc, getDialog("A2.dialog"), object_id);
                         pc.questCompleted(pc, qp);
                         pc.sendPacket(new PlaySound(PlaySound.Sounds.QUEST_COMPLETED));
                         pc.sendPacket(new SystemMessage("You successfully completed quest " + QUEST_NAME));
@@ -112,6 +111,8 @@ public class Q1_ReportToTheWatcher extends Quest {
                         {
                             pc.giveItem(DataEngine.getInstance().getItemById(questItemReward.getKey()), questItemReward.getValue());
                         }
+                        prepareAndSendDialog(pc, getDialog("A2.dialog"), object_id, true);
+
                     }
                 }
                 break;
@@ -121,5 +122,15 @@ public class Q1_ReportToTheWatcher extends Quest {
     @Override
     public void onQuestKill(PlayableCharacter pc, int npc_id) {
 
+    }
+
+    @Override
+    public boolean isLastStep(PlayableCharacter pc, int npc_id)
+    {
+        QuestProgression qp = pc.getQuestProgression(QUEST_ID);
+        if(qp == null || qp.getCurrentQuestState() == null)
+            return false;
+
+        return qp.getCurrentQuestState().equals("A1") && npc_id == 103;
     }
 }

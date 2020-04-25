@@ -35,7 +35,7 @@ TestManequen:
 Berter:
   id: 103
   name: Berter
-  template_id: 102
+  template_id: 103
   is_friendly: true
   hp: 100.0
   respawn_time: 5

@@ -18,7 +18,7 @@ public class SendActorInfoCommand extends AbstractAdminCommand{
             }
             else if (actor instanceof NPCActor)
             {
-                character.sendPacket(new ActorInfo(actor));
+                character.sendPacket(new ActorInfo(actor, character));
             }
         }
         character.sendPacket(new SystemMessage("Sent nearby actors info"));

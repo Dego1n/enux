@@ -165,7 +165,8 @@ public class PlayableCharacter extends BaseActor {
 
     public List<BaseActor> nearbyActors()
     {
-        return World.getInstance().getActorsInRadius(this,10000);
+        //TODO: Fix radius because movement listeners does not broadcast nearby actors
+        return World.getInstance().getActorsInRadius(this,100000);
     }
 
     public void moveToLocation(int x, int y, int z)
@@ -453,7 +454,8 @@ public class PlayableCharacter extends BaseActor {
             }
             sendPacketAndBroadcastToNearbyPlayers(new ActorDied(target));
         } else {
-            sendPacketAndBroadcastToNearbyPlayers(new ActorInfo(target));
+            sendPacket(new ActorInfo(target,this));
+            broadcastActorInfo(target);
         }
     }
 

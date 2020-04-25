@@ -92,4 +92,26 @@ public class NpcAi {
         }
         prepareDialogAndSend(character,dialog.toString());
     }
+
+    public boolean hasQuestsForCharacter(PlayableCharacter pc)
+    {
+        NPCActor npcActor = (NPCActor) World.getInstance().getActorByObjectId(object_id);
+        List<Quest> quests = npcActor.getQuests();
+        for(Quest quest : quests)
+        {
+            if(pc.getQuestProgression(quest.getQuestId()) == null)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasLastStepForCharacter(PlayableCharacter pc)
+    {
+        for(QuestProgression qp : pc.getQuestProgressions())
+        {
+            if(qp.getQuest().isLastStep(pc,npc_id))
+                return true;
+        }
+        return false;
+    }
 }
