@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  game_jdk_vm:
+    build:
+      context: ".docker"
+      dockerfile: jvm/Dockerfile
+    ports:
+#      - '5005:5005' # Intellij Idea debug
+      - '6987:6987' # Clients
+    environment:
+      DATABASE_URL: "jdbc:postgresql://game_db:5432/postgres?useSSL=false"
+      DATABASE_PASSWORD: "game_db_pass"
+      DATABASE_USER: "game_user"
+      LISTEN_CLIENTS_ADDR: "0.0.0.0"
+      AUTH_SERVER_ADDR: "auth_jdk_vm"
+    volumes:
+      - './:/jvm'
+    networks:
+      - proxy-game-net
+      - local-game-net
+    command: gradle -DDEBUG=true run
+  game_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "game_db_pass"
+      POSTGRES_USER: "game_user"
+    networks:
+      - local-game-net
+
+networks:
+  proxy-game-net:
+    external:
+      name: game-backend-local-network
+  local-game-net:
+    name: auth-backend-netowrk

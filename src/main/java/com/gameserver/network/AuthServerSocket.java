@@ -22,7 +22,9 @@ public class AuthServerSocket {
                 thread.receivableStream();
             }
             @Override
-            public void failed(Throwable exc, Void att) {}
+            public void failed(Throwable exc, Void att) {
+                exc.printStackTrace();
+            }
         });
     }
 }
