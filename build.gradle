@@ -1,12 +1,23 @@
 plugins {
-    id 'java'
+    id 'application'
 }
 
-group 'com.mmo'
+group 'com.mmo.gamesserver'
 version 'DEVELOPMENT'
+
+apply plugin: 'java'
+application {
+    mainClassName 'com.gameserver.GameServer'
+}
 
 repositories {
     mavenCentral()
+}
+
+tasks.withType(JavaExec) {
+    if (System.getProperty('DEBUG', 'false') == 'true') {
+        jvmArgs '-Xdebug', '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
+    }
 }
 
 dependencies {

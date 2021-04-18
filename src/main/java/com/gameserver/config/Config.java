@@ -65,17 +65,17 @@ public class Config {
         }
 
         PropertiesParser configParser = new PropertiesParser(gameSocketProperties);
-        GAME_SOCKET_LISTEN_ADDRESS = configParser.getString("ListenAddress", "127.0.0.1");
+        GAME_SOCKET_LISTEN_ADDRESS = System.getenv("LISTEN_CLIENTS_ADDR") != null ? System.getenv("LISTEN_CLIENTS_ADDR") : configParser.getString("ListenAddress", "127.0.0.1");
         GAME_SOCKET_LISTEN_PORT = configParser.getShort("ListenPort", (short)6987);
-        AUTH_SERVER_ADDRESS = configParser.getString("AuthServerAddress", "127.0.0.1");
+        AUTH_SERVER_ADDRESS = System.getenv("AUTH_SERVER_ADDR") != null ? System.getenv("AUTH_SERVER_ADDR") : configParser.getString("AuthServerAddress", "127.0.0.1");
         AUTH_SERVER_GAME_LISTEN_PORT = configParser.getShort("AuthServerGameListenPort", (short)1234);
 
         configParser = new PropertiesParser(databaseProperties);
         DATABASE_DRIVER = configParser.getString("DatabaseDriver","org.postgresql.Driver");
         DATABASE_DIALECT = configParser.getString("DatabaseDialect","org.hibernate.dialect.PostgreSQL95Dialect");
-        DATABASE_URL = configParser.getString("DatabaseURL","jdbc:postgresql://localhost:5432/postgres?useSSL=false");
-        DATABASE_USER = configParser.getString("DatabaseUser","postgres");
-        DATABASE_PASSWORD = configParser.getString("DatabasePassword","root");
+        DATABASE_URL = System.getenv("DATABASE_URL") != null ? System.getenv("DATABASE_URL") : configParser.getString("DatabaseURL","jdbc:postgresql://localhost:5432/postgres?useSSL=false");
+        DATABASE_USER = System.getenv("DATABASE_USER") != null ? System.getenv("DATABASE_USER") : configParser.getString("DatabaseUser","postgres");
+        DATABASE_PASSWORD = System.getenv("DATABASE_PASSWORD") != null ? System.getenv("DATABASE_PASSWORD") : configParser.getString("DatabasePassword","root");
         DATABASE_SHOW_SQL = configParser.getString("DatabaseShowSql","true");
         DATABASE_HBM2DLL = configParser.getString("DatabaseHBM2DLL","update");
 
