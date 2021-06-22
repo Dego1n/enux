@@ -25,7 +25,7 @@ dependencies {
     compile files("dist/config/log") // IDE будет подключать конфиг LogBack
 
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4' //PostgreSQL Driver
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.32.Final' //Hibernate 5.4.1
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.5.3.Final' //Hibernate 5.4.1
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3' //LogBack
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.30' //Log
 
