@@ -1,6 +1,7 @@
 package com.gameserver.packet.client2game;
 
-import com.gameserver.database.dao.actor.CharacterDao;
+import com.gameserver.database.DBDatastore;
+import com.gameserver.database.repository.actor.CharacterRepository;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
 import com.gameserver.network.thread.ClientListenerThread;
@@ -25,7 +26,7 @@ public class RequestCreateCharacter extends AbstractReceivablePacket {
 
         //TODO: Проверять полученные данные валидатором
 
-        CharacterDao characterDao = new CharacterDao();
+        CharacterRepository characterDao = new CharacterRepository();
         Character character = new Character();
 
         character.setName(name);
@@ -50,13 +51,12 @@ public class RequestCreateCharacter extends AbstractReceivablePacket {
         }
 
         //TODO: change location
-        character.setLocationX(2820);
-        character.setLocationY(3990);
-        character.setLocationZ(-5740);
+        character.setLocationX(-41560);
+        character.setLocationY(202984);
+        character.setLocationZ(2150);
+        character.setAccountId("1"); // TODO set actual ID
 
-        character.setAccountId(1); //TODO change to account
-
-        characterDao.save(character);
-        _clientListenerThread.sendPacket(new CharacterList(characterDao.getCharactersByAccount(1))); //TODO: change account
+        DBDatastore.getInstance().save(character);
+        _clientListenerThread.sendPacket(new CharacterList(characterDao.getCharactersByAccount("1"))); //TODO: change account
     }
 }

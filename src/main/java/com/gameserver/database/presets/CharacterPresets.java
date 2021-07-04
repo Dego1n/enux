@@ -1,6 +1,7 @@
 package com.gameserver.database.presets;
 
-import com.gameserver.database.dao.actor.CharacterDao;
+import com.gameserver.database.DBDatastore;
+import com.gameserver.database.repository.actor.CharacterRepository;
 import com.gameserver.database.entity.actor.Character;
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
@@ -13,26 +14,22 @@ public class CharacterPresets {
 
     public static void Load()
     {
-        CharacterDao characterDao = new CharacterDao();
+        CharacterRepository characterRepository = new CharacterRepository();
 
-        if(characterDao.getCharacterByName("PlayTest") == null)
+        if(characterRepository.getCharacterByName("PlayTest") == null)
         {
             log.info("Creating actor PlayTest");
 
-            Character character = new Character();
-
-            character.setAccountId(1);
-
-            character.setLocationX(2820);
-            character.setLocationY(3990);
-            character.setLocationZ(4000);
-            character.setLevel(1);
-            character.setExperience(0);
-            character.setName("PlayTest");
-            character.setRace(Race.Human);
-            character.setCharacterClass(CharacterClass.Fighter);
-
-            characterDao.save(character);
+            Character character = new Character(
+                    "1",
+                    "PlayTest",
+                    Race.Human,
+                    CharacterClass.Fighter,
+                    -41560,
+                    202984,
+                    2150
+            );
+            DBDatastore.getInstance().save(character);
         }
         else
         {

@@ -2,56 +2,65 @@ package com.gameserver.database.entity.actor;
 
 import com.gameserver.database.staticdata.CharacterClass;
 import com.gameserver.database.staticdata.Race;
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Id;
+import dev.morphia.annotations.Property;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "Character")
+@Entity("character")
 public class Character {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    private String id;
 
-    @Column(name = "account_id")
-    private int accountId;
+    @Property("account_id")
+    private String accountId;
 
-    @Column(name = "name")
+    @Property("name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "race")
+    @Property("race")
     private Race race;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "class")
+    @Property("class")
     private CharacterClass characterClass;
 
-    @Column(name = "location_x")
+    @Property("location_x")
     private int locationX;
 
-    @Column(name = "location_y")
+    @Property("location_y")
     private int locationY;
 
-    @Column(name = "location_z")
+    @Property("location_z")
     private int locationZ;
 
-    @Column(name = "level")
-    private int level;
+    @Property("level")
+    private int level = 1;
 
-    @Column(name = "experience")
-    private int experience;
+    @Property("experience")
+    private int experience = 0;
 
-    public int getId() {
+    public Character() {
+
+    }
+    public Character(String accountId, String name, Race race, CharacterClass characterClass, int locationX, int locationY, int locationZ) {
+        this.accountId = accountId;
+        this.name = name;
+        this.race = race;
+        this.characterClass = characterClass;
+        this.locationX = locationX;
+        this.locationY = locationY;
+        this.locationZ = locationZ;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public int getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
