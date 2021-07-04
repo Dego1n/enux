@@ -39,6 +39,8 @@ public class CommandEngine {
         this.registerCommand(new AddExperienceCommand());
         this.registerCommand(new DebugShowAcquireSkillList());
         this.registerCommand(new LogSpawnRowToServerCommand());
+        this.registerCommand(new CurrentLocationCommand());
+        this.registerCommand(new SetSpeedCommand());
         log.info("Loaded {} admin commands", _adminCommands.size());
     }
 
