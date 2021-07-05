@@ -23,13 +23,8 @@ public class Config {
 
 
     private static String databaseProperties = configDir + "/database/database.ini";
-    public static String DATABASE_DRIVER;
-    public static String DATABASE_DIALECT;
-    public static String DATABASE_URL;
-    public static String DATABASE_USER;
-    public static String DATABASE_PASSWORD;
-    public static String DATABASE_SHOW_SQL;
-    public static String DATABASE_HBM2DLL;
+    public static String DATABASE_CONNECTION_STRING;
+    public static String DATABASE_NAME;
 
     private static String generalProperties = configDir + "/general/general.ini";
     public static String GAME_SERVER_NAME;
@@ -71,13 +66,8 @@ public class Config {
         AUTH_SERVER_GAME_LISTEN_PORT = configParser.getShort("AuthServerGameListenPort", (short)1234);
 
         configParser = new PropertiesParser(databaseProperties);
-        DATABASE_DRIVER = configParser.getString("DatabaseDriver","org.postgresql.Driver");
-        DATABASE_DIALECT = configParser.getString("DatabaseDialect","org.hibernate.dialect.PostgreSQL95Dialect");
-        DATABASE_URL = System.getenv("DATABASE_URL") != null ? System.getenv("DATABASE_URL") : configParser.getString("DatabaseURL","jdbc:postgresql://localhost:5432/postgres?useSSL=false");
-        DATABASE_USER = System.getenv("DATABASE_USER") != null ? System.getenv("DATABASE_USER") : configParser.getString("DatabaseUser","postgres");
-        DATABASE_PASSWORD = System.getenv("DATABASE_PASSWORD") != null ? System.getenv("DATABASE_PASSWORD") : configParser.getString("DatabasePassword","root");
-        DATABASE_SHOW_SQL = configParser.getString("DatabaseShowSql","true");
-        DATABASE_HBM2DLL = configParser.getString("DatabaseHBM2DLL","update");
+        DATABASE_CONNECTION_STRING = configParser.getString("DatabaseConnectionString","mongodb://localhost");
+        DATABASE_NAME = configParser.getString("DatabaseName","enux");
 
         configParser = new PropertiesParser(generalProperties);
         GAME_SERVER_NAME = configParser.getString("ServerName", "NoNameServer");

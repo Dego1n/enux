@@ -1,6 +1,6 @@
 package com.gameserver.network.thread;
 
-import com.gameserver.database.dao.actor.CharacterDao;
+import com.gameserver.database.repository.actor.CharacterRepository;
 import com.gameserver.database.entity.actor.Character;
 import com.gameserver.model.World;
 import com.gameserver.model.actor.PlayableCharacter;
@@ -47,7 +47,8 @@ public class ClientListenerThread {
             packetBuffer.add(packet);
         else {
             writeIsPending = true;
-            _socketChannel.write(ByteBuffer.wrap(packet.prepareAndGetData()), this, new CompletionHandler<>() {
+            _socketChannel.write(ByteBuffer.wrap(packet.prepareAndGetData()), this, new CompletionHandler<Integer, ClientListenerThread>() {
+
                 @Override
                 public void completed(Integer result, ClientListenerThread thread) {
                     thread.writeIsPending = false;
@@ -128,16 +129,16 @@ public class ClientListenerThread {
         //TODO получить аккаунт_ид от сервера авторизации
         //TODO отправлять персонажей именно этого аккаунта
 
-        CharacterDao characterDao = new CharacterDao();
-        List<Character> characters = characterDao.getCharactersByAccount(1);
+        CharacterRepository characterDao = new CharacterRepository();
+        List<Character> characters = characterDao.getCharactersByAccount("1"); //TODO:
         sendPacket(new CharacterList(characters));
     }
 
-    public void characterSelected(int characterId) {
+    public void characterSelected(String characterId) {
         //TODO: проверять что персонаж принадлежит аккаунту
         //TODO: проверять что персонаж не забанен
 
-        CharacterDao characterDao = new CharacterDao();
+        CharacterRepository characterDao = new CharacterRepository();
         Character character = characterDao.getCharacterById(characterId);
 
         if(character == null)

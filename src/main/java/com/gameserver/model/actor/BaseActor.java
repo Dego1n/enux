@@ -20,7 +20,7 @@ public abstract class BaseActor {
     public static final int REGEN_TASK_EVERY_SECONDS = 5;
 
     private final int objectId;
-    int id;
+    protected String id;
     private int locationX;
     private int locationY;
     private int locationZ;

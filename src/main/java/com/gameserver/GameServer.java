@@ -1,8 +1,8 @@
 package com.gameserver;
 
 import com.gameserver.config.Config;
+import com.gameserver.database.DBDatastore;
 import com.gameserver.database.presets.CharacterPresets;
-import com.gameserver.geodata.GeoEngine;
 import com.gameserver.instance.CommandEngine;
 import com.gameserver.instance.DataEngine;
 import com.gameserver.model.World;
@@ -16,6 +16,7 @@ class GameServer {
     public static void main(String[] args)
     {
         Config.Load();
+        DBDatastore.getInstance();
         DataEngine.getInstance();
         /* PRESETS_START */
         CharacterPresets.Load();

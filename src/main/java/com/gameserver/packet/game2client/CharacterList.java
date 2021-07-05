@@ -29,7 +29,7 @@ public class CharacterList  extends AbstractSendablePacket implements IServerPac
 
         for(Character character : _characters)
         {
-            writeD(character.getId());
+            writeS(character.getId());
             writeS(character.getName());
             writeD(character.getLocationX());
             writeD(character.getLocationY());

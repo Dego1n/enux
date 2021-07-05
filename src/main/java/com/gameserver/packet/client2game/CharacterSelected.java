@@ -16,7 +16,7 @@ public class CharacterSelected extends AbstractReceivablePacket {
 
     private void handle() {
 
-        int characterId = readD();
-        _clientListenerThread.characterSelected(characterId);
+        String characterId = readS();
+        _clientListenerThread.characterSelected(String.valueOf(characterId));
     }
 }
