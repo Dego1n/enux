@@ -24,30 +24,30 @@ public class GeoEngine {
         return _instance;
     }
 
-    //Значения landscape из Unreal
-    private final int world_map_x_start = Config.WORLD_MAP_X_START; //Высчитывается из окна world composition
-    private final int world_map_y_start = Config.WORLD_MAP_Y_START; //Высчитывается из окна world composition
+    //Р—РЅР°С‡РµРЅРёСЏ landscape РёР· Unreal
+    private final int world_map_x_start = Config.WORLD_MAP_X_START; //Р’С‹СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РёР· РѕРєРЅР° world composition
+    private final int world_map_y_start = Config.WORLD_MAP_Y_START; //Р’С‹СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РёР· РѕРєРЅР° world composition
     private final float world_map_x_scale = Config.WORLD_MAP_X_SCALE;
     private final float world_map_y_scale = Config.WORLD_MAP_Y_SCALE;
     private final float world_map_z_scale = Config.WORLD_MAP_Z_SCALE;
-    //Не тестировалось если не 0
+    //РќРµ С‚РµСЃС‚РёСЂРѕРІР°Р»РѕСЃСЊ РµСЃР»Рё РЅРµ 0
     private final float world_map_z_position = Config.WORLD_MAP_Z_POSITION;
 
-    //Потрачено 2 дня на вычисления :(
+    //РџРѕС‚СЂР°С‡РµРЅРѕ 2 РґРЅСЏ РЅР° РІС‹С‡РёСЃР»РµРЅРёСЏ :(
     private final float world_map_z_min = -256*world_map_z_scale + world_map_z_position;
 
-    //Будет автоматически заполнено при загрузке изображения heightmap.
-    //Файл доставать так. В Modes выбрать Landscape -> Sculpt -> Нажать правой кнопкой на Heightmap в Layers и Export to file (выбрать .png)
+    //Р‘СѓРґРµС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё Р·Р°РїРѕР»РЅРµРЅРѕ РїСЂРё Р·Р°РіСЂСѓР·РєРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ heightmap.
+    //Р¤Р°Р№Р» РґРѕСЃС‚Р°РІР°С‚СЊ С‚Р°Рє. Р’ Modes РІС‹Р±СЂР°С‚СЊ Landscape -> Sculpt -> РќР°Р¶Р°С‚СЊ РїСЂР°РІРѕР№ РєРЅРѕРїРєРѕР№ РЅР° Heightmap РІ Layers Рё Export to file (РІС‹Р±СЂР°С‚СЊ .png)
     private final int heightmap_image_width;
 
-    //Здесь будет хранится данные с картинки (ЗДЕСЬ НЕТ ГОТОВЫХ Z КООРДИНАТ)
+    //Р—РґРµСЃСЊ Р±СѓРґРµС‚ С…СЂР°РЅРёС‚СЃСЏ РґР°РЅРЅС‹Рµ СЃ РєР°СЂС‚РёРЅРєРё (Р—Р”Р•РЎР¬ РќР•Рў Р“РћРўРћР’Р«РҐ Z РљРћРћР Р”РРќРђРў)
     private final short[] _heightMap;
 
     private GeoEngine()
     {
         log.info("Building GeoData");
         BufferedImage image = null;
-        //Загружаем картинку heightmap
+        //Р—Р°РіСЂСѓР¶Р°РµРј РєР°СЂС‚РёРЅРєСѓ heightmap
         try {
             image = ImageIO.read(new File(System.getProperty("user.dir") + Config.HEIGHTMAP_PATH));
         } catch (IOException e) {
@@ -56,10 +56,10 @@ public class GeoEngine {
             System.exit(1);
         }
 
-        //Вытаскиваем размеры
+        //Р’С‹С‚Р°СЃРєРёРІР°РµРј СЂР°Р·РјРµСЂС‹
         heightmap_image_width = image.getWidth();
 
-        //Вытаскиваем данные из картинки в массив
+        //Р’С‹С‚Р°СЃРєРёРІР°РµРј РґР°РЅРЅС‹Рµ РёР· РєР°СЂС‚РёРЅРєРё РІ РјР°СЃСЃРёРІ
         DataBufferUShort buffer = (DataBufferUShort) image.getRaster().getDataBuffer();
         _heightMap = buffer.getData();
         log.info("Geodata builded! Loaded {} points", _heightMap.length);
@@ -67,15 +67,15 @@ public class GeoEngine {
 
     public float getNearestZ(float x, float y)
     {
-        //Преобразуем координаты с мира в координаты картинки heightmap
+        //РџСЂРµРѕР±СЂР°Р·СѓРµРј РєРѕРѕСЂРґРёРЅР°С‚С‹ СЃ РјРёСЂР° РІ РєРѕРѕСЂРґРёРЅР°С‚С‹ РєР°СЂС‚РёРЅРєРё heightmap
         int geoX = Math.round((x - world_map_x_start)/world_map_x_scale);
         int geoY = Math.round((y - world_map_y_start)/world_map_y_scale);
 
-        //heightValue - от 0 до 65535
+        //heightValue - РѕС‚ 0 РґРѕ 65535
         int heightValue = _heightMap[geoX + geoY * heightmap_image_width] & 0xffff;
 
-        //32768 - это Z=0
-        //Потрачено 2 дня на вычисление :(
+        //32768 - СЌС‚Рѕ Z=0
+        //РџРѕС‚СЂР°С‡РµРЅРѕ 2 РґРЅСЏ РЅР° РІС‹С‡РёСЃР»РµРЅРёРµ :(
         return 256 * world_map_z_scale / 32768f * heightValue + world_map_z_min + world_map_z_position;
     }
 
