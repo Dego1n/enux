@@ -1,6 +1,5 @@
 plugins {
     id 'application'
-    id "org.sonarqube" version "3.3"
 }
 
 group 'com.mmo.gamesserver'
@@ -18,11 +17,6 @@ repositories {
 tasks.withType(JavaExec) {
     if (System.getProperty('DEBUG', 'false') == 'true') {
         jvmArgs '-Xdebug', '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
-    }
-}
-sonarqube {
-    properties {
-        property "sonar.projectKey", "eleanarium_enux"
     }
 }
 
