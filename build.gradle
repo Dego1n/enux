@@ -18,6 +18,7 @@ repositories {
 sonarqube {
     properties {
         property "sonar.projectKey", "eleanarium_enux"
+        property "sonar.projectName", "Enux"
     }
 }
 
