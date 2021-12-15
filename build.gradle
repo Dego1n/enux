@@ -35,7 +35,7 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5' //LogBack
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.32' //Log
 
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.29' //YAML парсер
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.30' //YAML парсер
 
     compile "org.mdkt.compiler:InMemoryJavaCompiler:1.3.0"
 
