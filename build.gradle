@@ -32,7 +32,7 @@ dependencies {
 
     compile files("dist/config/log") // IDE будет подключать конфиг LogBack
     compile group: 'dev.morphia.morphia', name:'morphia-core', version:'2.2.1'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5' //LogBack
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10' //LogBack
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.32' //Log
 
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.29' //YAML парсер
