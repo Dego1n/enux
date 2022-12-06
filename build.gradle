@@ -31,7 +31,7 @@ tasks.withType(JavaExec) {
 dependencies {
 
     compile files("dist/config/log") // IDE будет подключать конфиг LogBack
-    compile group: 'dev.morphia.morphia', name:'morphia-core', version:'2.2.1'
+    compile group: 'dev.morphia.morphia', name:'morphia-core', version:'2.3.0'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5' //LogBack
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.32' //Log
 
